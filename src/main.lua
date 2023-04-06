@@ -1,3 +1,4 @@
+io.write('\n-------------\n| RAYTRACER |\n-------------\n\n')
 
 local image, err = io.open('image.ppm', 'w')
 assert(image, err)
@@ -7,7 +8,10 @@ local image_height = 256
 
 image:write('P3\n' .. image_width .. ' ' .. image_height .. '\n255\n');
 
+local progress_flush = string.rep(' ', string.len(tostring(image_height - 1)))
 for j = image_height - 1, 0, -1 do
+	io.write('\rScanlines remaining: ' .. j .. progress_flush)
+
 	for i = 0, image_width - 1 do
 		local r = i / (image_width - 1)
 		local g = j / (image_height - 1)
@@ -22,3 +26,4 @@ for j = image_height - 1, 0, -1 do
 end
 
 image:close()
+io.write('\nDone.\n\n')
