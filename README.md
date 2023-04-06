@@ -1,2 +1,2 @@
-# raytracer.js
+# raytracer
 A simple raytracer built with TypeScript
