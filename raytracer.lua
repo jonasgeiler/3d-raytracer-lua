@@ -1,3 +1,5 @@
+local vec3 = require('lib.vec3')
+
 io.write('\n-------------\n| RAYTRACER |\n-------------\n\n')
 
 local image, err = io.open('image.ppm', 'w')
@@ -9,6 +11,7 @@ local image_height = 256
 image:write('P3\n' .. image_width .. ' ' .. image_height .. '\n255\n');
 
 local progress_flush = string.rep(' ', string.len(tostring(image_height - 1)))
+
 for j = image_height - 1, 0, -1 do
 	io.write('\rScanlines remaining: ' .. j .. progress_flush)
 
