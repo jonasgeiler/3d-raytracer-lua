@@ -1,2 +1,2 @@
-# raytracer
-A simple raytracer built with TypeScript
+# raytracer.lua
+A simple raytracer built with Lua
