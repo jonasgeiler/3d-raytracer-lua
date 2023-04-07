@@ -5,13 +5,31 @@ local ray = require('lib.ray')
 local point3 = vec3 -- alias
 local color = vec3 -- alias
 
+function hit_sphere(center, radius, r)
+	assert(center.class == point3, 'Invalid sphere center: ' .. type(center))
+	assert(type(radius) == 'number', 'Invalid sphere radius: ' .. type(radius))
+	assert(r.class == ray, 'Invalid sphere hit ray: ' .. type(r))
+
+	local oc = r.origin - center
+	local a = vec3.dot(r.direction, r.direction)
+	local b = 2 * vec3.dot(oc, r.direction)
+	local c = vec3.dot(oc, oc) - radius*radius
+	local discriminant = b*b - 4*a*c
+
+	return discriminant > 0
+end
+
 function ray_color(r)
 	assert(r.class == ray, 'Invalid ray: ' .. type(r))
 
-	local unit_direction = r.direction:unit_vector()
-	local t = 0.5 * (unit_direction.y + 1.0)
+	if hit_sphere(point3(0, 0, -1), 0.5, r) then
+		return color(1, 0, 0)
+	end
 
-	return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0)
+	local unit_direction = r.direction:unit_vector()
+	local t = 0.5 * (unit_direction.y + 1)
+
+	return (1 - t) * color(1, 1, 1) + t * color(0.5, 0.7, 1)
 end
 
 
