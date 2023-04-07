@@ -3,10 +3,14 @@ local class = require('lib.middleclass')
 local vec3 = class('vec3')
 
 function vec3:initialize(x, y, z)
+	x = x or 0
+	y = y or 0
+	z = z or 0
 	assert(type(x) == 'number' and type(y) == 'number' and type(z) == 'number', 'Invalid vec3 arguments: ' .. type(x) .. ', ' .. type(y) .. ', ' .. type(z))
-	self.x = x or 0
-	self.y = y or 0
-	self.z = z or 0
+
+	self.x = x
+	self.y = y
+	self.z = z
 end
 
 function vec3:length_squared()
