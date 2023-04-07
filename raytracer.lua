@@ -1,5 +1,6 @@
 local vec3 = require('lib.vec3')
 local ppm = require('lib.ppm')
+local ray = require('lib.ray')
 
 local point3 = vec3 -- alias
 local color = vec3 -- alias
