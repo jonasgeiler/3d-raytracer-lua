@@ -5,14 +5,31 @@ local ray = require('lib.ray')
 local point3 = vec3 -- alias
 local color = vec3 -- alias
 
+function ray_color(r)
+	assert(r.class == ray, 'Invalid ray: ' .. type(r))
+
+	local unit_direction = r.direction:unit_vector()
+	local t = 0.5 * (unit_direction.y + 1.0)
+
+	return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0)
+end
+
+
 io.write('\n-------------\n| RAYTRACER |\n-------------\n\n')
 
-local image, err = io.open('image.ppm', 'w')
-assert(image, err)
-
-local image_width = 256
-local image_height = 256
+local aspect_ratio = 16 / 9
+local image_width = 400
+local image_height = math.floor(image_width / aspect_ratio)
 local image = ppm('image.ppm', image_width, image_height)
+
+local viewport_height = 2
+local viewport_width = aspect_ratio * viewport_height
+local focal_length = 1
+
+local origin = point3(0, 0, 0)
+local horizontal = vec3(viewport_width, 0, 0)
+local vertical = vec3(0, viewport_height, 0)
+local lower_left_corner = origin - horizontal/2 - vertical/2 - vec3(0, 0, focal_length)
 
 local progress_flush = string.rep(' ', string.len(tostring(image_height - 1)))
 
@@ -20,7 +37,11 @@ for j = image_height - 1, 0, -1 do
 	io.write('\rScanlines remaining: ' .. j .. progress_flush)
 
 	for i = 0, image_width - 1 do
-		local pixel_color = color(i / (image_width - 1), j / (image_height - 1), 0.25)
+		local u = i / (image_width - 1)
+		local v = j / (image_height - 1)
+		local r = ray(origin, lower_left_corner + u*horizontal + v*vertical - origin)
+		local pixel_color = ray_color(r)
+
 		image:write_color(pixel_color)
 	end
 end
