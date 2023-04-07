@@ -8,12 +8,20 @@ function vec3:initialize(x, y, z)
 	self.z = z or 0
 end
 
+function vec3:__unm()
+	return vec3(-self.x, -self.y, -self.z)
+end
+
 function vec3:length()
 	return math.sqrt(self:length_squared())
 end
 
 function vec3:length_squared()
 	return self.x*self.x + self.y*self.y + self.z*self.z
+end
+
+function vec3:__tostring()
+	return '(' .. self.x .. ', ' .. self.y .. ', ' .. self.z .. ')'
 end
 
 return vec3

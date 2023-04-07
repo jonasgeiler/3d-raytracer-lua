@@ -1,4 +1,6 @@
 local vec3 = require('lib.vec3')
+local v = vec3(1, 2, 3)
+print(-v)
 
 io.write('\n-------------\n| RAYTRACER |\n-------------\n\n')
 
