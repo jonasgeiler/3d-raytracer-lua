@@ -16,18 +16,24 @@ function hit_sphere(center, radius, r)
 	local c = vec3.dot(oc, oc) - radius*radius
 	local discriminant = b*b - 4*a*c
 
-	return discriminant > 0
+	if discriminant < 0 then
+		return -1
+	else
+		return (-b - math.sqrt(discriminant)) / (2 * a)
+	end
 end
 
 function ray_color(r)
 	assert(r.class == ray, 'Invalid ray: ' .. type(r))
 
-	if hit_sphere(point3(0, 0, -1), 0.5, r) then
-		return color(1, 0, 0)
+	local t = hit_sphere(point3(0, 0, -1), 0.5, r)
+	if t > 0 then
+		local N = vec3.unit_vector(r:at(t) - vec3(0, 0, -1))
+		return 0.5 * color(N.x + 1, N.y + 1, N.z + 1)
 	end
 
 	local unit_direction = r.direction:unit_vector()
-	local t = 0.5 * (unit_direction.y + 1)
+	t = 0.5 * (unit_direction.y + 1)
 
 	return (1 - t) * color(1, 1, 1) + t * color(0.5, 0.7, 1)
 end
