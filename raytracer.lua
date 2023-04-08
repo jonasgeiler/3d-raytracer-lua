@@ -55,7 +55,7 @@ local horizontal = vec3(viewport_width, 0, 0)
 local vertical = vec3(0, viewport_height, 0)
 local lower_left_corner = origin - horizontal/2 - vertical/2 - vec3(0, 0, focal_length)
 
-local progress_flush = string.rep(' ', #tostring(image_height - 1))
+local progress_flush = string.rep(' ', #tostring(image_height - 1)) -- calculate max length of scanline number and use that for padding the progress message
 
 for j = image_height - 1, 0, -1 do
 	io.write('\rScanlines remaining: ' .. j .. progress_flush)
