@@ -11,15 +11,15 @@ function hit_sphere(center, radius, r)
 	assert(r.class == ray, 'Invalid sphere hit ray: ' .. type(r))
 
 	local oc = r.origin - center
-	local a = vec3.dot(r.direction, r.direction)
-	local b = 2 * vec3.dot(oc, r.direction)
-	local c = vec3.dot(oc, oc) - radius*radius
-	local discriminant = b*b - 4*a*c
+	local a = r.direction:length_squared()
+	local half_b = oc:dot(r.direction)
+	local c = oc:length_squared() - radius*radius
+	local discriminant = half_b*half_b - a*c
 
 	if discriminant < 0 then
 		return -1
 	else
-		return (-b - math.sqrt(discriminant)) / (2 * a)
+		return (-half_b - math.sqrt(discriminant)) / a
 	end
 end
 
