@@ -2,6 +2,7 @@ local class = require('lib.middleclass')
 local vec3 = require('lib.vec3')
 local hittable = require('lib.hittable')
 local ray = require('lib.ray')
+local hit_record = require('lib.hit_record')
 
 local point3 = vec3 -- alias
 local color = vec3 -- alias
@@ -20,7 +21,7 @@ function sphere:hit(r, t_min, t_max, rec)
 	assert(r.class == ray, 'Invalid sphere hit ray: ' .. type(r))
 	assert(type(t_min) == 'number', 'Invalid sphere hit t-min: ' .. type(t_min))
 	assert(type(t_max) == 'number', 'Invalid sphere hit t-max: ' .. type(t_max))
-	assert(type(rec) == 'table', 'Invalid sphere hit record: ' .. type(rec))
+	assert(rec.class == hit_record, 'Invalid sphere hit record: ' .. type(rec))
 
 	local oc = r.origin - self.center
 	local a = r.direction:length_squared()
@@ -41,7 +42,8 @@ function sphere:hit(r, t_min, t_max, rec)
 
 	rec.t = root
 	rec.p = r:at(rec.t)
-	rec.normal = (rec.p - self.center) / self.radius
+	local outward_normal = (rec.p - self.center) / self.radius
+	rec:set_face_normal(r, outward_normal)
 
 	return true
 end
