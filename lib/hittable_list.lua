@@ -7,7 +7,10 @@ local hittable_list = class('hittable_list', hittable)
 
 function hittable_list:initialize(object)
 	self.objects = {}
-	self:add(object)
+
+	if object then
+		self:add(object)
+	end
 end
 
 function hittable_list:clear()
@@ -18,24 +21,24 @@ end
 
 function hittable_list:add(object)
 	assert(type(object) == 'table' and object.isInstanceOf and object:isInstanceOf(hittable), 'Invalid object for hittable list: ' .. type(object))
-	self.objects:insert(object)
+	table.insert(self.objects, object)
 end
 
 function hittable_list:hit(r, t_min, t_max, rec)
-	assert(r.class == ray, 'Invalid hitable_list hit ray: ' .. type(r))
+	assert(type(r) == 'table' and r.class == ray, 'Invalid hitable_list hit ray: ' .. type(r))
 	assert(type(t_min) == 'number', 'Invalid hitable_list hit t-min: ' .. type(t_min))
 	assert(type(t_max) == 'number', 'Invalid hitable_list hit t-max: ' .. type(t_max))
-	assert(rec.class == hit_record, 'Invalid hitable_list hit record: ' .. type(rec))
+	assert(type(rec) == 'table' and rec.class == hit_record, 'Invalid hitable_list hit record: ' .. type(rec))
 
 	local temp_rec = hit_record()
 	local hit_anything = false
 	local closest_so_far = t_max
 
-	for object in ipairs(self.objects) do
+	for i, object in ipairs(self.objects) do
 		if object:hit(r, t_min, closest_so_far, temp_rec) then
 			hit_anything = true
 			closest_so_far = temp_rec.t
-			rec = temp_rec
+			rec:replace_with(temp_rec)
 		end
 	end
 

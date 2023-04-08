@@ -22,7 +22,7 @@ function ppm:initialize(path, width, height, use_ascii)
 end
 
 function ppm:write_color(pixel_color)
-	assert(pixel_color.class == color, 'Invalid ppm pixel color: ' .. type(pixel_color))
+	assert(type(pixel_color) == 'table' and pixel_color.class == color, 'Invalid ppm pixel color: ' .. type(pixel_color))
 	if self.use_ascii then
 		self.image:write(math.floor(255.999 * pixel_color.x) .. ' ' .. math.floor(255.999 * pixel_color.y) .. ' ' .. math.floor(255.999 * pixel_color.z) .. '\n')
 	else

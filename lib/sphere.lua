@@ -10,7 +10,7 @@ local color = vec3 -- alias
 local sphere = class('sphere', hittable)
 
 function sphere:initialize(center, radius)
-	assert(center.class == point3, 'Invalid sphere center: ' .. type(center))
+	assert(type(center) == 'table' and center.class == point3, 'Invalid sphere center: ' .. type(center))
 	assert(type(radius) == 'number', 'Invalid sphere radius: ' .. type(radius))
 
 	self.center = center
@@ -18,10 +18,10 @@ function sphere:initialize(center, radius)
 end
 
 function sphere:hit(r, t_min, t_max, rec)
-	assert(r.class == ray, 'Invalid sphere hit ray: ' .. type(r))
+	assert(type(r) == 'table' and r.class == ray, 'Invalid sphere hit ray: ' .. type(r))
 	assert(type(t_min) == 'number', 'Invalid sphere hit t-min: ' .. type(t_min))
 	assert(type(t_max) == 'number', 'Invalid sphere hit t-max: ' .. type(t_max))
-	assert(rec.class == hit_record, 'Invalid sphere hit record: ' .. type(rec))
+	assert(type(rec) == 'table' and rec.class == hit_record, 'Invalid sphere hit record: ' .. type(rec))
 
 	local oc = r.origin - self.center
 	local a = r.direction:length_squared()

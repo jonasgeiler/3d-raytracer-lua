@@ -38,7 +38,7 @@ function vec3.__add(a, b)
 		return vec3(a.x + b, a.y + b, a.z + b)
 	end
 
-	assert(a.class == vec3 and b.class == vec3, 'Invalid vec3 addition: ' .. type(a) .. ' + ' .. type(b))
+	assert(type(a) == 'table' and a.class == vec3 and type(b) == 'table' and b.class == vec3, 'Invalid vec3 addition: ' .. type(a) .. ' + ' .. type(b))
 	return vec3(a.x + b.x, a.y + b.y, a.z + b.z)
 end
 
@@ -51,7 +51,7 @@ function vec3.__sub(a, b)
 		return vec3(a.x - b, a.y - b, a.z - b)
 	end
 
-	assert(a.class == vec3 and b.class == vec3, 'Invalid vec3 subtraction: ' .. type(a) .. ' - ' .. type(b))
+	assert(type(a) == 'table' and a.class == vec3 and type(b) == 'table' and b.class == vec3, 'Invalid vec3 subtraction: ' .. type(a) .. ' - ' .. type(b))
 	return vec3(a.x - b.x, a.y - b.y, a.z - b.z)
 end
 
@@ -64,7 +64,7 @@ function vec3.__mul(a, b)
 		return vec3(a.x * b, a.y * b, a.z * b)
 	end
 
-	assert(a.class == vec3 and b.class == vec3, 'Invalid vec3 multiplication: ' .. type(a) .. ' * ' .. type(b))
+	assert(type(a) == 'table' and a.class == vec3 and type(b) == 'table' and b.class == vec3, 'Invalid vec3 multiplication: ' .. type(a) .. ' * ' .. type(b))
 	return vec3(a.x * b.x, a.y * b.y, a.z * b.z)
 end
 
@@ -81,17 +81,17 @@ function vec3.__div(a, b)
 end
 
 function vec3.dot(a, b)
-	assert(a.class == vec3 and b.class == vec3, 'Invalid vec3 dot product: ' .. type(a) .. ' dot ' .. type(b))
+	assert(type(a) == 'table' and a.class == vec3 and type(b) == 'table' and b.class == vec3, 'Invalid vec3 dot product: ' .. type(a) .. ' dot ' .. type(b))
 	return a.x * b.x + a.y * b.y + a.z * b.z
 end
 
 function vec3.cross(a, b)
-	assert(a.class == vec3 and b.class == vec3, 'Invalid vec3 cross product: ' .. type(a) .. ' cross ' .. type(b))
+	assert(type(a) == 'table' and a.class == vec3 and type(b) == 'table' and b.class == vec3, 'Invalid vec3 cross product: ' .. type(a) .. ' cross ' .. type(b))
 	return vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
 end
 
 function vec3.unit_vector(v)
-	assert(v.class == vec3, 'Invalid vec3 unit vector: ' .. type(v))
+	assert(type(v) == 'table' and v.class == vec3, 'Invalid vec3 unit vector: ' .. type(v))
 	return v / v:length()
 end
 

@@ -7,8 +7,8 @@ local color = vec3 -- alias
 local ray = class('ray')
 
 function ray:initialize(origin, direction)
-	assert(origin.class == point3, 'Invalid ray origin: ' .. type(origin))
-	assert(direction.class == vec3, 'Invalid ray direction: ' .. type(direction))
+	assert(type(origin) == 'table' and origin.class == point3, 'Invalid ray origin: ' .. type(origin))
+	assert(type(direction) == 'table' and direction.class == vec3, 'Invalid ray direction: ' .. type(direction))
 	self.origin = origin
 	self.direction = direction
 end
