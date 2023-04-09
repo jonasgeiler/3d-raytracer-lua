@@ -5,6 +5,7 @@ local hittable = require('lib.hittable')
 local hit_record = require('lib.hit_record')
 local hittable_list = require('lib.hittable_list')
 local sphere = require('lib.sphere')
+local camera = require('lib.camera')
 
 local point3 = vec3 -- alias
 local color = vec3 -- alias
@@ -28,6 +29,7 @@ end
 io.write('\n-------------\n| RAYTRACER |\n-------------\n\n')
 
 local aspect_ratio = 16 / 9
+local samples_per_pixel = 100
 local image_width = 400
 local image_height = math.floor(image_width / aspect_ratio)
 local image = ppm('image.ppm', image_width, image_height)
@@ -36,27 +38,22 @@ local world = hittable_list()
 world:add(sphere(point3(0, 0, -1), 0.5))
 world:add(sphere(point3(0, -100.5, -1), 100))
 
-local viewport_height = 2
-local viewport_width = aspect_ratio * viewport_height
-local focal_length = 1
-
-local origin = point3(0, 0, 0)
-local horizontal = vec3(viewport_width, 0, 0)
-local vertical = vec3(0, viewport_height, 0)
-local lower_left_corner = origin - horizontal/2 - vertical/2 - vec3(0, 0, focal_length)
+local cam = camera()
 
 local progress_flush = string.rep(' ', #tostring(image_height - 1)) -- calculate max length of scanline number and use that for padding the progress message
 
 for j = image_height - 1, 0, -1 do
-	io.write('\rScanlines remaining: ' .. j .. progress_flush)
+	print('Scanlines remaining: ' .. j)
 
 	for i = 0, image_width - 1 do
-		local u = i / (image_width - 1)
-		local v = j / (image_height - 1)
-		local r = ray(origin, lower_left_corner + u*horizontal + v*vertical)
-		local pixel_color = ray_color(r, world)
-
-		image:write_color(pixel_color)
+		local pixel_color = color(0, 0, 0)
+		for s = 0, samples_per_pixel - 1 do
+			local u = (i + math.random()) / (image_width-1)
+			local v = (j + math.random()) / (image_height-1)
+			local r = cam:get_ray(u, v)
+			pixel_color = pixel_color + ray_color(r, world)
+		end
+		image:write_color(pixel_color, samples_per_pixel)
 	end
 end
 
