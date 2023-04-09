@@ -10,8 +10,8 @@ local point3 = vec3 -- alias
 local color = vec3 -- alias
 
 function ray_color(r, world)
-	assert(r.class == ray, 'Invalid ray: ' .. type(r))
-	assert(world.class == hittable_list, 'Invalid world: ' .. type(world))
+	assert(type(r) == 'table' and r.class == ray, 'Invalid ray: ' .. type(r))
+	assert(type(world) == 'table' and world.class == hittable_list, 'Invalid world: ' .. type(world))
 
 	local rec = hit_record()
 	if world:hit(r, 0, math.huge, rec) then
@@ -53,7 +53,7 @@ for j = image_height - 1, 0, -1 do
 	for i = 0, image_width - 1 do
 		local u = i / (image_width - 1)
 		local v = j / (image_height - 1)
-		local r = ray(origin, lower_left_corner + u*horizontal + v*vertical - origin)
+		local r = ray(origin, lower_left_corner + u*horizontal + v*vertical)
 		local pixel_color = ray_color(r, world)
 
 		image:write_color(pixel_color)
