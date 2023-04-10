@@ -16,7 +16,7 @@ function ppm:initialize(path, width, height, use_ascii)
 	local image, err = io.open(path, use_ascii and 'w' or 'wb')
 	assert(image, err)
 
-	image:write(use_ascii and 'P3' or 'P6' .. '\n' .. width .. ' ' .. height .. '\n255\n')
+	image:write(use_ascii and 'P3' or 'P6', '\n', width, ' ', height, '\n255\n')
 
 	self.image = image
 	self.use_ascii = use_ascii
@@ -31,9 +31,9 @@ function ppm:write_color(pixel_color, samples_per_pixel)
 
 	if self.use_ascii then
 		self.image:write(
-			math.floor(256 * utils.clamp(r, 0, 0.999)) .. ' ' ..
-			math.floor(256 * utils.clamp(g, 0, 0.999)) .. ' ' ..
-			math.floor(256 * utils.clamp(b, 0, 0.999)) .. '\n'
+			math.floor(256 * utils.clamp(r, 0, 0.999)), ' ',
+			math.floor(256 * utils.clamp(g, 0, 0.999)), ' ',
+			math.floor(256 * utils.clamp(b, 0, 0.999)), '\n'
 		)
 	else
 		self.image:write(

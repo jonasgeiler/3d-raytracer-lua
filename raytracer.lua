@@ -26,7 +26,9 @@ function ray_color(r, world)
 end
 
 
-io.write('\n-------------\n| RAYTRACER |\n-------------\n\n')
+print('\n-------------\n| RAYTRACER |\n-------------\n')
+
+math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6))) -- improve random nums
 
 local aspect_ratio = 16 / 9
 local samples_per_pixel = 100
@@ -40,10 +42,8 @@ world:add(sphere(point3(0, -100.5, -1), 100))
 
 local cam = camera()
 
-local progress_flush = string.rep(' ', #tostring(image_height - 1)) -- calculate max length of scanline number and use that for padding the progress message
-
 for j = image_height - 1, 0, -1 do
-	print('Scanlines remaining: ' .. j)
+	print('Scanlines remaining: ', j)
 
 	for i = 0, image_width - 1 do
 		local pixel_color = color(0, 0, 0)
@@ -58,4 +58,4 @@ for j = image_height - 1, 0, -1 do
 end
 
 image:close()
-io.write('\nDone.\n\n')
+print('\nDone.\n')
