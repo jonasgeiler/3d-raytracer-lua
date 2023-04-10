@@ -1,5 +1,6 @@
 local class = require('lib.middleclass')
 
+---@class hittable
 local hittable = class('hittable')
 
 function hittable:hit()

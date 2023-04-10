@@ -1,2 +1,4 @@
-# Ignore output images
-*.ppm
+.idea
+
+# Ignore rendered images
+renders/*.ppm

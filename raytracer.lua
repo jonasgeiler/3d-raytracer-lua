@@ -1,16 +1,18 @@
 local vec3 = require('lib.vec3')
 local ppm = require('lib.ppm')
 local ray = require('lib.ray')
-local hittable = require('lib.hittable')
+local point3 = require('lib.point3')
+local color = require('lib.color')
 local hit_record = require('lib.hit_record')
 local hittable_list = require('lib.hittable_list')
 local sphere = require('lib.sphere')
 local camera = require('lib.camera')
 
-local point3 = vec3 -- alias
-local color = vec3 -- alias
-
-function ray_color(r, world, depth)
+---@param r ray
+---@param world hittable_list
+---@param depth number
+---@return color
+local function ray_color(r, world, depth)
 	assert(type(r) == 'table' and r.class == ray, 'Invalid ray: ' .. type(r))
 	assert(type(world) == 'table' and world.class == hittable_list, 'Invalid world: ' .. type(world))
 	assert(type(depth) == 'number', 'Invalid depth for ray color: ' .. type(depth))
@@ -20,7 +22,7 @@ function ray_color(r, world, depth)
 	end
 
 	local rec = hit_record()
-	if world:hit(r, 0, math.huge, rec) then
+	if world:hit(r, 0.001, math.huge, rec) then
 		local target = rec.p + rec.normal + vec3:random_in_unit_sphere()
 		return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth - 1)
 	end
@@ -41,7 +43,7 @@ local samples_per_pixel = 100
 local max_depth = 50
 local image_width = 400
 local image_height = math.floor(image_width / aspect_ratio)
-local image = ppm('image.ppm', image_width, image_height)
+local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', image_width, image_height, true)
 
 local world = hittable_list()
 world:add(sphere(point3(0, 0, -1), 0.5))
@@ -54,7 +56,7 @@ for j = image_height - 1, 0, -1 do
 
 	for i = 0, image_width - 1 do
 		local pixel_color = color(0, 0, 0)
-		for s = 0, samples_per_pixel - 1 do
+		for _ = 0, samples_per_pixel - 1 do
 			local u = (i + math.random()) / (image_width-1)
 			local v = (j + math.random()) / (image_height-1)
 			local r = cam:get_ray(u, v)
