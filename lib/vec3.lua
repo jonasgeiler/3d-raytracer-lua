@@ -13,6 +13,24 @@ function vec3:initialize(x, y, z)
 	self.z = z
 end
 
+function vec3.static:random(min, max)
+	if min and max then
+		assert(type(min) == 'number' and type(max) == 'number', 'Invalid min/max for new random vec3: ' .. type(min) .. ', ' .. type(max))
+		return vec3(math.random(min, max), math.random(min, max), math.random(min, max))
+	end
+
+	return vec3(math.random(), math.random(), math.random())
+end
+
+function vec3.static:random_in_unit_sphere()
+	while true do
+		local p = self:random(-1, 1)
+		if p:length_squared() < 1 then
+			return p
+		end
+	end
+end
+
 function vec3:length_squared()
 	return self.x * self.x + self.y * self.y + self.z * self.z
 end

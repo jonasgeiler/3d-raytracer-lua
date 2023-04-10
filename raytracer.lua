@@ -10,13 +10,19 @@ local camera = require('lib.camera')
 local point3 = vec3 -- alias
 local color = vec3 -- alias
 
-function ray_color(r, world)
+function ray_color(r, world, depth)
 	assert(type(r) == 'table' and r.class == ray, 'Invalid ray: ' .. type(r))
 	assert(type(world) == 'table' and world.class == hittable_list, 'Invalid world: ' .. type(world))
+	assert(type(depth) == 'number', 'Invalid depth for ray color: ' .. type(depth))
+
+	if depth <= 0 then
+		return color(0, 0, 0)
+	end
 
 	local rec = hit_record()
 	if world:hit(r, 0, math.huge, rec) then
-		return 0.5 * (rec.normal + color(1, 1, 1))
+		local target = rec.p + rec.normal + vec3:random_in_unit_sphere()
+		return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth - 1)
 	end
 
 	local unit_direction = r.direction:unit_vector()
@@ -32,6 +38,7 @@ math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6))) -- improve ran
 
 local aspect_ratio = 16 / 9
 local samples_per_pixel = 100
+local max_depth = 50
 local image_width = 400
 local image_height = math.floor(image_width / aspect_ratio)
 local image = ppm('image.ppm', image_width, image_height)
@@ -51,7 +58,7 @@ for j = image_height - 1, 0, -1 do
 			local u = (i + math.random()) / (image_width-1)
 			local v = (j + math.random()) / (image_height-1)
 			local r = cam:get_ray(u, v)
-			pixel_color = pixel_color + ray_color(r, world)
+			pixel_color = pixel_color + ray_color(r, world, max_depth)
 		end
 		image:write_color(pixel_color, samples_per_pixel)
 	end
