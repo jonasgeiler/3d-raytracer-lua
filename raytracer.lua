@@ -47,12 +47,14 @@ world:add(sphere(point3(0, -100.5, -1), 100))
 
 local cam = camera()
 
+local last_scanline_time = 0
 for j = image_height - 1, 0, -1 do
-	print('Scanlines remaining: ', j)
+	print('Scanlines remaining: ', j, 'Seconds remaining: ', math.floor(last_scanline_time * j))
 
+	local scanline_time = os.clock()
 	for i = 0, image_width - 1 do
 		local pixel_color = color(0, 0, 0)
-		for _ = 0, samples_per_pixel - 1 do
+		for _ = 1, samples_per_pixel do
 			local u = (i + math.random()) / (image_width-1)
 			local v = (j + math.random()) / (image_height-1)
 			local r = cam:get_ray(u, v)
@@ -60,6 +62,7 @@ for j = image_height - 1, 0, -1 do
 		end
 		image:write_color(pixel_color, samples_per_pixel)
 	end
+	last_scanline_time = os.clock() - scanline_time
 end
 
 image:close()
