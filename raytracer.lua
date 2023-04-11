@@ -1,5 +1,6 @@
 local ppm = require('lib.ppm')
 local ray = require('lib.ray')
+local vec3 = require('lib.vec3')
 local point3 = require('lib.point3')
 local color = require('lib.color')
 local hit_record = require('lib.hit_record')
@@ -49,16 +50,26 @@ local image_width = 400
 local image_height = math.floor(image_width / aspect_ratio)
 local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', image_width, image_height)
 
-local R = math.cos(math.pi / 4)
 local world = hittable_list()
 
-local material_left   = lambertian(color(0.0, 0.0, 1.0))
-local material_right  = lambertian(color(1.0, 0.0, 0.0))
+local material_ground = lambertian(color(0.8, 0.8, 0.0))
+local material_center = lambertian(color(0.1, 0.2, 0.5))
+local material_left   = dielectric(1.5)
+local material_right  = metal(color(0.8, 0.6, 0.2), 0.0)
 
-world:add(sphere(point3(-R, 0, -1), R, material_left))
-world:add(sphere(point3( R, 0, -1), R, material_right))
+world:add(sphere(point3( 0.0, -100.5, -1.0), 100.0, material_ground))
+world:add(sphere(point3( 0.0,    0.0, -1.0),   0.5, material_center))
+world:add(sphere(point3(-1.0,    0.0, -1.0),   0.5, material_left))
+world:add(sphere(point3(-1.0,    0.0, -1.0), -0.45, material_left))
+world:add(sphere(point3( 1.0,    0.0, -1.0),   0.5, material_right))
 
-local cam = camera(90.0, aspect_ratio)
+local lookfrom = point3(3, 3, 2)
+local lookat = point3(0, 0, -1)
+local vup = vec3(0, 1, 0)
+local dist_to_focus = (lookfrom - lookat):length()
+local aperture = 2.0
+
+local cam = camera(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus)
 
 print('Starting rendering...\n')
 local render_time = os.clock()

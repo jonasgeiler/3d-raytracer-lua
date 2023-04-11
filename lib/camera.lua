@@ -6,32 +6,51 @@ local utils = require('lib.utils')
 
 ---@class camera
 ---@field origin point3
+---@field lower_left_corner point3
 ---@field horizontal vec3
 ---@field vertical vec3
----@field lower_left_corner vec3
+---@field u vec3
+---@field v vec3
+---@field w vec3
+---@field lens_radius number
 local camera = class()
 
+---@param lookfrom point3
+---@param lookat point3
+---@param vup vec3
 ---@param vfov number @Vertical field-of-view in degrees
 ---@param aspect_ratio number
-function camera:new(vfov, aspect_ratio)
+---@param aperture number
+---@param focus_dist number
+function camera:new(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, focus_dist)
     local theta = utils.degrees_to_radians(vfov)
     local h = math.tan(theta / 2)
     local viewport_height = 2.0 * h
     local viewport_width = aspect_ratio * viewport_height
 
-    local focal_length = 1.0
+    self.w = (lookfrom - lookat):unit_vector()
+    self.u = vup:cross(self.w):unit_vector()
+    self.v = self.w:cross(self.u)
 
-    self.origin = point3(0, 0, 0)
-    self.horizontal = vec3(viewport_width, 0.0, 0.0)
-    self.vertical = vec3(0.0, viewport_height, 0.0)
-    self.lower_left_corner = self.origin - self.horizontal / 2 - self.vertical / 2 - vec3(0, 0, focal_length)
+    self.origin = lookfrom
+    self.horizontal = focus_dist * viewport_width * self.u
+    self.vertical = focus_dist * viewport_height * self.v
+    self.lower_left_corner = self.origin - self.horizontal / 2 - self.vertical / 2 - focus_dist * self.w
+
+    self.lens_radius = aperture / 2
 end
 
----@param u number
----@param v number
+---@param s number
+---@param t number
 ---@return ray
-function camera:get_ray(u, v)
-    return ray(self.origin, self.lower_left_corner + u * self.horizontal + v * self.vertical - self.origin)
+function camera:get_ray(s, t)
+    local rd = self.lens_radius * vec3.random_in_unit_disk()
+    local offset = self.u * rd.x + self.v * rd.y
+
+    return ray(
+        self.origin + offset,
+        self.lower_left_corner + s * self.horizontal + t * self.vertical - self.origin - offset
+    )
 end
 
 return camera

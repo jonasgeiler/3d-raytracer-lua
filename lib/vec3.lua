@@ -176,4 +176,14 @@ function vec3.random_in_hemisphere(normal)
 	end
 end
 
+function vec3.random_in_unit_disk()
+	while true do
+		local p = vec3(utils.random(-1, 1), utils.random(-1, 1), 0)
+
+		if p:length_squared() < 1 then
+			return p
+		end
+	end
+end
+
 return vec3
