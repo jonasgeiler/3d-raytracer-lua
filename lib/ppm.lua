@@ -1,16 +1,16 @@
-local class = require('lib.middleclass')
+local class = require('lib.class')
 local utils= require('lib.utils')
 
 ---@class ppm
 ---@field image file
 ---@field use_ascii boolean
-local ppm = class('ppm')
+local ppm = class()
 
 ---@param path string
 ---@param width number
 ---@param height number
 ---@param use_ascii boolean
-function ppm:initialize(path, width, height, use_ascii)
+function ppm:new(path, width, height, use_ascii)
 	use_ascii = use_ascii or false
 
 	local image, err = io.open(path, use_ascii and 'w' or 'wb')

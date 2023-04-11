@@ -1,13 +1,13 @@
-local class = require('lib.middleclass')
+local class = require('lib.class')
 
 ---@class ray
 ---@field origin point3
 ---@field direction vec3
-local ray = class('ray')
+local ray = class()
 
 ---@param origin point3
 ---@param direction vec3
-function ray:initialize(origin, direction)
+function ray:new(origin, direction)
     self.origin = origin
     self.direction = direction
 end

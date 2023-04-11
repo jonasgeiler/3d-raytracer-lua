@@ -1,14 +1,14 @@
-local class = require('lib.middleclass')
+local class = require('lib.class')
 local hittable = require('lib.hittable')
 
 ---@class sphere : hittable
 ---@field center point3
 ---@field radius number
-local sphere = class('sphere', hittable)
+local sphere = class(hittable)
 
 ---@param center point3
 ---@param radius number
-function sphere:initialize(center, radius)
+function sphere:new(center, radius)
 	self.center = center
 	self.radius = radius
 end

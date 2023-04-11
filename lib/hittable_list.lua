@@ -1,13 +1,13 @@
-local class = require('lib.middleclass')
+local class = require('lib.class')
 local hittable = require('lib.hittable')
 local hit_record = require('lib.hit_record')
 
 ---@class hittable_list : hittable
 ---@field objects hittable[]
-local hittable_list = class('hittable_list', hittable)
+local hittable_list = class(hittable)
 
 ---@param object hittable
-function hittable_list:initialize(object)
+function hittable_list:new(object)
 	self.objects = {}
 
 	if object then

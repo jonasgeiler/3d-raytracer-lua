@@ -1,5 +1,16 @@
 local utils = {}
 
+---@param min number
+---@param max number
+---@return number
+function utils.random(min, max)
+	if min and max then
+		return min + (max - min) * math.random()
+	end
+
+	return math.random()
+end
+
 ---@param degrees number
 ---@return number
 function utils.degrees_to_radians(degrees)

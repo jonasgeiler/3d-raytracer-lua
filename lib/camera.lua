@@ -1,4 +1,4 @@
-local class = require('lib.middleclass')
+local class = require('lib.class')
 local vec3 = require('lib.vec3')
 local point3 = require('lib.point3')
 local ray = require('lib.ray')
@@ -8,9 +8,9 @@ local ray = require('lib.ray')
 ---@field horizontal vec3
 ---@field vertical vec3
 ---@field lower_left_corner vec3
-local camera = class('camera')
+local camera = class()
 
-function camera:initialize()
+function camera:new()
     local aspect_ratio = 16 / 9
     local viewport_height = 2
     local viewport_width = aspect_ratio * viewport_height

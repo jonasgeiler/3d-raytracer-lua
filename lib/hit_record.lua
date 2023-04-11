@@ -1,13 +1,13 @@
-local class = require('lib.middleclass')
+local class = require('lib.class')
 
 ---@class hit_record
 ---@field p point3
 ---@field normal vec3
 ---@field t number
 ---@field front_face boolean
-local hit_record = class('hit_record')
+local hit_record = class()
 
-function hit_record:initialize()
+function hit_record:new()
 	self.p = nil
 	self.normal = nil
 	self.t = nil

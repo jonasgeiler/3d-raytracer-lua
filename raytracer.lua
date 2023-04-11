@@ -13,17 +13,13 @@ local camera = require('lib.camera')
 ---@param depth number
 ---@return color
 local function ray_color(r, world, depth)
-	assert(type(r) == 'table' and r.class == ray, 'Invalid ray: ' .. type(r))
-	assert(type(world) == 'table' and world.class == hittable_list, 'Invalid world: ' .. type(world))
-	assert(type(depth) == 'number', 'Invalid depth for ray color: ' .. type(depth))
-
 	if depth <= 0 then
 		return color(0, 0, 0)
 	end
 
 	local rec = hit_record()
 	if world:hit(r, 0.001, math.huge, rec) then
-		local target = rec.p + rec.normal + vec3:random_in_unit_sphere()
+		local target = rec.p + rec.normal + vec3.random_unit_vector()
 		return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth - 1)
 	end
 
