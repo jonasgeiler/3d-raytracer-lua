@@ -19,7 +19,9 @@ local function ray_color(r, world, depth)
 
 	local rec = hit_record()
 	if world:hit(r, 0.001, math.huge, rec) then
-		local target = rec.p + rec.normal + vec3.random_unit_vector()
+		--local target = rec.p + rec.normal + vec3.random_in_unit_sphere()
+		--local target = rec.p + rec.normal + vec3.random_unit_vector()
+		local target = rec.p + vec3.random_in_hemisphere(rec.normal)
 		return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth - 1)
 	end
 

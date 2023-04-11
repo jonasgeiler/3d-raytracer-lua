@@ -134,4 +134,16 @@ function vec3.random_unit_vector()
 	return vec3.random_in_unit_sphere():unit_vector()
 end
 
+---@return vec3
+---@param normal vec3
+function vec3.random_in_hemisphere(normal)
+	local in_unit_sphere = vec3.random_in_unit_sphere()
+
+	if in_unit_sphere:dot(normal) > 0 then
+		return in_unit_sphere
+	else
+		return -in_unit_sphere
+	end
+end
+
 return vec3
