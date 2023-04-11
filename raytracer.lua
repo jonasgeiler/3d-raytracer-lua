@@ -4,10 +4,11 @@ local point3 = require('lib.point3')
 local color = require('lib.color')
 local hit_record = require('lib.hit_record')
 local hittable_list = require('lib.hittable_list')
+local camera = require('lib.camera')
 local sphere = require('lib.sphere')
 local lambertian = require('lib.lambertian')
 local metal = require('lib.metal')
-local camera = require('lib.camera')
+local dielectric = require('lib.dielectric')
 
 ---@param r ray
 ---@param world hittable_list
@@ -15,7 +16,7 @@ local camera = require('lib.camera')
 ---@return color
 local function ray_color(r, world, depth)
 	if depth <= 0 then
-		return color(0, 0, 0)
+		return color(0.0, 0.0, 0.0)
 	end
 
 	local rec = hit_record()
@@ -27,13 +28,13 @@ local function ray_color(r, world, depth)
 			return attenuation * ray_color(scattered, world, depth - 1)
 		end
 
-		return color(0, 0, 0)
+		return color(0.0, 0.0, 0.0)
 	end
 
 	local unit_direction = r.direction:unit_vector()
-	local t = 0.5 * (unit_direction.y + 1)
+	local t = 0.5 * (unit_direction.y + 1.0)
 
-	return (1 - t) * color(1, 1, 1) + t * color(0.5, 0.7, 1)
+	return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0)
 end
 
 
@@ -51,9 +52,9 @@ local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', i
 local world = hittable_list()
 
 local material_ground = lambertian(color(0.8, 0.8, 0.0))
-local material_center = lambertian(color(0.7, 0.3, 0.3))
-local material_left   = metal(color(0.8, 0.8, 0.8), 0.3)
-local material_right  = metal(color(0.8, 0.6, 0.2), 1.0)
+local material_center = lambertian(color(0.1, 0.2, 0.5))
+local material_left   = dielectric(1.5)
+local material_right  = metal(color(0.8, 0.6, 0.2), 0.0)
 
 world:add(sphere(point3( 0.0, -100.5, -1.0), 100.0, material_ground))
 world:add(sphere(point3( 0.0,    0.0, -1.0),   0.5, material_center))

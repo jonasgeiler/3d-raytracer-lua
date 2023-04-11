@@ -127,6 +127,16 @@ function vec3.reflect(v, n)
 	return v - 2*v:dot(n)*n
 end
 
+---@param uv vec3
+---@param n vec3
+---@param etai_over_etat number
+function vec3.refract(uv, n, etai_over_etat)
+	local cos_theta = math.min((-uv):dot(n), 1.0)
+	local r_out_perp = etai_over_etat * (uv + cos_theta*n)
+	local r_out_parallel = -math.sqrt(math.abs(1.0 - r_out_perp:length_squared())) * n
+	return r_out_perp + r_out_parallel
+end
+
 ---@param min number
 ---@param max number
 ---@return vec3
