@@ -17,7 +17,7 @@ end
 
 function hittable_list:clear()
 	for i = 1, #self.objects do
-		self.objects[k] = nil
+		self.objects[i] = nil
 	end
 end
 
