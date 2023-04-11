@@ -16,6 +16,13 @@ function vec3:new(x, y, z)
 	self.z = z or 0
 end
 
+---@param new_vec3 vec3
+function vec3:replace_with(new_vec3)
+	self.x = new_vec3.x
+	self.y = new_vec3.y
+	self.z = new_vec3.z
+end
+
 ---@return number
 function vec3:length_squared()
 	return self.x * self.x + self.y * self.y + self.z * self.z
@@ -29,6 +36,12 @@ end
 ---@return vec3
 function vec3:unit_vector()
 	return self / self:length()
+end
+
+---@return boolean
+function vec3:near_zero()
+	local s = 1e-8
+	return (math.abs(self.x) < s) and (math.abs(self.y) < s) and (math.abs(self.z) < s)
 end
 
 ---@return string
@@ -105,6 +118,13 @@ end
 ---@return vec3
 function vec3.cross(a, b)
 	return vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
+end
+
+---@param v vec3
+---@param n vec3
+---@return vec3
+function vec3.reflect(v, n)
+	return v - 2*v:dot(n)*n
 end
 
 ---@param min number

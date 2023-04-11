@@ -12,6 +12,12 @@ function ray:new(origin, direction)
     self.direction = direction
 end
 
+---@param new_ray ray
+function ray:replace_with(new_ray)
+    self.origin = new_ray.origin
+    self.direction = new_ray.direction
+end
+
 ---@param t number
 function ray:at(t)
     return self.origin + t * self.direction

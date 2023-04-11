@@ -3,6 +3,7 @@ local class = require('lib.class')
 ---@class hit_record
 ---@field p point3
 ---@field normal vec3
+---@field mat material
 ---@field t number
 ---@field front_face boolean
 local hit_record = class()
@@ -10,6 +11,7 @@ local hit_record = class()
 function hit_record:new()
 	self.p = nil
 	self.normal = nil
+	self.mat = nil
 	self.t = nil
 	self.front_face = nil
 end
@@ -18,6 +20,7 @@ end
 function hit_record:replace_with(new_hit_record)
 	self.p = new_hit_record.p
 	self.normal = new_hit_record.normal
+	self.mat = new_hit_record.mat
 	self.t = new_hit_record.t
 	self.front_face = new_hit_record.front_face
 end

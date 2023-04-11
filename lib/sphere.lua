@@ -4,13 +4,16 @@ local hittable = require('lib.hittable')
 ---@class sphere : hittable
 ---@field center point3
 ---@field radius number
+---@field mat material
 local sphere = class(hittable)
 
 ---@param center point3
 ---@param radius number
-function sphere:new(center, radius)
+---@param mat material
+function sphere:new(center, radius, mat)
 	self.center = center
 	self.radius = radius
+	self.mat = mat
 end
 
 ---@param r ray
@@ -40,6 +43,7 @@ function sphere:hit(r, t_min, t_max, rec)
 	rec.p = r:at(rec.t)
 	local outward_normal = (rec.p - self.center) / self.radius
 	rec:set_face_normal(r, outward_normal)
+	rec.mat = self.mat
 
 	return true
 end
