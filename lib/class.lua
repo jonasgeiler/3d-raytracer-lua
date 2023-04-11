@@ -1,4 +1,4 @@
----@param base table
+---@param base table?
 ---@return table
 local function class(base)
 	local cls = {}

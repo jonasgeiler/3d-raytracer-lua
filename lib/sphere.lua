@@ -1,12 +1,15 @@
 local class = require('lib.class')
 local hittable = require('lib.hittable')
 
+---Represents a hittable sphere
 ---@class sphere : hittable
+---@overload fun(): sphere
 ---@field center point3
 ---@field radius number
 ---@field mat material
 local sphere = class(hittable)
 
+---Init the sphere
 ---@param center point3
 ---@param radius number
 ---@param mat material
@@ -16,6 +19,7 @@ function sphere:new(center, radius, mat)
 	self.mat = mat
 end
 
+---Check if a ray hits the sphere
 ---@param r ray
 ---@param t_min number
 ---@param t_max number

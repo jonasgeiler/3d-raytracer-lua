@@ -2,30 +2,31 @@ local class = require('lib.class')
 local hittable = require('lib.hittable')
 local hit_record = require('lib.hit_record')
 
+---Represents a list of htitable objects
 ---@class hittable_list : hittable
+---@overload fun(): hittable_list
 ---@field objects hittable[]
 local hittable_list = class(hittable)
 
----@param object hittable
-function hittable_list:new(object)
+---Init the hittable list
+function hittable_list:new()
 	self.objects = {}
-
-	if object then
-		self:add(object)
-	end
 end
 
+---Clear the hittable list
 function hittable_list:clear()
 	for i = 1, #self.objects do
 		self.objects[i] = nil
 	end
 end
 
+---Add a hittable object to the list
 ---@param object hittable
 function hittable_list:add(object)
 	self.objects[#self.objects + 1] = object
 end
 
+---Check if a ray hits any of the objects in the list
 ---@param r ray
 ---@param t_min number
 ---@param t_max number

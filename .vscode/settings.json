@@ -1,0 +1,11 @@
+{
+    "Lua.runtime.version": "LuaJIT",
+    "Lua.codeLens.enable": true,
+    "Lua.completion.callSnippet": "Replace",
+    "Lua.hint.enable": true,
+    "Lua.hint.semicolon": "Disable",
+    "Lua.hint.setType": true,
+    "Lua.hover.enumsLimit": 10,
+    "Lua.runtime.pathStrict": true,
+    "Lua.type.castNumberToInteger": false
+}

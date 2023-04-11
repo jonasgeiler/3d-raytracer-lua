@@ -12,10 +12,12 @@ local metal = require('lib.metal')
 local dielectric = require('lib.dielectric')
 local utils = require('lib.utils')
 
+---Get the color of the ray
 ---@param r ray
 ---@param world hittable_list
 ---@param depth number
 ---@return color
+---@nodiscard
 local function ray_color(r, world, depth)
 	if depth <= 0 then
 		return color(0.0, 0.0, 0.0)
@@ -36,9 +38,12 @@ local function ray_color(r, world, depth)
 	local unit_direction = r.direction:unit_vector()
 	local t = 0.5 * (unit_direction.y + 1.0)
 
-	return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0)
+	return color(1.0, 1.0, 1.0) * (1.0 - t) + color(0.5, 0.7, 1.0) * t
 end
 
+---Generate a random scene
+---@return hittable_list
+---@nodiscard
 local function random_scene()
 	local world = hittable_list()
 
@@ -68,7 +73,7 @@ local function random_scene()
 				elseif choose_mat < 0.95 then
 					-- metal
 					local albedo = color.random(0.5, 1)
-					local fuzz = utils.random(0, 0.5)
+					local fuzz = utils.random_float(0, 0.5)
 					local sphere_material = metal(albedo, fuzz)
 					world:add(sphere(center, 0.2, sphere_material))
 				else
@@ -86,6 +91,7 @@ end
 
 print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 
+---@diagnostic disable-next-line: param-type-mismatch
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6))) -- improve random nums
 
 local aspect_ratio = 3.0 / 2.0

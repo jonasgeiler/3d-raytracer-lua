@@ -1,15 +1,18 @@
 local class = require('lib.class')
 local utils= require('lib.utils')
 
+---Handles creating PPM image files
 ---@class ppm
----@field image file
+---@overload fun(): ppm
+---@field image file*
 ---@field use_ascii boolean
 local ppm = class()
 
----@param path string
----@param width number
----@param height number
----@param use_ascii boolean
+---Create and open a new PPM file
+---@param path string Path to the file
+---@param width number Image width
+---@param height number Image height
+---@param use_ascii boolean Whether to create an ASCII or binary PPM file
 function ppm:new(path, width, height, use_ascii)
 	use_ascii = use_ascii or false
 
@@ -22,6 +25,7 @@ function ppm:new(path, width, height, use_ascii)
 	self.use_ascii = use_ascii
 end
 
+---Write the next pixel to the file
 ---@param pixel_color color
 ---@param samples_per_pixel number
 function ppm:write_color(pixel_color, samples_per_pixel)
@@ -41,6 +45,7 @@ function ppm:write_color(pixel_color, samples_per_pixel)
 	end
 end
 
+---Close the PPM file
 function ppm:close()
 	self.image:close()
 end
