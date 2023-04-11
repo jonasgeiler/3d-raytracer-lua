@@ -95,9 +95,9 @@ print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6))) -- improve random nums
 
 local aspect_ratio = 3.0 / 2.0
-local samples_per_pixel = 500
+local samples_per_pixel = 100
 local max_depth = 50
-local image_width = 1200
+local image_width = 400
 local image_height = math.floor(image_width / aspect_ratio)
 local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', image_width, image_height)
 
