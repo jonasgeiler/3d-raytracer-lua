@@ -29,9 +29,9 @@ function sphere:hit(r, t_min, t_max, rec)
 	local oc = r.origin - self.center
 	local a = r.direction:length_squared()
 	local half_b = oc:dot(r.direction)
-	local c = oc:length_squared() - self.radius*self.radius
+	local c = oc:length_squared() - self.radius * self.radius
 
-	local discriminant = half_b*half_b - a*c
+	local discriminant = half_b * half_b - a * c
 	if discriminant < 0 then return false end
 	local sqrtd = math.sqrt(discriminant)
 

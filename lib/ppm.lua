@@ -1,5 +1,5 @@
 local class = require('lib.class')
-local utils= require('lib.utils')
+local utils = require('lib.utils')
 
 ---Handles creating PPM image files
 ---@class ppm

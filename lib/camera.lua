@@ -25,21 +25,21 @@ local camera = class()
 ---@param aperture number
 ---@param focus_dist number
 function camera:new(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, focus_dist)
-    local theta = utils.degrees_to_radians(vfov)
-    local h = math.tan(theta / 2)
-    local viewport_height = 2.0 * h
-    local viewport_width = aspect_ratio * viewport_height
+	local theta = utils.degrees_to_radians(vfov)
+	local h = math.tan(theta / 2)
+	local viewport_height = 2.0 * h
+	local viewport_width = aspect_ratio * viewport_height
 
-    self.w = (lookfrom - lookat):unit_vector()
-    self.u = vup:cross(self.w):unit_vector()
-    self.v = self.w:cross(self.u)
+	self.w = (lookfrom - lookat):unit_vector()
+	self.u = vup:cross(self.w):unit_vector()
+	self.v = self.w:cross(self.u)
 
-    self.origin = lookfrom
-    self.horizontal = focus_dist * viewport_width * self.u
-    self.vertical = focus_dist * viewport_height * self.v
-    self.lower_left_corner = self.origin - self.horizontal / 2 - self.vertical / 2 - focus_dist * self.w
+	self.origin = lookfrom
+	self.horizontal = focus_dist * viewport_width * self.u
+	self.vertical = focus_dist * viewport_height * self.v
+	self.lower_left_corner = self.origin - self.horizontal / 2 - self.vertical / 2 - focus_dist * self.w
 
-    self.lens_radius = aperture / 2
+	self.lens_radius = aperture / 2
 end
 
 ---Get a ray from the camera
@@ -48,13 +48,13 @@ end
 ---@return ray
 ---@nodiscard
 function camera:get_ray(s, t)
-    local rd = vec3.random_in_unit_disk() * self.lens_radius
-    local offset = self.u * rd.x + self.v * rd.y
+	local rd = vec3.random_in_unit_disk() * self.lens_radius
+	local offset = self.u * rd.x + self.v * rd.y
 
-    return ray(
-        self.origin + offset,
-        self.lower_left_corner + self.horizontal * s + self.vertical * t - self.origin - offset
-    )
+	return ray(
+		self.origin + offset,
+		self.lower_left_corner + self.horizontal * s + self.vertical * t - self.origin - offset
+	)
 end
 
 return camera

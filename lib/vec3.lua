@@ -76,9 +76,11 @@ end
 ---@return vec3
 ---@nodiscard
 function vec3.__add(a, b)
-	if type(a) == 'number' then -- if `a` is a number than `b` has to be vec3
+	if type(a) == 'number' then
+		-- if `a` is a number than `b` has to be vec3
 		return vec3(a + b.x, a + b.y, a + b.z)
-	elseif type(b) == 'number' then -- if `b` is a number than `a` has to be vec3
+	elseif type(b) == 'number' then
+		-- if `b` is a number than `a` has to be vec3
 		return vec3(a.x + b, a.y + b, a.z + b)
 	end
 
@@ -91,9 +93,11 @@ end
 ---@return vec3
 ---@nodiscard
 function vec3.__sub(a, b)
-	if type(a) == 'number' then -- if `a` is a number than `b` has to be vec3
+	if type(a) == 'number' then
+		-- if `a` is a number than `b` has to be vec3
 		return vec3(a - b.x, a - b.y, a - b.z)
-	elseif type(b) == 'number' then -- if `b` is a number than `a` has to be vec3
+	elseif type(b) == 'number' then
+		-- if `b` is a number than `a` has to be vec3
 		return vec3(a.x - b, a.y - b, a.z - b)
 	end
 
@@ -106,9 +110,11 @@ end
 ---@return vec3
 ---@nodiscard
 function vec3.__mul(a, b)
-	if type(a) == 'number' then -- if `a` is a number than `b` has to be vec3
+	if type(a) == 'number' then
+		-- if `a` is a number than `b` has to be vec3
 		return vec3(a * b.x, a * b.y, a * b.z)
-	elseif type(b) == 'number' then -- if `b` is a number than `a` has to be vec3
+	elseif type(b) == 'number' then
+		-- if `b` is a number than `a` has to be vec3
 		return vec3(a.x * b, a.y * b, a.z * b)
 	end
 
@@ -121,9 +127,11 @@ end
 ---@return vec3
 ---@nodiscard
 function vec3.__div(a, b)
-	if type(a) == 'number' then -- if `a` is a number than `b` has to be vec3
+	if type(a) == 'number' then
+		-- if `a` is a number than `b` has to be vec3
 		return (1 / a) * b
-	elseif type(b) == 'number' then -- if `b` is a number than `a` has to be vec3
+	elseif type(b) == 'number' then
+		-- if `b` is a number than `a` has to be vec3
 		return a * (1 / b)
 	end
 
@@ -154,7 +162,7 @@ end
 ---@return vec3
 ---@nodiscard
 function vec3.reflect(v, n)
-	return v - n*v:dot(n)*2
+	return v - n * v:dot(n) * 2
 end
 
 ---Refract a vector
@@ -165,7 +173,7 @@ end
 ---@nodiscard
 function vec3.refract(uv, n, etai_over_etat)
 	local cos_theta = math.min((-uv):dot(n), 1.0)
-	local r_out_perp = (uv + n*cos_theta) * etai_over_etat
+	local r_out_perp = (uv + n * cos_theta) * etai_over_etat
 	local r_out_parallel = n * -math.sqrt(math.abs(1.0 - r_out_perp:length_squared()))
 	return r_out_perp + r_out_parallel
 end

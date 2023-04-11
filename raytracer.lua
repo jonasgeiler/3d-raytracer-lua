@@ -62,7 +62,7 @@ local function random_scene()
 	for a = -11, 10 do
 		for b = -11, 10 do
 			local choose_mat = math.random()
-			local center = point3(a + 0.9*math.random(), 0.2, b + 0.9*math.random())
+			local center = point3(a + 0.9 * math.random(), 0.2, b + 0.9 * math.random())
 
 			if (center - point3(4, 0.2, 0)):length() > 0.9 then
 				if choose_mat < 0.8 then
@@ -88,11 +88,10 @@ local function random_scene()
 	return world
 end
 
-
 print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 
 ---@diagnostic disable-next-line: param-type-mismatch
-math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6))) -- improve random nums
+math.randomseed(tonumber(tostring(os.time()):reverse():sub(1, 6))) -- improve random nums
 
 local aspect_ratio = 3.0 / 2.0
 local samples_per_pixel = 100
@@ -121,8 +120,8 @@ for j = image_height - 1, 0, -1 do
 	for i = 0, image_width - 1 do
 		local pixel_color = color(0, 0, 0)
 		for _ = 1, samples_per_pixel do
-			local u = (i + math.random()) / (image_width-1)
-			local v = (j + math.random()) / (image_height-1)
+			local u = (i + math.random()) / (image_width - 1)
+			local v = (j + math.random()) / (image_height - 1)
 			local r = cam:get_ray(u, v)
 			pixel_color = pixel_color + ray_color(r, world, max_depth)
 		end

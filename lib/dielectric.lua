@@ -13,7 +13,6 @@ local function reflectance(cosine, ref_idx)
 	return r0 + (1 - r0) * ((1 - cosine) ^ 5)
 end
 
-
 ---Represents a dielectric material (e.g. glass)
 ---@class dielectric : material
 ---@overload fun(): dielectric
@@ -38,7 +37,7 @@ function dielectric:scatter(r_in, rec, attenuation, scattered)
 
 	local unit_direction = r_in.direction:unit_vector()
 	local cos_theta = math.min((-unit_direction):dot(rec.normal), 1.0)
-	local sin_theta = math.sqrt(1.0 - cos_theta*cos_theta)
+	local sin_theta = math.sqrt(1.0 - cos_theta * cos_theta)
 
 	local cannot_refract = refraction_ratio * sin_theta > 1.0
 
