@@ -1,6 +1,5 @@
 local class = require('lib.class')
 local vec3 = require('lib.vec3')
-local point3 = require('lib.point3')
 local ray = require('lib.ray')
 local utils = require('lib.utils')
 

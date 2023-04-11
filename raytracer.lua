@@ -10,6 +10,7 @@ local sphere = require('lib.sphere')
 local lambertian = require('lib.lambertian')
 local metal = require('lib.metal')
 local dielectric = require('lib.dielectric')
+local utils = require('lib.utils')
 
 ---@param r ray
 ---@param world hittable_list
@@ -38,36 +39,69 @@ local function ray_color(r, world, depth)
 	return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0)
 end
 
+local function random_scene()
+	local world = hittable_list()
+
+	local ground_material = lambertian(color(0.5, 0.5, 0.5))
+	world:add(sphere(point3(0, -1000, 0), 1000, ground_material))
+
+	local material1 = dielectric(1.5)
+	world:add(sphere(point3(0, 1, 0), 1.0, material1))
+
+	local material2 = lambertian(color(0.4, 0.2, 0.1))
+	world:add(sphere(point3(-4, 1, 0), 1.0, material2))
+
+	local material3 = metal(color(0.7, 0.6, 0.5), 0.0)
+	world:add(sphere(point3(4, 1, 0), 1.0, material3))
+
+	for a = -11, 10 do
+		for b = -11, 10 do
+			local choose_mat = math.random()
+			local center = point3(a + 0.9*math.random(), 0.2, b + 0.9*math.random())
+
+			if (center - point3(4, 0.2, 0)):length() > 0.9 then
+				if choose_mat < 0.8 then
+					-- diffuse
+					local albedo = color.random() * color.random()
+					local sphere_material = lambertian(albedo)
+					world:add(sphere(center, 0.2, sphere_material))
+				elseif choose_mat < 0.95 then
+					-- metal
+					local albedo = color.random(0.5, 1)
+					local fuzz = utils.random(0, 0.5)
+					local sphere_material = metal(albedo, fuzz)
+					world:add(sphere(center, 0.2, sphere_material))
+				else
+					-- glass
+					local sphere_material = dielectric(1.5)
+					world:add(sphere(center, 0.2, sphere_material))
+				end
+			end
+		end
+	end
+
+	return world
+end
+
 
 print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1,6))) -- improve random nums
 
-local aspect_ratio = 16 / 9
-local samples_per_pixel = 100
+local aspect_ratio = 3.0 / 2.0
+local samples_per_pixel = 500
 local max_depth = 50
-local image_width = 400
+local image_width = 1200
 local image_height = math.floor(image_width / aspect_ratio)
 local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', image_width, image_height)
 
-local world = hittable_list()
+local world = random_scene()
 
-local material_ground = lambertian(color(0.8, 0.8, 0.0))
-local material_center = lambertian(color(0.1, 0.2, 0.5))
-local material_left   = dielectric(1.5)
-local material_right  = metal(color(0.8, 0.6, 0.2), 0.0)
-
-world:add(sphere(point3( 0.0, -100.5, -1.0), 100.0, material_ground))
-world:add(sphere(point3( 0.0,    0.0, -1.0),   0.5, material_center))
-world:add(sphere(point3(-1.0,    0.0, -1.0),   0.5, material_left))
-world:add(sphere(point3(-1.0,    0.0, -1.0), -0.45, material_left))
-world:add(sphere(point3( 1.0,    0.0, -1.0),   0.5, material_right))
-
-local lookfrom = point3(3, 3, 2)
-local lookat = point3(0, 0, -1)
+local lookfrom = point3(13, 2, 3)
+local lookat = point3(0, 0, 0)
 local vup = vec3(0, 1, 0)
-local dist_to_focus = (lookfrom - lookat):length()
-local aperture = 2.0
+local dist_to_focus = 10.0
+local aperture = 0.1
 
 local cam = camera(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus)
 
@@ -93,4 +127,5 @@ for j = image_height - 1, 0, -1 do
 end
 
 image:close()
-print('\nFinished rendering!\nRendering took', os.clock() - render_time, 'seconds (or', (os.clock() - render_time) / 60, 'minutes)\n')
+print('\nFinished rendering!\nRendering took', os.clock() - render_time,
+      'seconds (or', (os.clock() - render_time) / 60, 'minutes)\n')
