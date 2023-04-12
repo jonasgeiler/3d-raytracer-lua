@@ -120,8 +120,8 @@ for j = image_height - 1, 0, -1 do
 	for i = 0, image_width - 1 do
 		local pixel_color = color(0, 0, 0)
 		for _ = 1, samples_per_pixel do
-			local u = (i + math.random()) / (image_width - 1)
-			local v = (j + math.random()) / (image_height - 1)
+			local u = (i + math.random()) / (image_width - 1) ---@type number
+			local v = (j + math.random()) / (image_height - 1) ---@type number
 			local r = cam:get_ray(u, v)
 			pixel_color = pixel_color + ray_color(r, world, max_depth)
 		end
@@ -132,5 +132,4 @@ for j = image_height - 1, 0, -1 do
 end
 
 image:close()
-print('\nFinished rendering!\nRendering took', os.clock() - render_time,
-      'seconds (or', (os.clock() - render_time) / 60, 'minutes)\n')
+print('\nFinished rendering!\nRendering took', os.clock() - render_time, 'seconds (or', (os.clock() - render_time) / 60, 'minutes)\n')

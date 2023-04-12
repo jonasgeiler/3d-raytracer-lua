@@ -35,9 +35,9 @@ function sphere:hit(r, t_min, t_max, rec)
 	if discriminant < 0 then return false end
 	local sqrtd = math.sqrt(discriminant)
 
-	local root = (-half_b - sqrtd) / a
+	local root = (-half_b - sqrtd) / a ---@type number
 	if root < t_min or t_max < root then
-		root = (-half_b + sqrtd) / a
+		root = (-half_b + sqrtd) / a ---@type number
 		if root < t_min or t_max < root then
 			return false
 		end

@@ -8,7 +8,7 @@ local ray = require('lib.ray')
 ---@param ref_idx number
 ---@return number
 local function reflectance(cosine, ref_idx)
-	local r0 = (1 - ref_idx) / (1 + ref_idx)
+	local r0 = (1 - ref_idx) / (1 + ref_idx) ---@type number
 	r0 = r0 * r0
 	return r0 + (1 - r0) * ((1 - cosine) ^ 5)
 end

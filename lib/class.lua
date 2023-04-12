@@ -8,7 +8,7 @@ local function class(base)
 		__index = base,
 		__call = function(c, ...)
 			local instance = setmetatable({}, c)
-			local new = instance.new
+			local new = instance.new ---@type table
 			if new then new(instance, ...) end
 			return instance
 		end

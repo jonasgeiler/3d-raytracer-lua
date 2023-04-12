@@ -7,5 +7,9 @@
     "Lua.hint.setType": true,
     "Lua.hover.enumsLimit": 10,
     "Lua.runtime.pathStrict": true,
-    "Lua.type.castNumberToInteger": false
+    "Lua.type.castNumberToInteger": false,
+    "Lua.diagnostics.neededFileStatus": {
+        "codestyle-check": "Any",
+        "no-unknown": "Any"
+    }
 }
