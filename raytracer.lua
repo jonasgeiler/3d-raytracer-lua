@@ -88,6 +88,7 @@ local function random_scene()
 	return world
 end
 
+
 print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 
 ---@diagnostic disable-next-line: param-type-mismatch
@@ -111,7 +112,7 @@ local aperture = 0.1
 local cam = camera(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus)
 
 print('Starting rendering...\n')
-local render_time = os.clock()
+local render_start = os.clock()
 
 print('Scanlines remaining: ', image_height)
 for j = image_height - 1, 0, -1 do
@@ -131,5 +132,8 @@ for j = image_height - 1, 0, -1 do
 	print('Scanlines remaining: ', j, 'Seconds remaining: ', math.floor((os.clock() - scanline_time) * j))
 end
 
+local render_end = os.clock()
+print('\nFinished rendering!\nRendering took', render_end - render_start,
+	'seconds (or', (render_end - render_start) / 60, 'minutes)\n')
+
 image:close()
-print('\nFinished rendering!\nRendering took', os.clock() - render_time, 'seconds (or', (os.clock() - render_time) / 60, 'minutes)\n')

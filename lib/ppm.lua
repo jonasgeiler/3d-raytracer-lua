@@ -29,14 +29,14 @@ end
 ---@param pixel_color color
 ---@param samples_per_pixel number
 function ppm:write_color(pixel_color, samples_per_pixel)
-	local scale = 1 / samples_per_pixel ---@type number
+	local scale = 1.0 / samples_per_pixel ---@type number
 	local r = math.floor(256 * utils.clamp(math.sqrt(pixel_color.x * scale), 0.0, 0.999))
 	local g = math.floor(256 * utils.clamp(math.sqrt(pixel_color.y * scale), 0.0, 0.999))
 	local b = math.floor(256 * utils.clamp(math.sqrt(pixel_color.z * scale), 0.0, 0.999))
 
-	if r ~= r then r = 0 end
-	if g ~= g then g = 0 end
-	if b ~= b then b = 0 end
+	if r ~= r then r = 0.0 end
+	if g ~= g then g = 0.0 end
+	if b ~= b then b = 0.0 end
 
 	if self.use_ascii then
 		self.image:write(r, ' ', g, ' ', b, '\n')
