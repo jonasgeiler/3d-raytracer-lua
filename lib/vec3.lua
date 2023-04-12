@@ -77,10 +77,10 @@ end
 ---@nodiscard
 function vec3.__add(a, b)
 	if type(a) == 'number' then
-		-- if `a` is a number than `b` has to be vec3
+		-- if `a` is a number then `b` has to be vec3
 		return vec3(a + b.x, a + b.y, a + b.z)
 	elseif type(b) == 'number' then
-		-- if `b` is a number than `a` has to be vec3
+		-- if `b` is a number then `a` has to be vec3
 		return vec3(a.x + b, a.y + b, a.z + b)
 	end
 
@@ -94,10 +94,10 @@ end
 ---@nodiscard
 function vec3.__sub(a, b)
 	if type(a) == 'number' then
-		-- if `a` is a number than `b` has to be vec3
+		-- if `a` is a number then `b` has to be vec3
 		return vec3(a - b.x, a - b.y, a - b.z)
 	elseif type(b) == 'number' then
-		-- if `b` is a number than `a` has to be vec3
+		-- if `b` is a number then `a` has to be vec3
 		return vec3(a.x - b, a.y - b, a.z - b)
 	end
 
@@ -111,10 +111,10 @@ end
 ---@nodiscard
 function vec3.__mul(a, b)
 	if type(a) == 'number' then
-		-- if `a` is a number than `b` has to be vec3
+		-- if `a` is a number then `b` has to be vec3
 		return vec3(a * b.x, a * b.y, a * b.z)
 	elseif type(b) == 'number' then
-		-- if `b` is a number than `a` has to be vec3
+		-- if `b` is a number then `a` has to be vec3
 		return vec3(a.x * b, a.y * b, a.z * b)
 	end
 
@@ -128,10 +128,10 @@ end
 ---@nodiscard
 function vec3.__div(a, b)
 	if type(a) == 'number' then
-		-- if `a` is a number than `b` has to be vec3
+		-- if `a` is a number then `b` has to be vec3
 		return (1 / a) * b
 	elseif type(b) == 'number' then
-		-- if `b` is a number than `a` has to be vec3
+		-- if `b` is a number then `a` has to be vec3
 		return a * (1 / b)
 	end
 

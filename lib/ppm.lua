@@ -25,7 +25,7 @@ function ppm:new(path, width, height, use_ascii)
 	self.use_ascii = use_ascii
 end
 
----Write the next pixel to the file
+---Write the next pixel to the PPM file
 ---@param pixel_color color
 ---@param samples_per_pixel number
 function ppm:write_color(pixel_color, samples_per_pixel)

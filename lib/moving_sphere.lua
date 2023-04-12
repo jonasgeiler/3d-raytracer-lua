@@ -64,6 +64,7 @@ end
 ---Get the sphere center at a specific time
 ---@param time number
 ---@return point3
+---@nodiscard
 function moving_sphere:center(time)
 	return self.center0 + (self.center1 - self.center0) * ((time - self.time0) / (self.time1 - self.time0))
 end
