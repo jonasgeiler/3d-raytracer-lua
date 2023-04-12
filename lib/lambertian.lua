@@ -28,7 +28,7 @@ function lambertian:scatter(r_in, rec, attenuation, scattered)
 		scatter_direction = rec.normal
 	end
 
-	scattered:replace_with(ray(rec.p, scatter_direction))
+	scattered:replace_with(ray(rec.p, scatter_direction, r_in.time))
 	attenuation:replace_with(self.albedo)
 	return true
 end

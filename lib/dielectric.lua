@@ -49,7 +49,7 @@ function dielectric:scatter(r_in, rec, attenuation, scattered)
 		direction = unit_direction:refract(rec.normal, refraction_ratio)
 	end
 
-	scattered:replace_with(ray(rec.p, direction))
+	scattered:replace_with(ray(rec.p, direction, r_in.time))
 	return true
 end
 

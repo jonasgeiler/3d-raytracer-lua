@@ -1,3 +1,4 @@
+local utils = require('lib.utils')
 local ppm = require('lib.ppm')
 local ray = require('lib.ray')
 local vec3 = require('lib.vec3')
@@ -7,10 +8,10 @@ local hit_record = require('lib.hit_record')
 local hittable_list = require('lib.hittable_list')
 local camera = require('lib.camera')
 local sphere = require('lib.sphere')
+local moving_sphere = require('lib.moving_sphere')
 local lambertian = require('lib.lambertian')
 local metal = require('lib.metal')
 local dielectric = require('lib.dielectric')
-local utils = require('lib.utils')
 
 ---Get the color of the ray
 ---@param r ray
@@ -69,7 +70,8 @@ local function random_scene()
 					-- diffuse
 					local albedo = color.random() * color.random()
 					local sphere_material = lambertian(albedo)
-					world:add(sphere(center, 0.2, sphere_material))
+					local center2 = center + vec3(0, utils.random_float(0, 0.5), 0)
+					world:add(moving_sphere(center, center2, 0.0, 1.0, 0.2, sphere_material))
 				elseif choose_mat < 0.95 then
 					-- metal
 					local albedo = color.random(0.5, 1)
@@ -94,7 +96,7 @@ print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 ---@diagnostic disable-next-line: param-type-mismatch
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1, 6))) -- improve random nums
 
-local aspect_ratio = 3.0 / 2.0
+local aspect_ratio = 16.0 / 9.0
 local samples_per_pixel = 100
 local max_depth = 50
 local image_width = 400
@@ -109,7 +111,7 @@ local vup = vec3(0, 1, 0)
 local dist_to_focus = 10.0
 local aperture = 0.1
 
-local cam = camera(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus)
+local cam = camera(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0)
 
 print('Starting rendering...\n')
 local render_start = os.clock()

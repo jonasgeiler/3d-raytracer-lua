@@ -14,6 +14,8 @@ local utils = require('lib.utils')
 ---@field v vec3
 ---@field w vec3
 ---@field lens_radius number
+---@field time0 number
+---@field time1 number
 local camera = class()
 
 ---Init the camera
@@ -24,7 +26,9 @@ local camera = class()
 ---@param aspect_ratio number
 ---@param aperture number
 ---@param focus_dist number
-function camera:new(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, focus_dist)
+---@param time0 number
+---@param time1 number
+function camera:new(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, focus_dist, time0, time1)
 	local theta = utils.degrees_to_radians(vfov)
 	local h = math.tan(theta / 2)
 	local viewport_height = 2.0 * h
@@ -40,6 +44,8 @@ function camera:new(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, focus_d
 	self.lower_left_corner = self.origin - self.horizontal / 2 - self.vertical / 2 - focus_dist * self.w
 
 	self.lens_radius = aperture / 2
+	self.time0 = time0
+	self.time1 = time1
 end
 
 ---Get a ray from the camera
@@ -53,7 +59,8 @@ function camera:get_ray(s, t)
 
 	return ray(
 		self.origin + offset,
-		self.lower_left_corner + self.horizontal * s + self.vertical * t - self.origin - offset
+		self.lower_left_corner + self.horizontal * s + self.vertical * t - self.origin - offset,
+		utils.random_float(self.time0, self.time1)
 	)
 end
 
