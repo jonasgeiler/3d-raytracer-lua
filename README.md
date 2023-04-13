@@ -35,3 +35,30 @@ $ lua ./raytracer.lua
 
 After the rendering is finished, you can find the PPM file in `renders/`.  
 To convert the PPM file to a PNG file, I recommend using [GIMP](https://www.gimp.org/).
+
+
+## To Do
+
+- [X] Book 1 (Ray Tracing in One Weekend)
+	- [X] Output an Image
+	- [X] The vec3 Class
+	- [X] Rays, a Simple Camera, and Background
+	- [X] Adding a Sphere
+	- [X] Surface Normals and Multiple Objects
+	- [X] Antialiasing
+	- [X] Diffuse Materials
+	- [X] Metal
+	- [X] Dielectrics
+	- [X] Positionable Camera
+	- [X] Defocus Blur
+	- [X] A Final Render
+- [ ] Book 2 (Ray Tracing: The Next Week)
+	- [X] Motion Blur
+	- [ ] Bounding Volume Hierachies
+	- [ ] Solid Textures
+	- [ ] Perlin Noise
+	- [ ] Image Texture Mapping
+	- [ ] Rectangles and Lights
+	- [ ] Instances
+	- [ ] Volumes
+	- [ ] A Scene Testing All New Features

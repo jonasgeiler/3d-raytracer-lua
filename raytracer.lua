@@ -105,6 +105,7 @@ local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', i
 
 local world = random_scene()
 
+--- TODO: Check overload annotation of all the classes. Do I need to specify parameters???
 local lookfrom = point3(13, 2, 3)
 local lookat = point3(0, 0, 0)
 local vup = vec3(0, 1, 0)
