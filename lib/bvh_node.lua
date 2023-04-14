@@ -75,20 +75,20 @@ function bvh_node:new(_objects, _from, _to, _time0, _time1)
 	local object_span = to - from
 
 	if object_span == 1 then
-		self.left = objects[from]
-		self.right = objects[from]
+		self.left = objects[from + 1]
+		self.right = objects[from + 1]
 	elseif object_span == 2 then
-		if comparator(objects[from], objects[from + 1]) then
-			self.left = objects[from]
-			self.right = objects[from + 1]
-		else
+		if comparator(objects[from + 1], objects[from + 2]) then
 			self.left = objects[from + 1]
-			self.right = objects[from]
+			self.right = objects[from + 2]
+		else
+			self.left = objects[from + 2]
+			self.right = objects[from + 1]
 		end
 	else
 		utils.sort_range(objects, from, to, comparator)
 
-		local mid = from + object_span / 2 ---@type number
+		local mid = math.floor(from + object_span / 2)
 		self.left = bvh_node(objects, from, mid, time0, time1)
 		self.right = bvh_node(objects, mid, to, time0, time1)
 	end

@@ -1,6 +1,5 @@
 
 --- TODO: Add a "set" method and use it instead of "replace_with" at some places?
---- TODO: Maybe sort hittables by distance to camera?
 
 local utils = require('lib.utils')
 local ppm = require('lib.ppm')
@@ -16,6 +15,7 @@ local moving_sphere = require('lib.moving_sphere')
 local lambertian = require('lib.lambertian')
 local metal = require('lib.metal')
 local dielectric = require('lib.dielectric')
+local bvh_node   = require('lib.bvh_node')
 
 ---Get the color of the ray
 ---@param r ray
@@ -55,14 +55,22 @@ local function random_scene()
 	local ground_material = lambertian(color(0.5, 0.5, 0.5))
 	world:add(sphere(point3(0, -1000, 0), 1000, ground_material))
 
+
+	local big_spheres = hittable_list()
+
 	local material1 = dielectric(1.5)
-	world:add(sphere(point3(0, 1, 0), 1.0, material1))
+	big_spheres:add(sphere(point3(0, 1, 0), 1.0, material1))
 
 	local material2 = lambertian(color(0.4, 0.2, 0.1))
-	world:add(sphere(point3(-4, 1, 0), 1.0, material2))
+	big_spheres:add(sphere(point3(-4, 1, 0), 1.0, material2))
 
 	local material3 = metal(color(0.7, 0.6, 0.5), 0.0)
-	world:add(sphere(point3(4, 1, 0), 1.0, material3))
+	big_spheres:add(sphere(point3(4, 1, 0), 1.0, material3))
+
+	world:add(bvh_node(big_spheres, 0.0, 1.0))
+
+
+	local small_spheres = hittable_list()
 
 	for a = -11, 10 do
 		for b = -11, 10 do
@@ -75,21 +83,24 @@ local function random_scene()
 					local albedo = color.random() * color.random()
 					local sphere_material = lambertian(albedo)
 					local center2 = center + vec3(0, utils.random_float(0, 0.5), 0)
-					world:add(moving_sphere(center, center2, 0.0, 1.0, 0.2, sphere_material))
+					small_spheres:add(moving_sphere(center, center2, 0.0, 1.0, 0.2, sphere_material))
 				elseif choose_mat < 0.95 then
 					-- metal
 					local albedo = color.random(0.5, 1)
 					local fuzz = utils.random_float(0, 0.5)
 					local sphere_material = metal(albedo, fuzz)
-					world:add(sphere(center, 0.2, sphere_material))
+					small_spheres:add(sphere(center, 0.2, sphere_material))
 				else
 					-- glass
 					local sphere_material = dielectric(1.5)
-					world:add(sphere(center, 0.2, sphere_material))
+					small_spheres:add(sphere(center, 0.2, sphere_material))
 				end
 			end
 		end
 	end
+
+	world:add(bvh_node(small_spheres, 0.0, 1.0))
+
 
 	return world
 end
