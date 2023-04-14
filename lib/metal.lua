@@ -5,7 +5,7 @@ local vec3 = require('lib.vec3')
 
 ---Represents a metalic material
 ---@class metal : material
----@overload fun(): metal
+---@overload fun(albedo: color, fuzz: number): metal
 ---@field albedo color
 ---@field fuzz number
 local metal = class(material)

@@ -1,9 +1,10 @@
 local class = require('lib.class')
 local hittable = require('lib.hittable')
+local aabb = require('lib.aabb')
 
 ---Represents a moving hittable sphere
 ---@class moving_sphere : hittable
----@overload fun(): moving_sphere
+---@overload fun(center0: point3, center1: point3, time0: number, time1: number, radius: number, mat: material): moving_sphere
 ---@field center0 point3
 ---@field center1 point3
 ---@field time0 number
@@ -58,6 +59,19 @@ function moving_sphere:hit(r, t_min, t_max, rec)
 	rec:set_face_normal(r, outward_normal)
 	rec.mat = self.mat
 
+	return true
+end
+
+---Get the bounding box of the sphere
+---@param time0 number
+---@param time1 number
+---@param output_box aabb
+---@return boolean
+function moving_sphere:bounding_box(time0, time1, output_box)
+	local box0 = aabb(self:center(time0) - self.radius, self:center(time0) + self.radius)
+	local box1 = aabb(self:center(time1) - self.radius, self:center(time1) + self.radius)
+
+	output_box:replace_with(aabb.surrounding_box(box0, box1))
 	return true
 end
 

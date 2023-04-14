@@ -2,7 +2,7 @@ local class = require('lib.class')
 
 ---Represents a ray
 ---@class ray
----@overload fun(): ray
+---@overload fun(origin: point3, direction: vec3, time: number?): ray
 ---@field origin point3
 ---@field direction vec3
 ---@field time number
@@ -11,7 +11,7 @@ local ray = class()
 ---Init the ray
 ---@param origin point3
 ---@param direction vec3
----@param time number
+---@param time number?
 function ray:new(origin, direction, time)
 	self.origin = origin
 	self.direction = direction

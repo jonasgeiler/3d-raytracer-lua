@@ -16,7 +16,7 @@ end
 
 ---Represents a dielectric material (e.g. glass)
 ---@class dielectric : material
----@overload fun(): dielectric
+---@overload fun(index_of_refraction: number): dielectric
 ---@field index_of_refraction number
 local dielectric = class(material)
 

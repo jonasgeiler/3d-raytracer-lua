@@ -5,7 +5,7 @@ local material = require('lib.material')
 
 ---Represents a lambertian (matte) material
 ---@class lambertian : material
----@overload fun(): lambertian
+---@overload fun(albedo: color): lambertian
 ---@field albedo color
 local lambertian = class(material)
 

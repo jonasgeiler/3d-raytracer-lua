@@ -1,3 +1,7 @@
+
+--- TODO: Add a "set" method and use it instead of "replace_with" at some places?
+--- TODO: Maybe sort hittables by distance to camera?
+
 local utils = require('lib.utils')
 local ppm = require('lib.ppm')
 local ray = require('lib.ray')
@@ -105,7 +109,6 @@ local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', i
 
 local world = random_scene()
 
---- TODO: Check overload annotation of all the classes. Do I need to specify parameters???
 local lookfrom = point3(13, 2, 3)
 local lookat = point3(0, 0, 0)
 local vup = vec3(0, 1, 0)

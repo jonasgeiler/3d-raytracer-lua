@@ -1,6 +1,7 @@
 local class = require('lib.class')
 local hittable = require('lib.hittable')
 local hit_record = require('lib.hit_record')
+local aabb = require('lib.aabb')
 
 ---Represents a list of htitable objects
 ---@class hittable_list : hittable
@@ -46,6 +47,29 @@ function hittable_list:hit(r, t_min, t_max, rec)
 	end
 
 	return hit_anything
+end
+
+---Get the bounding box of the objects in the list
+---@param time0 number
+---@param time1 number
+---@param output_box aabb
+---@return boolean
+function hittable_list:bounding_box(time0, time1, output_box)
+	if #self.objects == 0 then return false end
+
+	local temp_box = aabb()
+	local first_box = true
+
+	for i = 1, #self.objects do
+		if not self.objects[i]:bounding_box(time0, time1, temp_box) then
+			return false
+		end
+
+		output_box:replace_with(first_box and temp_box or aabb.surrounding_box(output_box, temp_box))
+		first_box = false
+	end
+
+	return true
 end
 
 return hittable_list

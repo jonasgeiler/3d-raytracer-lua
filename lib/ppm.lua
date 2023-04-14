@@ -3,16 +3,16 @@ local utils = require('lib.utils')
 
 ---Handles creating PPM image files
 ---@class ppm
----@overload fun(): ppm
+---@overload fun(path: string, width: integer, height: integer, use_ascii: boolean?): ppm
 ---@field image file*
 ---@field use_ascii boolean
 local ppm = class()
 
 ---Create and open a new PPM file
 ---@param path string Path to the file
----@param width number Image width
----@param height number Image height
----@param use_ascii boolean Whether to create an ASCII or binary PPM file
+---@param width integer Image width
+---@param height integer Image height
+---@param use_ascii boolean? Whether to create an ASCII or binary PPM file
 function ppm:new(path, width, height, use_ascii)
 	use_ascii = use_ascii or false
 

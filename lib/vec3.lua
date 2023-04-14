@@ -2,7 +2,7 @@ local class = require('lib.class')
 local utils = require('lib.utils')
 
 ---@class vec3
----@overload fun(): vec3
+---@overload fun(x: number?, y: number?, z: number?): vec3
 ---@field x number
 ---@field y number
 ---@field z number
@@ -17,9 +17,9 @@ local utils = require('lib.utils')
 local vec3 = class()
 
 ---Init the vector
----@param x number
----@param y number
----@param z number
+---@param x number?
+---@param y number?
+---@param z number?
 function vec3:new(x, y, z)
 	self.x = x or 0
 	self.y = y or 0
@@ -61,6 +61,16 @@ end
 function vec3:near_zero()
 	local s = 1e-8
 	return (math.abs(self.x) < s) and (math.abs(self.y) < s) and (math.abs(self.z) < s)
+end
+
+---Allow accessing XYZ using their index 0-2
+---@param i integer
+---@return number
+function vec3:axis(i)
+	if i == 0 then return self.x
+	elseif i == 1 then return self.y
+	elseif i == 2 then return self.z
+	else error('Index not allowed in vec3: ' .. i) end
 end
 
 ---Negate the vector

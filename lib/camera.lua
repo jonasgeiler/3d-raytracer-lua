@@ -5,7 +5,7 @@ local utils = require('lib.utils')
 
 ---Represents the camera
 ---@class camera
----@overload fun(): camera
+---@overload fun(lookfrom: point3, lookat: point3, vup: vec3, vfov: number, aspect_ratio: number, aperture: number, focus_dist: number, time0: number, time1: number): camera
 ---@field origin point3
 ---@field lower_left_corner point3
 ---@field horizontal vec3
