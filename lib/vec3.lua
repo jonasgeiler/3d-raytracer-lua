@@ -67,10 +67,15 @@ end
 ---@param i integer
 ---@return number
 function vec3:axis(i)
-	if i == 0 then return self.x
-	elseif i == 1 then return self.y
-	elseif i == 2 then return self.z
-	else error('Index not allowed in vec3: ' .. i) end
+	if i == 0 then
+		return self.x
+	elseif i == 1 then
+		return self.y
+	elseif i == 2 then
+		return self.z
+	else
+		error('Index not allowed in vec3: ' .. i)
+	end
 end
 
 ---Negate the vector

@@ -1,7 +1,7 @@
 local class = require('lib.class')
 local hittable = require('lib.base.hittable')
-local hit_record = require('lib.hit_record')
 local aabb = require('lib.aabb')
+local hit_record = require('lib.hit_record')
 
 ---Represents a list of htitable objects
 ---@class hittable_list : hittable

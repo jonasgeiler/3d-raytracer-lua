@@ -1,7 +1,7 @@
 local class = require('lib.class')
-local vec3 = require('lib.vec3')
 local ray = require('lib.ray')
 local utils = require('lib.utils')
+local vec3 = require('lib.vec3')
 
 ---Represents the camera
 ---@class camera

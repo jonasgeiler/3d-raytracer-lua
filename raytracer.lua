@@ -149,7 +149,6 @@ lookat = point3(0, 0, 0)
 vfov = 20.0
 aperture = 0.1
 ]]
-
 world = two_sphere_scene()
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)

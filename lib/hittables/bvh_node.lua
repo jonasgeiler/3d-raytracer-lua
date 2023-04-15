@@ -63,7 +63,7 @@ local bvh_node = class(hittable)
 ---@overload fun(self: bvh_node, src_objects: hittable[], start: integer, end: integer, time0: number, time1: number): bvh_node
 function bvh_node:new(_objects, _from, _to, _time0, _time1)
 	local given_hittable_list = _objects.objects and true or false
-	local objects	= given_hittable_list and _objects.objects or _objects
+	local objects = given_hittable_list and _objects.objects or _objects
 	local from = given_hittable_list and 0 or _from
 	local to = given_hittable_list and #_objects.objects or _to
 	local time0 = given_hittable_list and _from or _time0
