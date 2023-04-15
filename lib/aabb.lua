@@ -8,7 +8,7 @@ local point3 = require('lib.point3')
 ---@field maximum point3?
 local aabb = class()
 
----Initialize the AABB
+---Init the AABB
 ---@param minimum point3?
 ---@param maximum point3?
 function aabb:new(minimum, maximum)

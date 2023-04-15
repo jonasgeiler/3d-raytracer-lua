@@ -2,17 +2,24 @@ local class = require('lib.class')
 local vec3 = require('lib.vec3')
 local ray = require('lib.ray')
 local material = require('lib.material')
+local solid_color = require('lib.solid_color')
 
 ---Represents a lambertian (matte) material
 ---@class lambertian : material
----@overload fun(albedo: color): lambertian
----@field albedo color
+---@overload fun(albedo: color|texture): lambertian
+---@field albedo texture
 local lambertian = class(material)
 
 ---Init the material
----@param albedo color
+---@param albedo color|texture
 function lambertian:new(albedo)
-	self.albedo = albedo
+	if albedo.x and albedo.y and albedo.z then
+		---@cast albedo color
+		self.albedo = solid_color(albedo)
+	else
+		---@cast albedo texture
+		self.albedo = albedo
+	end
 end
 
 ---Scatter and color a ray that hits the material
@@ -29,7 +36,7 @@ function lambertian:scatter(r_in, rec, attenuation, scattered)
 	end
 
 	scattered:replace_with(ray(rec.p, scatter_direction, r_in.time))
-	attenuation:replace_with(self.albedo)
+	attenuation:replace_with(self.albedo:value(rec.u, rec.v, rec.p))
 	return true
 end
 

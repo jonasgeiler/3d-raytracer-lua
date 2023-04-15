@@ -16,6 +16,7 @@ local lambertian = require('lib.lambertian')
 local metal = require('lib.metal')
 local dielectric = require('lib.dielectric')
 local bvh_node   = require('lib.bvh_node')
+local checker_texture = require('lib.checker_texture')
 
 ---Get the color of the ray
 ---@param r ray
@@ -52,7 +53,8 @@ end
 local function random_scene()
 	local world = hittable_list()
 
-	local ground_material = lambertian(color(0.5, 0.5, 0.5))
+	local checker = checker_texture(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9))
+	local ground_material = lambertian(checker)
 	world:add(sphere(point3(0, -1000, 0), 1000, ground_material))
 
 
@@ -105,6 +107,21 @@ local function random_scene()
 	return world
 end
 
+---Generate a scene with two textured spheres
+---@return hittable_list
+---@nodiscard
+local function two_sphere_scene()
+	local world = hittable_list()
+
+	local checker = checker_texture(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9))
+	local material = lambertian(checker)
+
+	world:add(sphere(point3(0, -10, 0), 10, material))
+	world:add(sphere(point3(0, 10, 0), 10, material))
+
+	return world
+end
+
 
 print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 
@@ -118,15 +135,28 @@ local image_width = 400
 local image_height = math.floor(image_width / aspect_ratio)
 local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', image_width, image_height)
 
-local world = random_scene()
-
-local lookfrom = point3(13, 2, 3)
-local lookat = point3(0, 0, 0)
+local world ---@type hittable_list
+local lookfrom ---@type point3
+local lookat ---@type point3
 local vup = vec3(0, 1, 0)
+local vfov = 40.0
+local aperture = 0.0
 local dist_to_focus = 10.0
-local aperture = 0.1
 
-local cam = camera(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0)
+--[[
+world = random_scene()
+lookfrom = point3(13, 2, 3)
+lookat = point3(0, 0, 0)
+vfov = 20.0
+aperture = 0.1
+]]--
+
+world = two_sphere_scene()
+lookfrom = point3(13, 2, 3)
+lookat = point3(0, 0, 0)
+vfov = 20.0
+
+local cam = camera(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0)
 
 print('Starting rendering...\n')
 local render_start = os.clock()

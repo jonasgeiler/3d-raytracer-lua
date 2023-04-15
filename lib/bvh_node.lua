@@ -53,14 +53,14 @@ end
 ---@field box aabb
 local bvh_node = class(hittable)
 
----Initialize a new BVH Node
+---Init a new BVH Node
 ---@param _objects hittable_list|hittable[]
 ---@param _from number
 ---@param _to number
 ---@param _time0 number?
 ---@param _time1 number?
----@overload fun(n: bvh_node, list: hittable_list, time0: number, time1: number): bvh_node
----@overload fun(n: bvh_node, src_objects: hittable[], start: integer, end: integer, time0: number, time1: number): bvh_node
+---@overload fun(self: bvh_node, list: hittable_list, time0: number, time1: number): bvh_node
+---@overload fun(self: bvh_node, src_objects: hittable[], start: integer, end: integer, time0: number, time1: number): bvh_node
 function bvh_node:new(_objects, _from, _to, _time0, _time1)
 	local given_hittable_list = _objects.objects and true or false
 	local objects	= given_hittable_list and _objects.objects or _objects

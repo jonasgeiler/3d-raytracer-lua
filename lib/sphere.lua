@@ -2,6 +2,21 @@ local class = require('lib.class')
 local hittable = require('lib.hittable')
 local aabb = require('lib.aabb')
 
+---Calculate the spherical UV coordinates
+--- (1 0 0) yields <0.50 0.50>       (-1  0  0) yields <0.00 0.50>
+--- (0 1 0) yields <0.50 1.00>       ( 0 -1  0) yields <0.50 0.00>
+--- (0 0 1) yields <0.25 0.50>       ( 0  0 -1) yields <0.75 0.50>
+---@param p point3 A given point on the sphere of radius one, centered at the origin
+---@return number u Returned value [0,1] of angle around the Y axis from X=-1
+---@return number v Returned value [0,1] of angle from Y=-1 to Y=+1
+local function get_sphere_uv(p)
+	local theta = math.acos(-p.y)
+	local phi = math.atan2(-p.z, p.x) + math.pi
+
+	return phi / (2 * math.pi), theta / math.pi
+end
+
+
 ---Represents a hittable sphere
 ---@class sphere : hittable
 ---@overload fun(center: point3, radius: number, mat: material): sphere
@@ -48,6 +63,7 @@ function sphere:hit(r, t_min, t_max, rec)
 	rec.p = r:at(rec.t)
 	local outward_normal = (rec.p - self.center) / self.radius
 	rec:set_face_normal(r, outward_normal)
+	rec.u, rec.v = get_sphere_uv(outward_normal)
 	rec.mat = self.mat
 
 	return true
