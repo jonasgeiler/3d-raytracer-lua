@@ -1,6 +1,6 @@
 local bit = require('bit')
 local class = require('lib.class')
-local utils = require('lib.utils')
+local vec3  = require('lib.vec3')
 
 local POINT_COUNT = 256
 
@@ -32,22 +32,27 @@ local function perlin_generate_perm()
 	return p
 end
 
----Perform trilinear interpolation
----@param c number[][][]
+---Perform perlin interpolation
+---@param c vec3[][][]
 ---@param u number
 ---@param v number
 ---@param w number
-local function trilinear_interp(c, u, v, w)
+local function perlin_interp(c, u, v, w)
+	local uu = u * u * (3 - 2 * u)
+	local vv = v * v * (3 - 2 * v)
+	local ww = w * w * (3 - 2 * w)
 	local accum = 0.0
 
 	for i = 0, 1 do
 		for j = 0, 1 do
 			for k = 0, 1 do
+				local weight_v = vec3(u - i, v - j, w - k)
+
 				accum = accum +
-					(i * u + (1 - i) * (1 - u)) *
-					(j * v + (1 - j) * (1 - v)) *
-					(k * w + (1 - k) * (1 - w)) *
-					c[i][j][k]
+					(i * uu + (1 - i) * (1 - uu)) *
+					(j * vv + (1 - j) * (1 - vv)) *
+					(k * ww + (1 - k) * (1 - ww)) *
+					c[i][j][k]:dot(weight_v)
 			end
 		end
 	end
@@ -59,7 +64,7 @@ end
 ---Represents a perlin noise
 ---@class perlin
 ---@overload fun(): perlin
----@field ranfloat number[]
+---@field ranvec vec3[]
 ---@field perm_x integer[]
 ---@field perm_y integer[]
 ---@field perm_z integer[]
@@ -67,9 +72,9 @@ local perlin = class()
 
 ---Init the perlin noise
 function perlin:new()
-	self.ranfloat = {}
+	self.ranvec = {}
 	for i = 0, POINT_COUNT - 1 do
-		self.ranfloat[i] = math.random()
+		self.ranvec[i] = vec3.random(-1, 1):unit_vector()
 	end
 
 	self.perm_x = perlin_generate_perm()
@@ -85,21 +90,17 @@ function perlin:noise(p)
 	local u = p.x - math.floor(p.x)
 	local v = p.y - math.floor(p.y)
 	local w = p.z - math.floor(p.z)
-	u = u * u * (3 - 2 * u)
-	v = v * v * (3 - 2 * v)
-	w = w * w * (3 - 2 * w)
-
 	local i = math.floor(p.x)
 	local j = math.floor(p.y)
 	local k = math.floor(p.z)
-	local c = {} ---@type number[][][]
+	local c = {} ---@type vec3[][][]
 
 	for di = 0, 1 do
 		c[di] = {}
 		for dj = 0, 1 do
 			c[di][dj] = {}
 			for dk = 0, 1 do
-				c[di][dj][dk] = self.ranfloat[bit.bxor(
+				c[di][dj][dk] = self.ranvec[bit.bxor(
 					self.perm_x[bit.band(i + di, 255)],
 					self.perm_y[bit.band(j + dj, 255)],
 					self.perm_z[bit.band(k + dk, 255)]
@@ -108,7 +109,7 @@ function perlin:noise(p)
 		end
 	end
 
-	return trilinear_interp(c, u, v, w)
+	return perlin_interp(c, u, v, w)
 end
 
 return perlin
