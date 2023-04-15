@@ -9,6 +9,7 @@ local aabb = require('lib.aabb')
 ---@param p point3 A given point on the sphere of radius one, centered at the origin
 ---@return number u Returned value [0,1] of angle around the Y axis from X=-1
 ---@return number v Returned value [0,1] of angle from Y=-1 to Y=+1
+---@nodiscard
 local function get_sphere_uv(p)
 	local theta = math.acos(-p.y)
 	local phi = math.atan2(-p.z, p.x) + math.pi

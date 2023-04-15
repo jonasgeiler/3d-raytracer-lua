@@ -10,6 +10,7 @@ local texture = class()
 ---@param v number
 ---@param p point3
 ---@return color
+---@nodiscard
 function texture:value(u, v, p)
 	error('No value method defined for texture')
 end

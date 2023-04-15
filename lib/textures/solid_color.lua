@@ -29,6 +29,7 @@ end
 ---@param v number
 ---@param p point3
 ---@return color
+---@nodiscard
 function solid_color:value(u, v, p)
 	return self.color_value
 end

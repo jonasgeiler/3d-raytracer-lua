@@ -13,6 +13,7 @@ local hittable_list   = require('lib.hittables.hittable_list')
 local moving_sphere   = require('lib.hittables.moving_sphere')
 local sphere          = require('lib.hittables.sphere')
 local checker_texture = require('lib.textures.checker_texture')
+local noise_texture   = require('lib.textures.noise_texture')
 local dielectric      = require('lib.materials.dielectric')
 local lambertian      = require('lib.materials.lambertian')
 local metal           = require('lib.materials.metal')
@@ -106,10 +107,10 @@ local function random_scene()
 	return world
 end
 
----Generate a scene with two textured spheres
+---Generate a scene with two checker textured spheres
 ---@return hittable_list
 ---@nodiscard
-local function two_sphere_scene()
+local function two_checker_spheres_scene()
 	local world = hittable_list()
 
 	local checker = checker_texture(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9))
@@ -117,6 +118,21 @@ local function two_sphere_scene()
 
 	world:add(sphere(point3(0, -10, 0), 10, material))
 	world:add(sphere(point3(0, 10, 0), 10, material))
+
+	return world
+end
+
+---Generate a scene with two perlin textured spheres
+---@return hittable_list
+---@nodiscard
+local function two_perlin_spheres_scene()
+	local world = hittable_list()
+
+	local pertext = noise_texture()
+	local material = lambertian(pertext)
+
+	world:add(sphere(point3(0, -1000, 0), 1000, material))
+	world:add(sphere(point3(0, 2, 0), 2, material))
 
 	return world
 end
@@ -148,8 +164,13 @@ lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20.0
 aperture = 0.1
+
+world = two_checker_spheres_scene()
+lookfrom = point3(13, 2, 3)
+lookat = point3(0, 0, 0)
+vfov = 20.0
 ]]
-world = two_sphere_scene()
+world = two_perlin_spheres_scene()
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20.0

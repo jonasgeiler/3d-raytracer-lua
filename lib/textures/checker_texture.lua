@@ -35,6 +35,7 @@ end
 ---@param v number
 ---@param p point3
 ---@return color
+---@nodiscard
 function checker_texture:value(u, v, p)
 	local sines = math.sin(p.x * 10) * math.sin(p.y * 10) * math.sin(p.z * 10)
 
