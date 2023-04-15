@@ -13,8 +13,6 @@ local solid_color = class(texture)
 ---@param red_or_color number|color
 ---@param green number?
 ---@param blue number?
----@overload fun(self: solid_color, red: number, green: number, blue: number): solid_color
----@overload fun(self: solid_color, color: color): solid_color
 function solid_color:new(red_or_color, green, blue)
 	if type(red_or_color) == 'table' and red_or_color.x and red_or_color.y and red_or_color.z then
 		self.color_value = red_or_color

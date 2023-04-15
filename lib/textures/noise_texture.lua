@@ -24,7 +24,7 @@ end
 ---@return color
 ---@nodiscard
 function noise_texture:value(u, v, p)
-	return color(1, 1, 1) * 0.5 * (1.0 + self.noise:noise(p * self.scale))
+	return color(1, 1, 1) * self.noise:turb(p * self.scale)
 end
 
 return noise_texture

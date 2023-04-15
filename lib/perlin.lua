@@ -37,6 +37,7 @@ end
 ---@param u number
 ---@param v number
 ---@param w number
+---@nodiscard
 local function perlin_interp(c, u, v, w)
 	local uu = u * u * (3 - 2 * u)
 	local vv = v * v * (3 - 2 * v)
@@ -82,7 +83,7 @@ function perlin:new()
 	self.perm_z = perlin_generate_perm()
 end
 
----Get the noise at a specific point
+---Compute the noise at a specific point
 ---@param p point3
 ---@return number
 ---@nodiscard
@@ -110,6 +111,27 @@ function perlin:noise(p)
 	end
 
 	return perlin_interp(c, u, v, w)
+end
+
+---Compute the turbulence at a specific point
+---@param p point3
+---@param depth integer?
+---@return number
+---@nodiscard
+function perlin:turb(p, depth)
+	depth = depth or 7
+
+	local accum = 0.0
+	local temp_p = p
+	local weight = 1.0
+
+	for i = 0, depth - 1 do
+		accum = accum + weight * self:noise(temp_p)
+		weight = weight * 0.5
+		temp_p = temp_p * 2
+	end
+
+	return math.abs(accum)
 end
 
 return perlin
