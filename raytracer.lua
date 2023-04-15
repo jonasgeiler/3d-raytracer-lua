@@ -1,22 +1,21 @@
-
 --- TODO: Add a "set" method and use it instead of "replace_with" at some places?
 
-local utils = require('lib.utils')
-local ppm = require('lib.ppm')
-local ray = require('lib.ray')
-local vec3 = require('lib.vec3')
-local point3 = require('lib.point3')
-local color = require('lib.color')
-local hit_record = require('lib.hit_record')
-local hittable_list = require('lib.hittable_list')
-local camera = require('lib.camera')
-local sphere = require('lib.sphere')
-local moving_sphere = require('lib.moving_sphere')
-local lambertian = require('lib.lambertian')
-local metal = require('lib.metal')
-local dielectric = require('lib.dielectric')
-local bvh_node   = require('lib.bvh_node')
-local checker_texture = require('lib.checker_texture')
+local camera          = require('lib.camera')
+local color           = require('lib.color')
+local hit_record      = require('lib.hit_record')
+local point3          = require('lib.point3')
+local ppm             = require('lib.ppm')
+local ray             = require('lib.ray')
+local utils           = require('lib.utils')
+local vec3            = require('lib.vec3')
+local bvh_node        = require('lib.hittables.bvh_node')
+local hittable_list   = require('lib.hittables.hittable_list')
+local moving_sphere   = require('lib.hittables.moving_sphere')
+local sphere          = require('lib.hittables.sphere')
+local checker_texture = require('lib.textures.checker_texture')
+local dielectric      = require('lib.materials.dielectric')
+local lambertian      = require('lib.materials.lambertian')
+local metal           = require('lib.materials.metal')
 
 ---Get the color of the ray
 ---@param r ray
@@ -149,7 +148,7 @@ lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20.0
 aperture = 0.1
-]]--
+]]
 
 world = two_sphere_scene()
 lookfrom = point3(13, 2, 3)

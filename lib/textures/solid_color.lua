@@ -1,5 +1,5 @@
 local class = require('lib.class')
-local texture = require('lib.texture')
+local texture = require('lib.base.texture')
 local color   = require('lib.color')
 
 ---Represents a solid color texture

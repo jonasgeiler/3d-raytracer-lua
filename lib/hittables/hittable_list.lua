@@ -1,5 +1,5 @@
 local class = require('lib.class')
-local hittable = require('lib.hittable')
+local hittable = require('lib.base.hittable')
 local hit_record = require('lib.hit_record')
 local aabb = require('lib.aabb')
 

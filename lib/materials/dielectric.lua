@@ -1,5 +1,5 @@
 local class = require('lib.class')
-local material = require('lib.material')
+local material = require('lib.base.material')
 local color = require('lib.color')
 local ray = require('lib.ray')
 

@@ -1,8 +1,8 @@
 local class = require('lib.class')
 local vec3 = require('lib.vec3')
 local ray = require('lib.ray')
-local material = require('lib.material')
-local solid_color = require('lib.solid_color')
+local material = require('lib.base.material')
+local solid_color = require('lib.textures.solid_color')
 
 ---Represents a lambertian (matte) material
 ---@class lambertian : material

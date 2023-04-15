@@ -1,6 +1,6 @@
 local class = require('lib.class')
-local texture = require('lib.texture')
-local solid_color = require('lib.solid_color')
+local texture = require('lib.base.texture')
+local solid_color = require('lib.textures.solid_color')
 
 ---Represents a checker texture
 ---@class checker_texture : texture
