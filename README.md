@@ -23,15 +23,12 @@ All the code is written by me, but I added a MIT license so feel free to use it.
 
 ## How to use
 
-Just download the repository and then run `raytracer.lua`:
+Just download the repository and then run `raytracer.lua` using LuaJIT:
 ```shell
-$ lua ./raytracer.lua
+$ luajit ./raytracer.lua
 ```
-
-> To save time, I _**highly recommend**_ using LuaJIT instead:
-> ```shell
-> $ luajit ./raytracer.lua
-> ```
+> You can also use standard Lua 5.1, but I _**highly recommend**_ using LuaJIT instead.
+> Also, to use standard Lua you have to install the [Lua BitOp extension](https://bitop.luajit.org/), which is included in LuaJIT.
 
 After the rendering is finished, you can find the PPM file in `renders/`.  
 To convert the PPM file to a PNG file, I recommend using [GIMP](https://www.gimp.org/).
