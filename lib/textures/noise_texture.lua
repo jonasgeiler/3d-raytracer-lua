@@ -5,13 +5,16 @@ local perlin  = require('lib.perlin')
 
 ---Represents a noise texture
 ---@class noise_texture : texture
----@overload fun(): noise_texture
+---@overload fun(scale: number): noise_texture
 ---@field noise perlin
+---@field scale number
 local noise_texture = class(texture)
 
 ---Init the texture
-function noise_texture:new()
+---@param scale number
+function noise_texture:new(scale)
 	self.noise = perlin()
+	self.scale = scale
 end
 
 ---Get color value of the texture
@@ -21,7 +24,7 @@ end
 ---@return color
 ---@nodiscard
 function noise_texture:value(u, v, p)
-	return color(1, 1, 1) * self.noise:noise(p)
+	return color(1, 1, 1) * self.noise:noise(p * self.scale)
 end
 
 return noise_texture

@@ -128,7 +128,7 @@ end
 local function two_perlin_spheres_scene()
 	local world = hittable_list()
 
-	local pertext = noise_texture()
+	local pertext = noise_texture(4)
 	local material = lambertian(pertext)
 
 	world:add(sphere(point3(0, -1000, 0), 1000, material))
