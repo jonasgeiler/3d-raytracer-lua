@@ -54,7 +54,7 @@ To convert the PPM file to a PNG file, I recommend using [GIMP](https://www.gimp
 	- [X] Bounding Volume Hierachies
 	- [X] Solid Textures
 	- [X] Perlin Noise
-	- [ ] Image Texture Mapping
+	- [X] Image Texture Mapping
 	- [ ] Rectangles and Lights
 	- [ ] Instances
 	- [ ] Volumes

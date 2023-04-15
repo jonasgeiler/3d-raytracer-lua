@@ -13,6 +13,7 @@ local hittable_list   = require('lib.hittables.hittable_list')
 local moving_sphere   = require('lib.hittables.moving_sphere')
 local sphere          = require('lib.hittables.sphere')
 local checker_texture = require('lib.textures.checker_texture')
+local image_texture   = require('lib.textures.image_texture')
 local noise_texture   = require('lib.textures.noise_texture')
 local dielectric      = require('lib.materials.dielectric')
 local lambertian      = require('lib.materials.lambertian')
@@ -137,6 +138,20 @@ local function two_perlin_spheres_scene()
 	return world
 end
 
+---Generate a scene with an earth globe
+---@return hittable_list
+---@nodiscard
+local function earth_globe_scene()
+	local world = hittable_list()
+
+	local earth_texture = image_texture('textures/earthmap.ppm')
+	local earth_surface = lambertian(earth_texture)
+
+	world:add(sphere(point3(0, 0, 0), 2, earth_surface))
+
+	return world
+end
+
 
 print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 
@@ -148,7 +163,6 @@ local samples_per_pixel = 100
 local max_depth = 50
 local image_width = 400
 local image_height = math.floor(image_width / aspect_ratio)
-local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', image_width, image_height)
 
 local world ---@type hittable_list
 local lookfrom ---@type point3
@@ -169,13 +183,21 @@ world = two_checker_spheres_scene()
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20.0
-]]
+
 world = two_perlin_spheres_scene()
+lookfrom = point3(13, 2, 3)
+lookat = point3(0, 0, 0)
+vfov = 20.0
+]]
+world = earth_globe_scene()
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20.0
 
 local cam = camera(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0)
+
+local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm')
+image:write_head(image_width, image_height)
 
 print('Starting rendering...\n')
 local render_start = os.clock()
