@@ -1,4 +1,5 @@
 local class = require('lib.class')
+local color = require('lib.color')
 
 ---Represents a material
 ---@class material
@@ -13,6 +14,16 @@ local material = class()
 ---@return boolean
 function material:scatter(r_in, rec, attenuation, scattered)
 	error('Not scatter method defined for material')
+end
+
+---Returns the emitted color of the material
+---@param u number
+---@param v number
+---@param p point3
+---@return color
+---@nodiscard
+function material:emitted(u, v, p)
+	return color(0, 0, 0)
 end
 
 return material

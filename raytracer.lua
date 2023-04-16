@@ -22,31 +22,33 @@ local metal           = require('lib.materials.metal')
 
 ---Get the color of the ray
 ---@param r ray
+---@param background color
 ---@param world hittable_list
 ---@param depth number
 ---@return color
 ---@nodiscard
-local function ray_color(r, world, depth)
+local function ray_color(r, background, world, depth)
+	--- If we've exceeded the ray bounce limit, no more light is gathered
 	if depth <= 0 then
 		return color(0.0, 0.0, 0.0)
 	end
 
 	local rec = hit_record()
-	if world:hit(r, 0.001, math.huge, rec) then
-		local scattered = ray()
-		local attenuation = color()
 
-		if rec.mat:scatter(r, rec, attenuation, scattered) then
-			return attenuation * ray_color(scattered, world, depth - 1)
-		end
-
-		return color(0.0, 0.0, 0.0)
+	--- If the ray hits nothing, return the background color
+	if not world:hit(r, 0.001, math.huge, rec) then
+		return background
 	end
 
-	local unit_direction = r.direction:unit_vector()
-	local t = 0.5 * (unit_direction.y + 1.0)
+	local scattered = ray()
+	local attenuation = color()
+	local emitted = rec.mat:emitted(rec.u, rec.v, rec.p)
 
-	return color(1.0, 1.0, 1.0) * (1.0 - t) + color(0.5, 0.7, 1.0) * t
+	if not rec.mat:scatter(r, rec, attenuation, scattered) then
+		return emitted
+	end
+
+	return emitted + attenuation * ray_color(scattered, background, world, depth - 1)
 end
 
 ---Generate a random scene
@@ -166,6 +168,7 @@ local image_width = 400
 local image_height = math.floor(image_width / aspect_ratio)
 
 local world ---@type hittable_list
+local background = color(0, 0, 0)
 local lookfrom ---@type point3
 local lookat ---@type point3
 local vup = vec3(0, 1, 0)
@@ -173,27 +176,32 @@ local vfov = 40.0
 local aperture = 0.0
 local dist_to_focus = 10.0
 
---[[
+
 world = random_scene()
+background = color(0.7, 0.8, 1.0)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20.0
 aperture = 0.1
-
+--[[
 world = two_checker_spheres_scene()
+background = color(0.7, 0.8, 1.0)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20.0
 
 world = two_perlin_spheres_scene()
+background = color(0.7, 0.8, 1.0)
+lookfrom = point3(13, 2, 3)
+lookat = point3(0, 0, 0)
+vfov = 20.0
+
+world = earth_globe_scene()
+background = color(0.7, 0.8, 1.0)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20.0
 ]]
-world = earth_globe_scene()
-lookfrom = point3(13, 2, 3)
-lookat = point3(0, 0, 0)
-vfov = 20.0
 
 local cam = camera(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0)
 local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', true, image_width, image_height)
@@ -215,7 +223,7 @@ for j = image_height - 1, 0, -1 do
 			local u = (i + math.random()) / (image_width - 1) ---@type number
 			local v = (j + math.random()) / (image_height - 1) ---@type number
 			local cam_ray = cam:get_ray(u, v)
-			local cam_ray_color = ray_color(cam_ray, world, max_depth)
+			local cam_ray_color = ray_color(cam_ray, background, world, max_depth)
 
 			r = r + cam_ray_color.x ---@type number
 			g = g + cam_ray_color.y ---@type number
