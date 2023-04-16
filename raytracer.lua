@@ -196,9 +196,8 @@ lookat = point3(0, 0, 0)
 vfov = 20.0
 
 local cam = camera(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0)
-
-local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm')
-image:write_head(image_width, image_height)
+local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', true, image_width, image_height)
+local pixel_color_scale = 1.0 / samples_per_pixel ---@type number
 
 print('Starting rendering...\n')
 local render_start = os.clock()
@@ -208,14 +207,26 @@ for j = image_height - 1, 0, -1 do
 	local scanline_time = os.clock()
 
 	for i = 0, image_width - 1 do
-		local pixel_color = color(0, 0, 0)
+		local r = 0.0
+		local g = 0.0
+		local b = 0.0
+
 		for _ = 1, samples_per_pixel do
 			local u = (i + math.random()) / (image_width - 1) ---@type number
 			local v = (j + math.random()) / (image_height - 1) ---@type number
-			local r = cam:get_ray(u, v)
-			pixel_color = pixel_color + ray_color(r, world, max_depth)
+			local cam_ray = cam:get_ray(u, v)
+			local cam_ray_color = ray_color(cam_ray, world, max_depth)
+
+			r = r + cam_ray_color.x ---@type number
+			g = g + cam_ray_color.y ---@type number
+			b = b + cam_ray_color.z ---@type number
 		end
-		image:write_color(pixel_color, samples_per_pixel)
+
+		image:set_pixel(i, image_height - 1 - j, color(
+			math.sqrt(r * pixel_color_scale),
+			math.sqrt(g * pixel_color_scale),
+			math.sqrt(b * pixel_color_scale)
+		))
 	end
 
 	print('Scanlines remaining: ', j, 'Seconds remaining: ', math.floor((os.clock() - scanline_time) * j))

@@ -9,15 +9,12 @@ local utils       = require('lib.utils')
 ---@class image_texture : texture
 ---@overload fun(filename: string): image_texture
 ---@field image ppm
----@field image_width integer
----@field image_height integer
 local image_texture = class(texture)
 
 ---Init the texture
 ---@param filename string A path to a PPM file to use as texture
 function image_texture:new(filename)
-	self.image = ppm(filename, true)
-	self.image_width, self.image_height = self.image:read_head()
+	self.image = ppm(filename)
 end
 
 ---Get color value of the texture
@@ -30,13 +27,13 @@ function image_texture:value(u, v, p)
 	u = utils.clamp(u, 0.0, 1.0)
 	v = 1.0 - utils.clamp(v, 0.0, 1.0)
 
-	local x = math.floor(u * self.image_width)
-	local y = math.floor(v * self.image_height)
+	local x = math.floor(u * self.image.width)
+	local y = math.floor(v * self.image.height)
 
-	if x >= self.image_width then x = self.image_width - 1 end
-	if y >= self.image_height then y = self.image_height - 1 end
+	if x >= self.image.width then x = self.image.width - 1 end
+	if y >= self.image.height then y = self.image.height - 1 end
 
-	return self.image:read_color(x, y)
+	return self.image:get_pixel(x, y)
 end
 
 return image_texture

@@ -8,21 +8,63 @@ local COLOR_SCALE = 1.0 / 255.0
 
 ---Handles reading and creating PPM (only P6) image files
 ---@class ppm
----@overload fun(path: string, read: boolean?): ppm
+---@overload fun(path: string): ppm
+---@overload fun(path: string, write: false): ppm
+---@overload fun(path: string, write: true, width: integer, height: integer): ppm
 ---@field public image file*
----@field protected width integer
----@field protected height integer
+---@field public width integer
+---@field public height integer
 ---@field protected head_end integer
 local ppm = class()
 
----Create and open a new PPM file
+---Init the PPM file for reading or writing
+---Note: This class is very opinonated and will not be able to read every PPM file.
+---      The file has to be of type "P6" and not contain any comments or extra whitespace.
+---      I chose this approach for simplicity since parsing different whitespaces and comments can become pretty complicated.
+---      You can use HxD or any other hex editor to remove comments in your PPM file.
 ---@param filename string Path to the file
----@param read boolean? Controls whether the PPM file should be opened for reading (true) or writing (false)
-function ppm:new(filename, read)
-	local image, err = io.open(filename, read and 'rb' or 'wb')
-	assert(image, err)
+---@param write boolean? Controls whether the PPM file should be opened for writing (true) or reading (false, default)
+---@param width integer?
+---@param height integer?
+function ppm:new(filename, write, width, height)
+	self.image = assert(io.open(filename, write and 'wb' or 'rb'))
 
-	self.image = image
+	if write then
+		assert(type(width) == 'number' and type(height) == 'number', 'Invalid width/height for PPM file')
+		self.width = width
+		self.height = height
+
+		assert(self.image:write('P6\n', width, ' ', height, '\n255\n'))
+
+		self.head_end = assert(self.image:seek())
+
+		-- Fill image with black pixels
+		for _ = 1, height + width do
+			assert(self.image:write(string.char(0), string.char(0), string.char(0)))
+		end
+	else
+		local filetype = self.image:read(2)
+		assert(filetype == 'P6', 'Invalid PPM file type: ' .. tostring(filetype))
+
+		assert(self.image:read(1), 'Invalid PPM file header') -- Whitespace
+
+		self.width = self.image:read('*number')
+		assert(self.width, 'Invalid PPM file width: ' .. tostring(self.width))
+
+		assert(self.image:read(1), 'Invalid PPM file header') -- Whitespace
+
+		self.height = self.image:read('*number')
+		assert(self.height, 'Invalid PPM file height: ' .. tostring(self.height))
+
+		assert(self.image:read(1), 'Invalid PPM file header') -- Whitespace
+
+		local maxcolor = self.image:read('*number')
+		assert(maxcolor == 255, 'Invalid PPM file maximum color: ' .. tostring(maxcolor))
+
+		assert(self.image:read(1), 'Invalid PPM file header') -- Whitespace
+
+		self.head_end = assert(self.image:seek())
+	end
 end
 
 ---Close the PPM file
@@ -30,85 +72,35 @@ function ppm:close()
 	self.image:close()
 end
 
----Write the head with metadata to the PPM file
----@param width integer
----@param height integer
-function ppm:write_head(width, height)
-	assert(self.image:seek('set')) -- Reset pointer
-
-	self.image:write('P6\n', width, ' ', height, '\n255\n')
-
-	self.head_end = assert(self.image:seek())
-	self.width, self.height = width, height
-end
-
----Write the next pixel to the PPM file
+---Set the pixel at a specific coordinate in the PPM file
+---@param x integer
+---@param y integer
 ---@param pixel_color color
----@param samples_per_pixel number
-function ppm:write_color(pixel_color, samples_per_pixel)
-	local scale = 1.0 / samples_per_pixel ---@type number
-	local r = math.floor(256 * utils.clamp(math.sqrt(pixel_color.x * scale), 0.0, 0.999))
-	local g = math.floor(256 * utils.clamp(math.sqrt(pixel_color.y * scale), 0.0, 0.999))
-	local b = math.floor(256 * utils.clamp(math.sqrt(pixel_color.z * scale), 0.0, 0.999))
+function ppm:set_pixel(x, y, pixel_color)
+	assert(self.image:seek('set', self.head_end + x * BYTES_PER_PIXEL + y * BYTES_PER_PIXEL * self.width))
 
-	if r ~= r then r = 0.0 end
-	if g ~= g then g = 0.0 end
-	if b ~= b then b = 0.0 end
+	local r = math.floor(256 * utils.clamp(pixel_color.x, 0.0, 0.999))
+	local g = math.floor(256 * utils.clamp(pixel_color.y, 0.0, 0.999))
+	local b = math.floor(256 * utils.clamp(pixel_color.z, 0.0, 0.999))
 
-	self.image:write(
+	if r ~= r or r == math.huge then r = 0 end -- check nan or inf
+	if g ~= g or r == math.huge then g = 0 end
+	if b ~= b or r == math.huge then b = 0 end
+
+	assert(self.image:write(
 		string.char(r),
 		string.char(g),
 		string.char(b)
-	)
+	))
 end
 
----Read the head of the PPM file
----Note: This function is very opinonated and will not be able to parse every PPM file.
----      The file has to be of type "P6" and not contain any comments or extra whitespace.
----      I chose this approach for simplicity since parsing different whitespaces and comments can become pretty complicated.
----@return integer width
----@return integer height
----@nodiscard
-function ppm:read_head()
-	assert(self.image:seek('set')) -- Reset pointer
-
-	local filetype = self.image:read(2)
-	if filetype ~= 'P6' then error('Invalid PPM file type: ' .. tostring(filetype)) end
-
-	if self.image:read(1) == nil then error('Invalid PPM file header') end -- Whitespace
-
-	local width = self.image:read('*number')
-	if not width then error('Invalid PPM file width: ' .. tostring(width)) end
-
-	if self.image:read(1) == nil then error('Invalid PPM file header') end -- Whitespace
-
-	local height = self.image:read('*number')
-	if not height then error('Invalid PPM file height: ' .. tostring(height)) end
-
-	if self.image:read(1) == nil then error('Invalid PPM file header') end -- Whitespace
-
-	local maxcolor = self.image:read('*number')
-	if maxcolor ~= 255 then error('Invalid PPM file maximum color: ' .. tostring(maxcolor)) end
-
-	if self.image:read(1) == nil then error('Invalid PPM file header') end -- Whitespace
-
-	self.head_end = assert(self.image:seek())
-	self.width, self.height = width, height
-	return width, height
-end
-
----Read the pixel at specific coordinates
+---Get the pixel at a specific coordinate in the PPM file
 ---@param x integer
 ---@param y integer
 ---@return color pixel_color
 ---@nodiscard
-function ppm:read_color(x, y)
-	if self.head_end and self.width then
-		assert(self.image:seek('set', self.head_end + x * BYTES_PER_PIXEL + y * BYTES_PER_PIXEL * self.width))
-	else
-		local width = self:read_head()
-		assert(self.image:seek('cur', x * BYTES_PER_PIXEL + y * BYTES_PER_PIXEL * width))
-	end
+function ppm:get_pixel(x, y)
+	assert(self.image:seek('set', self.head_end + x * BYTES_PER_PIXEL + y * BYTES_PER_PIXEL * self.width))
 
 	return color(
 		string.byte(self.image:read(1)) * COLOR_SCALE,
