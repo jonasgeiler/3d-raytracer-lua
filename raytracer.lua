@@ -13,10 +13,14 @@ local bvh_node        = require('lib.hittables.bvh_node')
 local hittable_list   = require('lib.hittables.hittable_list')
 local moving_sphere   = require('lib.hittables.moving_sphere')
 local sphere          = require('lib.hittables.sphere')
+local xy_rect         = require('lib.hittables.xy_rect')
+local xz_rect         = require('lib.hittables.xz_rect')
+local yz_rect         = require('lib.hittables.yz_rect')
 local checker_texture = require('lib.textures.checker_texture')
 local image_texture   = require('lib.textures.image_texture')
 local noise_texture   = require('lib.textures.noise_texture')
 local dielectric      = require('lib.materials.dielectric')
+local diffuse_light   = require('lib.materials.diffuse_light')
 local lambertian      = require('lib.materials.lambertian')
 local metal           = require('lib.materials.metal')
 
@@ -134,7 +138,6 @@ local function two_perlin_spheres_scene()
 
 	local pertext = noise_texture(4)
 	local material = lambertian(pertext)
-
 	world:add(sphere(point3(0, -1000, 0), 1000, material))
 	world:add(sphere(point3(0, 2, 0), 2, material))
 
@@ -155,6 +158,45 @@ local function earth_globe_scene()
 	return world
 end
 
+---Generate a scene with some lights
+---@return hittable_list
+---@nodiscard
+local function simple_light_scene()
+	local world = hittable_list()
+
+	local pertext = noise_texture(4)
+	local material = lambertian(pertext)
+	world:add(sphere(point3(0, -1000, 0), 1000, material))
+	world:add(sphere(point3(0, 2, 0), 2, material))
+
+	local difflight = diffuse_light(color(4, 4, 4))
+	world:add(sphere(point3(0, 7, 0), 2, difflight))
+	world:add(xy_rect(3, 5, 1, 3, -2, difflight))
+
+	return world
+end
+
+---Generate a scene with a cornell box
+---@return hittable_list
+---@nodiscard
+local function cornell_box()
+	local world = hittable_list()
+
+	local red = lambertian(color(0.65, 0.05, 0.05))
+	local white = lambertian(color(0.73, 0.73, 0.73))
+	local green = lambertian(color(0.12, 0.45, 0.15))
+	local light = diffuse_light(color(15, 15, 15))
+
+	world:add(yz_rect(0, 555, 0, 555, 555, green)) -- left wall
+	world:add(yz_rect(0, 555, 0, 555, 0, red)) -- right wall
+	world:add(xz_rect(213, 343, 227, 332, 554, light)) -- roof light
+	world:add(xz_rect(0, 555, 0, 555, 0, white)) -- floor
+	world:add(xz_rect(0, 555, 0, 555, 555, white)) -- roof
+	world:add(xy_rect(0, 555, 0, 555, 555, white)) -- back wall
+
+	return world
+end
+
 
 print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 
@@ -165,7 +207,6 @@ local aspect_ratio = 16.0 / 9.0
 local samples_per_pixel = 100
 local max_depth = 50
 local image_width = 400
-local image_height = math.floor(image_width / aspect_ratio)
 
 local world ---@type hittable_list
 local background = color(0, 0, 0)
@@ -176,14 +217,14 @@ local vfov = 40.0
 local aperture = 0.0
 local dist_to_focus = 10.0
 
-
+--[[
 world = random_scene()
 background = color(0.7, 0.8, 1.0)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20.0
 aperture = 0.1
---[[
+
 world = two_checker_spheres_scene()
 background = color(0.7, 0.8, 1.0)
 lookfrom = point3(13, 2, 3)
@@ -201,8 +242,22 @@ background = color(0.7, 0.8, 1.0)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20.0
-]]
 
+world = simple_light_scene()
+samples_per_pixel = 400
+lookfrom = point3(26, 3, 6)
+lookat = point3(0, 2, 0)
+vfov = 20.0
+]]
+world = cornell_box()
+aspect_ratio = 1.0
+image_width = 600
+samples_per_pixel = 200
+lookfrom = point3(278, 278, -800)
+lookat = point3(278, 278, 0)
+vfov = 40.0
+
+local image_height = math.floor(image_width / aspect_ratio)
 local cam = camera(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0)
 local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', true, image_width, image_height)
 local pixel_color_scale = 1.0 / samples_per_pixel ---@type number
