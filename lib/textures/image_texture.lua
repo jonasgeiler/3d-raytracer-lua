@@ -4,8 +4,6 @@ local color       = require('lib.color')
 local ppm         = require('lib.ppm')
 local utils       = require('lib.utils')
 
-local COLOR_SCALE = 1.0 / 255.0
-
 
 ---Represents an image texture
 ---@class image_texture : texture
@@ -38,8 +36,7 @@ function image_texture:value(u, v, p)
 	if x >= self.image_width then x = self.image_width - 1 end
 	if y >= self.image_height then y = self.image_height - 1 end
 
-	local pixel_color = self.image:read_color(x, y)
-	return color(pixel_color.x * COLOR_SCALE, pixel_color.y * COLOR_SCALE, pixel_color.z * COLOR_SCALE)
+	return self.image:read_color(x, y)
 end
 
 return image_texture

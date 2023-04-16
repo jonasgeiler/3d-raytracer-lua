@@ -1,4 +1,5 @@
 --- TODO: Add a "set" method and use it instead of "replace_with" at some places?
+--- TODO: Make classes function more like the book's classes (init without params, define field scopes, etc.)
 
 local camera          = require('lib.camera')
 local color           = require('lib.color')
@@ -144,7 +145,7 @@ end
 local function earth_globe_scene()
 	local world = hittable_list()
 
-	local earth_texture = image_texture('textures/earthmap.ppm')
+	local earth_texture = image_texture('images/earthmap.ppm')
 	local earth_surface = lambertian(earth_texture)
 
 	world:add(sphere(point3(0, 0, 0), 2, earth_surface))

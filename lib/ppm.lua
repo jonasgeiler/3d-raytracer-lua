@@ -3,16 +3,16 @@ local color = require('lib.color')
 local utils = require('lib.utils')
 
 local BYTES_PER_PIXEL = 3
+local COLOR_SCALE = 1.0 / 255.0
 
 
----Handles creating PPM (only P6) image files
+---Handles reading and creating PPM (only P6) image files
 ---@class ppm
 ---@overload fun(path: string, read: boolean?): ppm
----@field image file*
----@field read boolean
----@field width integer
----@field height integer
----@field head_end integer
+---@field public image file*
+---@field protected width integer
+---@field protected height integer
+---@field protected head_end integer
 local ppm = class()
 
 ---Create and open a new PPM file
@@ -63,6 +63,9 @@ function ppm:write_color(pixel_color, samples_per_pixel)
 end
 
 ---Read the head of the PPM file
+---Note: This function is very opinonated and will not be able to parse every PPM file.
+---      The file has to be of type "P6" and not contain any comments or extra whitespace.
+---      I chose this approach for simplicity since parsing different whitespaces and comments can become pretty complicated.
 ---@return integer width
 ---@return integer height
 ---@nodiscard
@@ -108,9 +111,9 @@ function ppm:read_color(x, y)
 	end
 
 	return color(
-		string.byte(self.image:read(1)),
-		string.byte(self.image:read(1)),
-		string.byte(self.image:read(1))
+		string.byte(self.image:read(1)) * COLOR_SCALE,
+		string.byte(self.image:read(1)) * COLOR_SCALE,
+		string.byte(self.image:read(1)) * COLOR_SCALE
 	)
 end
 
