@@ -1,6 +1,6 @@
 local bit = require('bit')
 local class = require('lib.class')
-local vec3  = require('lib.vec3')
+local vec3 = require('lib.vec3')
 
 local POINT_COUNT = 256
 

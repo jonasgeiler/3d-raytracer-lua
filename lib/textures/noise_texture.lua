@@ -1,7 +1,7 @@
 local class = require('lib.class')
 local texture = require('lib.base.texture')
 local color = require('lib.color')
-local perlin  = require('lib.perlin')
+local perlin = require('lib.perlin')
 
 ---Represents a noise texture
 ---@class noise_texture : texture

@@ -1,28 +1,29 @@
 --- TODO: Add a "set" method and use it instead of "replace_with" at some places?
 --- TODO: Make classes function more like the book's classes (init without params, define field scopes, etc.)
 
-local camera          = require('lib.camera')
-local color           = require('lib.color')
-local hit_record      = require('lib.hit_record')
-local point3          = require('lib.point3')
-local ppm             = require('lib.ppm')
-local ray             = require('lib.ray')
-local utils           = require('lib.utils')
-local vec3            = require('lib.vec3')
-local bvh_node        = require('lib.hittables.bvh_node')
-local hittable_list   = require('lib.hittables.hittable_list')
-local moving_sphere   = require('lib.hittables.moving_sphere')
-local sphere          = require('lib.hittables.sphere')
-local xy_rect         = require('lib.hittables.xy_rect')
-local xz_rect         = require('lib.hittables.xz_rect')
-local yz_rect         = require('lib.hittables.yz_rect')
+local camera = require('lib.camera')
+local color = require('lib.color')
+local hit_record = require('lib.hit_record')
+local point3 = require('lib.point3')
+local ppm = require('lib.ppm')
+local ray = require('lib.ray')
+local utils = require('lib.utils')
+local vec3 = require('lib.vec3')
+local box = require('lib.hittables.box')
+local bvh_node = require('lib.hittables.bvh_node')
+local hittable_list = require('lib.hittables.hittable_list')
+local moving_sphere = require('lib.hittables.moving_sphere')
+local sphere = require('lib.hittables.sphere')
+local xy_rect = require('lib.hittables.xy_rect')
+local xz_rect = require('lib.hittables.xz_rect')
+local yz_rect = require('lib.hittables.yz_rect')
 local checker_texture = require('lib.textures.checker_texture')
-local image_texture   = require('lib.textures.image_texture')
-local noise_texture   = require('lib.textures.noise_texture')
-local dielectric      = require('lib.materials.dielectric')
-local diffuse_light   = require('lib.materials.diffuse_light')
-local lambertian      = require('lib.materials.lambertian')
-local metal           = require('lib.materials.metal')
+local image_texture = require('lib.textures.image_texture')
+local noise_texture = require('lib.textures.noise_texture')
+local dielectric = require('lib.materials.dielectric')
+local diffuse_light = require('lib.materials.diffuse_light')
+local lambertian = require('lib.materials.lambertian')
+local metal = require('lib.materials.metal')
 
 ---Get the color of the ray
 ---@param r ray
@@ -187,12 +188,17 @@ local function cornell_box()
 	local green = lambertian(color(0.12, 0.45, 0.15))
 	local light = diffuse_light(color(15, 15, 15))
 
-	world:add(yz_rect(0, 555, 0, 555, 555, green)) -- left wall
-	world:add(yz_rect(0, 555, 0, 555, 0, red)) -- right wall
+	-- room
+	world:add(yz_rect(0, 555, 0, 555, 555, green))  -- left wall
+	world:add(yz_rect(0, 555, 0, 555, 0, red))      -- right wall
 	world:add(xz_rect(213, 343, 227, 332, 554, light)) -- roof light
-	world:add(xz_rect(0, 555, 0, 555, 0, white)) -- floor
-	world:add(xz_rect(0, 555, 0, 555, 555, white)) -- roof
-	world:add(xy_rect(0, 555, 0, 555, 555, white)) -- back wall
+	world:add(xz_rect(0, 555, 0, 555, 0, white))    -- floor
+	world:add(xz_rect(0, 555, 0, 555, 555, white))  -- roof
+	world:add(xy_rect(0, 555, 0, 555, 555, white))  -- back wall
+
+	-- objects
+	world:add(box(point3(130, 0, 65), point3(295, 165, 230), white))
+	world:add(box(point3(265, 0, 295), point3(430, 330, 460), white))
 
 	return world
 end
