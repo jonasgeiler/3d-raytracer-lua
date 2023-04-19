@@ -8,7 +8,7 @@ local aabb = require('lib.aabb')
 
 ---Represents a hittable box
 ---@class box : hittable
----@overload fun(p0: point3, p1: point3, mat: material)
+---@overload fun(p0: point3, p1: point3, mat: material): box
 ---@field box_min point3
 ---@field box_max point3
 ---@field sides hittable_list

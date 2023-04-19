@@ -1,5 +1,6 @@
 --- TODO: Add a "set" method and use it instead of "replace_with" at some places?
 --- TODO: Make classes function more like the book's classes (init without params, define field scopes, etc.)
+--- TODO: Remove need for vec3:axis()
 
 local camera = require('lib.camera')
 local color = require('lib.color')
@@ -13,7 +14,9 @@ local box = require('lib.hittables.box')
 local bvh_node = require('lib.hittables.bvh_node')
 local hittable_list = require('lib.hittables.hittable_list')
 local moving_sphere = require('lib.hittables.moving_sphere')
+local rotate_y = require('lib.hittables.rotate_y')
 local sphere = require('lib.hittables.sphere')
+local translate = require('lib.hittables.translate')
 local xy_rect = require('lib.hittables.xy_rect')
 local xz_rect = require('lib.hittables.xz_rect')
 local yz_rect = require('lib.hittables.yz_rect')
@@ -196,9 +199,16 @@ local function cornell_box()
 	world:add(xz_rect(0, 555, 0, 555, 555, white))  -- roof
 	world:add(xy_rect(0, 555, 0, 555, 555, white))  -- back wall
 
-	-- objects
-	world:add(box(point3(130, 0, 65), point3(295, 165, 230), white))
-	world:add(box(point3(265, 0, 295), point3(430, 330, 460), white))
+	-- boxes
+	local box1 = box(point3(0, 0, 0), point3(165, 330, 165), white) ---@type hittable
+	box1 = rotate_y(box1, 15)
+	box1 = translate(box1, vec3(265, 0, 295))
+	world:add(box1)
+
+	local box2 = box(point3(0, 0, 0), point3(165, 165, 165), white) ---@type hittable
+	box2 = rotate_y(box2, -18)
+	box2 = translate(box2, vec3(130, 0, 65))
+	world:add(box2)
 
 	return world
 end

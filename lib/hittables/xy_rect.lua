@@ -6,7 +6,7 @@ local vec3 = require('lib.vec3')
 
 ---Represents an XY axis aligned rectangle
 ---@class xy_rect : hittable
----@overload fun(x0: number, x1: number, y0: number, y1: number, k: number, mat: material)
+---@overload fun(x0: number, x1: number, y0: number, y1: number, k: number, mat: material): xy_rect
 ---@field x0 number
 ---@field x1 number
 ---@field y0 number

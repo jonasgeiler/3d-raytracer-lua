@@ -6,7 +6,7 @@ local vec3 = require('lib.vec3')
 
 ---Represents an XZ axis aligned rectangle
 ---@class xz_rect : hittable
----@overload fun(x0: number, x1: number, z0: number, z1: number, k: number, mat: material)
+---@overload fun(x0: number, x1: number, z0: number, z1: number, k: number, mat: material): xz_rect
 ---@field x0 number
 ---@field x1 number
 ---@field z0 number
