@@ -1,6 +1,7 @@
 --- TODO: Add a "set" method and use it instead of "replace_with" at some places?
 --- TODO: Make classes function more like the book's classes (init without params, define field scopes, etc.)
 --- TODO: Remove need for vec3:axis()
+--- TODO: "Import" global modules by using something like `local _math = math`. This might make things 30% faster!
 
 local camera = require('lib.camera')
 local color = require('lib.color')
@@ -279,11 +280,13 @@ local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', t
 local pixel_color_scale = 1.0 / samples_per_pixel ---@type number
 
 print('Starting rendering...\n')
+print('Scanlines remaining: ', image_height)
 local render_start = os.clock()
 
-print('Scanlines remaining: ', image_height)
+local st_min, st_max = math.huge, 0 -- holds the overall longest and shortest scanline times
+local st1, st2, st3, st4, st5 = nil, nil, nil, nil, nil -- holds the last 5 scanline times
 for j = image_height - 1, 0, -1 do
-	local scanline_time = os.clock()
+	local scanline_start = os.clock()
 
 	for i = 0, image_width - 1 do
 		local r = 0.0
@@ -308,7 +311,18 @@ for j = image_height - 1, 0, -1 do
 		))
 	end
 
-	print('Scanlines remaining: ', j, 'Seconds remaining: ', math.floor((os.clock() - scanline_time) * j))
+	st1, st2, st3, st4, st5 = os.clock() - scanline_start, st1, st2, st3, st4 -- update the last 5 scanline times
+	if st1 < st_min then st_min = st1 end -- update shortest scanline time
+	if st1 > st_max then st_max = st1 end -- update longest scanline time
+	if st5 ~= nil then
+		-- try to calculate the remaining seconds by using the average of:
+		-- > the average of the last 5 scanline times
+		-- > the longest scanline time
+		-- > the shortest scanline time
+		print('Scanlines remaining: ', j, 'Seconds remaining: ', ((st1 + st2 + st3 + st4 + st5) / 5 + st_min + st_max) / 3 * j)
+	else
+		print('Scanlines remaining: ', j, 'Seconds remaining: ', st1 * j)
+	end
 end
 
 local render_end = os.clock()
