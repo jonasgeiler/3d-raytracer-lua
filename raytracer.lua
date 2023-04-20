@@ -2,6 +2,7 @@
 --- TODO: Make classes function more like the book's classes (init without params, define field scopes, etc.)
 --- TODO: Remove need for vec3:axis()
 --- TODO: "Import" global modules by using something like `local _math = math`. This might make things 30% faster!
+--- TODO: See if I actually need to use vec3:clone() anywhere
 
 local camera = require('lib.camera')
 local color = require('lib.color')
@@ -283,8 +284,9 @@ print('Starting rendering...\n')
 print('Scanlines remaining: ', image_height)
 local render_start = os.clock()
 
-local st_min, st_max = math.huge, 0 -- holds the overall longest and shortest scanline times
+---@diagnostic disable-next-line: no-unknown
 local st1, st2, st3, st4, st5 = nil, nil, nil, nil, nil -- holds the last 5 scanline times
+local st_min, st_max = math.huge, 0 -- holds the overall longest and shortest scanline times
 for j = image_height - 1, 0, -1 do
 	local scanline_start = os.clock()
 
@@ -319,9 +321,9 @@ for j = image_height - 1, 0, -1 do
 		-- > the average of the last 5 scanline times
 		-- > the longest scanline time
 		-- > the shortest scanline time
-		print('Scanlines remaining: ', j, 'Seconds remaining: ', ((st1 + st2 + st3 + st4 + st5) / 5 + st_min + st_max) / 3 * j)
+		print('Scanlines remaining: ', j, 'Seconds remaining: ', string.format('%.2f', ((st1 + st2 + st3 + st4 + st5) / 5 + st_min + st_max) / 3 * j))
 	else
-		print('Scanlines remaining: ', j, 'Seconds remaining: ', st1 * j)
+		print('Scanlines remaining: ', j, 'Seconds remaining: ', string.format('%.2f', st1 * j))
 	end
 end
 

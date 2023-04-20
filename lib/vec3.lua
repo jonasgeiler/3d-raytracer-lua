@@ -34,6 +34,13 @@ function vec3:replace_with(new_vec3)
 	self.z = new_vec3.z
 end
 
+---Clone the vector
+---@return vec3
+---@nodiscard
+function vec3:clone()
+	return vec3(self.x, self.y, self.z)
+end
+
 ---Get the squared length of the vector
 ---@return number
 ---@nodiscard

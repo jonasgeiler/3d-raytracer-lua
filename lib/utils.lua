@@ -13,14 +13,6 @@ function utils.random_float(min, max)
 	return math.random()
 end
 
----Convert degrees to radians
----@param degrees number
----@return number
----@nodiscard
-function utils.degrees_to_radians(degrees)
-	return degrees * math.pi / 180
-end
-
 ---Clamp a number between a min and a max
 ---@param x number
 ---@param min number

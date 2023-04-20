@@ -3,7 +3,6 @@ local hittable = require('lib.base.hittable')
 local aabb = require('lib.aabb')
 local point3 = require('lib.point3')
 local ray = require('lib.ray')
-local utils = require('lib.utils')
 local vec3 = require('lib.vec3')
 
 ---Represents a Y-rotated hittable
@@ -22,7 +21,7 @@ local rotate_y = class(hittable)
 function rotate_y:new(object, angle)
 	self.object = object
 
-	local radians = utils.degrees_to_radians(angle)
+	local radians = math.rad(angle)
 	self.sin_theta = math.sin(radians)
 	self.cos_theta = math.cos(radians)
 	self.bbox = aabb()
@@ -65,8 +64,8 @@ end
 ---@param rec hit_record
 ---@return boolean
 function rotate_y:hit(r, t_min, t_max, rec)
-	local origin = r.origin
-	local direction = r.direction
+	local origin = r.origin:clone()
+	local direction = r.direction:clone()
 
 	origin.x = self.cos_theta * r.origin.x - self.sin_theta * r.origin.z
 	origin.z = self.sin_theta * r.origin.x + self.cos_theta * r.origin.z
@@ -80,8 +79,8 @@ function rotate_y:hit(r, t_min, t_max, rec)
 		return false
 	end
 
-	local p = rec.p
-	local normal = rec.normal
+	local p = rec.p:clone()
+	local normal = rec.normal:clone()
 
 	p.x = self.cos_theta * rec.p.x + self.sin_theta * rec.p.z
 	p.z = -self.sin_theta * rec.p.x + self.cos_theta * rec.p.z

@@ -29,7 +29,7 @@ local camera = class()
 ---@param time0 number
 ---@param time1 number
 function camera:new(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, focus_dist, time0, time1)
-	local theta = utils.degrees_to_radians(vfov)
+	local theta = math.rad(vfov)
 	local h = math.tan(theta / 2)
 	local viewport_height = 2.0 * h
 	local viewport_width = aspect_ratio * viewport_height
