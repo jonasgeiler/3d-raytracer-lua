@@ -14,6 +14,7 @@ local utils = require('lib.utils')
 local vec3 = require('lib.vec3')
 local box = require('lib.hittables.box')
 local bvh_node = require('lib.hittables.bvh_node')
+local constant_medium = require('lib.hittables.constant_medium')
 local hittable_list = require('lib.hittables.hittable_list')
 local moving_sphere = require('lib.hittables.moving_sphere')
 local rotate_y = require('lib.hittables.rotate_y')
@@ -215,6 +216,39 @@ local function cornell_box()
 	return world
 end
 
+---Generate a scene with a cornell box and smoke
+---@return hittable_list
+---@nodiscard
+local function cornell_box_smoke()
+	local world = hittable_list()
+
+	local red = lambertian(color(0.65, 0.05, 0.05))
+	local white = lambertian(color(0.73, 0.73, 0.73))
+	local green = lambertian(color(0.12, 0.45, 0.15))
+	local light = diffuse_light(color(7, 7, 7))
+
+	-- room
+	world:add(yz_rect(0, 555, 0, 555, 555, green))  -- left wall
+	world:add(yz_rect(0, 555, 0, 555, 0, red))      -- right wall
+	world:add(xz_rect(113, 443, 127, 432, 554, light)) -- roof light
+	world:add(xz_rect(0, 555, 0, 555, 555, white))  -- roof
+	world:add(xz_rect(0, 555, 0, 555, 0, white))    -- floor
+	world:add(xy_rect(0, 555, 0, 555, 555, white))  -- back wall
+
+	-- boxes
+	local box1 = box(point3(0, 0, 0), point3(165, 330, 165), white) ---@type hittable
+	box1 = rotate_y(box1, 15)
+	box1 = translate(box1, vec3(265, 0, 295))
+	world:add(constant_medium(box1, 0.01, color(0, 0, 0)))
+
+	local box2 = box(point3(0, 0, 0), point3(165, 165, 165), white) ---@type hittable
+	box2 = rotate_y(box2, -18)
+	box2 = translate(box2, vec3(130, 0, 65))
+	world:add(constant_medium(box2, 0.01, color(1, 1, 1)))
+
+	return world
+end
+
 
 print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 
@@ -266,8 +300,16 @@ samples_per_pixel = 400
 lookfrom = point3(26, 3, 6)
 lookat = point3(0, 2, 0)
 vfov = 20.0
-]]
+
 world = cornell_box()
+aspect_ratio = 1.0
+image_width = 600
+samples_per_pixel = 200
+lookfrom = point3(278, 278, -800)
+lookat = point3(278, 278, 0)
+vfov = 40.0
+]]
+world = cornell_box_smoke()
 aspect_ratio = 1.0
 image_width = 600
 samples_per_pixel = 200
