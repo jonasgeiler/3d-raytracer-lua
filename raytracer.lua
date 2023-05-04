@@ -327,7 +327,7 @@ print('Scanlines remaining: ', image_height)
 local render_start = os.clock()
 
 ---@diagnostic disable-next-line: no-unknown
-local st1, st2, st3, st4, st5 = nil, nil, nil, nil, nil -- holds the last 5 scanline times
+local st1, st2, st3, st4, st5 -- holds the last 5 scanline times
 local st_min, st_max = math.huge, 0 -- holds the overall longest and shortest scanline times
 for j = image_height - 1, 0, -1 do
 	local scanline_start = os.clock()
