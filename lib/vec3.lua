@@ -189,9 +189,9 @@ end
 ---@return vec3
 ---@nodiscard
 function vec3.refract(uv, n, etai_over_etat)
-	local cos_theta = math.min((-uv):dot(n), 1.0)
+	local cos_theta = math.min((-uv):dot(n), 1)
 	local r_out_perp = (uv + n * cos_theta) * etai_over_etat
-	local r_out_parallel = n * -math.sqrt(math.abs(1.0 - r_out_perp:length_squared()))
+	local r_out_parallel = n * -math.sqrt(math.abs(1 - r_out_perp:length_squared()))
 	return r_out_perp + r_out_parallel
 end
 

@@ -42,7 +42,7 @@ local function perlin_interp(c, u, v, w)
 	local uu = u * u * (3 - 2 * u)
 	local vv = v * v * (3 - 2 * v)
 	local ww = w * w * (3 - 2 * w)
-	local accum = 0.0
+	local accum = 0
 
 	for i = 0, 1 do
 		for j = 0, 1 do
@@ -121,9 +121,9 @@ end
 function perlin:turb(p, depth)
 	depth = depth or 7
 
-	local accum = 0.0
+	local accum = 0
 	local temp_p = p
-	local weight = 1.0
+	local weight = 1
 
 	for i = 0, depth - 1 do
 		accum = accum + weight * self:noise(temp_p)

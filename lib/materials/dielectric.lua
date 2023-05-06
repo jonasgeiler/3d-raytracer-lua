@@ -34,14 +34,14 @@ end
 ---@param scattered ray
 ---@return boolean
 function dielectric:scatter(r_in, rec, attenuation, scattered)
-	attenuation:set(1.0, 1.0, 1.0)
-	local refraction_ratio = rec.front_face and (1.0 / self.index_of_refraction) or self.index_of_refraction
+	attenuation:set(1, 1, 1)
+	local refraction_ratio = rec.front_face and (1 / self.index_of_refraction) or self.index_of_refraction
 
 	local unit_direction = r_in.direction:unit_vector()
-	local cos_theta = math.min((-unit_direction):dot(rec.normal), 1.0)
-	local sin_theta = math.sqrt(1.0 - cos_theta * cos_theta)
+	local cos_theta = math.min((-unit_direction):dot(rec.normal), 1)
+	local sin_theta = math.sqrt(1 - cos_theta * cos_theta)
 
-	local cannot_refract = refraction_ratio * sin_theta > 1.0
+	local cannot_refract = refraction_ratio * sin_theta > 1
 
 	local direction ---@type vec3
 	if cannot_refract or reflectance(cos_theta, refraction_ratio) > math.random() then

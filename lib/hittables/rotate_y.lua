@@ -25,7 +25,7 @@ function rotate_y:new(object, angle)
 	self.sin_theta = math.sin(radians)
 	self.cos_theta = math.cos(radians)
 	self.bbox = aabb()
-	self.has_box = self.object:bounding_box(0.0, 1.0, self.bbox)
+	self.has_box = self.object:bounding_box(0, 1, self.bbox)
 
 	local min = point3(math.huge, math.huge, math.huge)
 	local max = point3(-math.huge, -math.huge, -math.huge)

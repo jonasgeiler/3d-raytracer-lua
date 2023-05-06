@@ -15,7 +15,7 @@ local ray = class()
 function ray:new(origin, direction, time)
 	self.origin = origin
 	self.direction = direction
-	self.time = time or 0.0
+	self.time = time or 0
 end
 
 ---Set all values of the ray at once

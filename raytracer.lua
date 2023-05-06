@@ -1,7 +1,6 @@
 --- TODO: Make classes function more like the book's classes (init without params, define field scopes, etc.)
 --- TODO: "Import" global modules by using something like `local _math = math`. This might make things 30% faster!
 --- TODO: See if I actually need to use vec3:clone() anywhere (maybe higlight all pointers in the type definition with `&`)
---- TODO: Remove uses of  since it doesn't matter to LuaJIT
 
 local camera = require('lib.camera')
 local color = require('lib.color')
@@ -40,7 +39,7 @@ local metal = require('lib.materials.metal')
 local function ray_color(r, background, world, depth)
 	--- If we've exceeded the ray bounce limit, no more light is gathered
 	if depth <= 0 then
-		return color(0.0, 0.0, 0.0)
+		return color(0, 0, 0)
 	end
 
 	local rec = hit_record()
@@ -75,15 +74,15 @@ local function random_scene()
 	local big_spheres = hittable_list()
 
 	local material1 = dielectric(1.5)
-	big_spheres:add(sphere(point3(0, 1, 0), 1.0, material1))
+	big_spheres:add(sphere(point3(0, 1, 0), 1, material1))
 
 	local material2 = lambertian(color(0.4, 0.2, 0.1))
-	big_spheres:add(sphere(point3(-4, 1, 0), 1.0, material2))
+	big_spheres:add(sphere(point3(-4, 1, 0), 1, material2))
 
-	local material3 = metal(color(0.7, 0.6, 0.5), 0.0)
-	big_spheres:add(sphere(point3(4, 1, 0), 1.0, material3))
+	local material3 = metal(color(0.7, 0.6, 0.5), 0)
+	big_spheres:add(sphere(point3(4, 1, 0), 1, material3))
 
-	world:add(bvh_node(big_spheres, 0.0, 1.0))
+	world:add(bvh_node(big_spheres, 0, 1))
 
 
 	local small_spheres = hittable_list()
@@ -99,7 +98,7 @@ local function random_scene()
 					local albedo = color.random() * color.random()
 					local sphere_material = lambertian(albedo)
 					local center2 = center + vec3(0, utils.random_float(0, 0.5), 0)
-					small_spheres:add(moving_sphere(center, center2, 0.0, 1.0, 0.2, sphere_material))
+					small_spheres:add(moving_sphere(center, center2, 0, 1, 0.2, sphere_material))
 				elseif choose_mat < 0.95 then
 					-- metal
 					local albedo = color.random(0.5, 1)
@@ -115,7 +114,7 @@ local function random_scene()
 		end
 	end
 
-	world:add(bvh_node(small_spheres, 0.0, 1.0))
+	world:add(bvh_node(small_spheres, 0, 1))
 
 
 	return world
@@ -254,7 +253,7 @@ print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 ---@diagnostic disable-next-line: param-type-mismatch
 math.randomseed(tonumber(tostring(os.time()):reverse():sub(1, 6))) -- improve random nums
 
-local aspect_ratio = 16.0 / 9.0
+local aspect_ratio = 16 / 9
 local samples_per_pixel = 100
 local max_depth = 50
 local image_width = 400
@@ -264,62 +263,62 @@ local background = color(0, 0, 0)
 local lookfrom ---@type point3
 local lookat ---@type point3
 local vup = vec3(0, 1, 0)
-local vfov = 40.0
-local aperture = 0.0
-local dist_to_focus = 10.0
+local vfov = 40
+local aperture = 0
+local dist_to_focus = 10
 
 world = random_scene()
-background = color(0.7, 0.8, 1.0)
+background = color(0.7, 0.8, 1)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
-vfov = 20.0
+vfov = 20
 aperture = 0.1
 --[[
 world = two_checker_spheres_scene()
-background = color(0.7, 0.8, 1.0)
+background = color(0.7, 0.8, 1)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
-vfov = 20.0
+vfov = 20
 
 world = two_perlin_spheres_scene()
-background = color(0.7, 0.8, 1.0)
+background = color(0.7, 0.8, 1)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
-vfov = 20.0
+vfov = 20
 
 world = earth_globe_scene()
-background = color(0.7, 0.8, 1.0)
+background = color(0.7, 0.8, 1)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
-vfov = 20.0
+vfov = 20
 
 world = simple_light_scene()
 samples_per_pixel = 400
 lookfrom = point3(26, 3, 6)
 lookat = point3(0, 2, 0)
-vfov = 20.0
+vfov = 20
 
 world = cornell_box()
-aspect_ratio = 1.0
+aspect_ratio = 1
 image_width = 600
 samples_per_pixel = 200
 lookfrom = point3(278, 278, -800)
 lookat = point3(278, 278, 0)
-vfov = 40.0
+vfov = 40
 
 world = cornell_box_smoke()
-aspect_ratio = 1.0
+aspect_ratio = 1
 image_width = 600
 samples_per_pixel = 200
 lookfrom = point3(278, 278, -800)
 lookat = point3(278, 278, 0)
-vfov = 40.0
+vfov = 40
 ]]
 
 local image_height = math.floor(image_width / aspect_ratio)
-local cam = camera(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0)
+local cam = camera(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0, 1)
 local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', true, image_width, image_height)
-local pixel_color_scale = 1.0 / samples_per_pixel ---@type number
+local pixel_color_scale = 1 / samples_per_pixel ---@type number
 
 print('Starting rendering...\n')
 print('Scanlines remaining: ', image_height)
@@ -332,9 +331,9 @@ for j = image_height - 1, 0, -1 do
 	local scanline_start = os.clock()
 
 	for i = 0, image_width - 1 do
-		local r = 0.0
-		local g = 0.0
-		local b = 0.0
+		local r = 0
+		local g = 0
+		local b = 0
 
 		for _ = 1, samples_per_pixel do
 			local u = (i + math.random()) / (image_width - 1) ---@type number

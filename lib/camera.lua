@@ -31,7 +31,7 @@ local camera = class()
 function camera:new(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, focus_dist, time0, time1)
 	local theta = math.rad(vfov)
 	local h = math.tan(theta / 2)
-	local viewport_height = 2.0 * h
+	local viewport_height = 2 * h
 	local viewport_width = aspect_ratio * viewport_height
 
 	self.w = (lookfrom - lookat):unit_vector()

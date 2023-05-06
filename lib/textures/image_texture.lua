@@ -24,8 +24,8 @@ end
 ---@return color
 ---@nodiscard
 function image_texture:value(u, v, p)
-	u = utils.clamp(u, 0.0, 1.0)
-	v = 1.0 - utils.clamp(v, 0.0, 1.0)
+	u = utils.clamp(u, 0, 1)
+	v = 1 - utils.clamp(v, 0, 1)
 
 	local x = math.floor(u * self.image.width)
 	local y = math.floor(v * self.image.height)

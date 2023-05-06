@@ -3,7 +3,7 @@ local color = require('lib.color')
 local utils = require('lib.utils')
 
 local BYTES_PER_PIXEL = 3
-local COLOR_SCALE = 1.0 / 255.0
+local COLOR_SCALE = 1 / 255
 
 
 ---Handles reading and creating PPM (only P6) image files
@@ -79,9 +79,9 @@ end
 function ppm:set_pixel(x, y, pixel_color)
 	assert(self.image:seek('set', self.head_end + x * BYTES_PER_PIXEL + y * BYTES_PER_PIXEL * self.width))
 
-	local r = math.floor(256 * utils.clamp(pixel_color.x, 0.0, 0.999))
-	local g = math.floor(256 * utils.clamp(pixel_color.y, 0.0, 0.999))
-	local b = math.floor(256 * utils.clamp(pixel_color.z, 0.0, 0.999))
+	local r = math.floor(256 * utils.clamp(pixel_color.x, 0, 0.999))
+	local g = math.floor(256 * utils.clamp(pixel_color.y, 0, 0.999))
+	local b = math.floor(256 * utils.clamp(pixel_color.z, 0, 0.999))
 
 	if r ~= r or r == math.huge then r = 0 end -- check nan or inf
 	if g ~= g or r == math.huge then g = 0 end
