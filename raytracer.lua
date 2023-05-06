@@ -1,8 +1,7 @@
---- TODO: Add a "set" method and use it instead of "replace_with" at some places?
 --- TODO: Make classes function more like the book's classes (init without params, define field scopes, etc.)
---- TODO: Remove need for vec3:axis()
 --- TODO: "Import" global modules by using something like `local _math = math`. This might make things 30% faster!
 --- TODO: See if I actually need to use vec3:clone() anywhere (maybe higlight all pointers in the type definition with `&`)
+--- TODO: Remove uses of  since it doesn't matter to LuaJIT
 
 local camera = require('lib.camera')
 local color = require('lib.color')

@@ -38,22 +38,38 @@ end
 ---@return boolean
 ---@nodiscard
 function aabb:hit(r, t_min, t_max)
-	for a = 0, 2 do
-		local inv_d = 1.0 / r.direction:axis(a) ---@type number
-		local t0 = (self.minimum:axis(a) - r.origin:axis(a)) * inv_d
-		local t1 = (self.maximum:axis(a) - r.origin:axis(a)) * inv_d
-
-		if inv_d < 0.0 then
-			t0, t1 = t1, t0 ---@type number
-		end
-
-		t_min = t0 > t_min and t0 or t_min
-		t_max = t1 < t_max and t1 or t_max
-
-		if t_max <= t_min then
-			return false
-		end
+	local inv_d = 1 / r.direction.x ---@type number
+	local t0 = (self.minimum.x - r.origin.x) * inv_d
+	local t1 = (self.maximum.x - r.origin.x) * inv_d
+	if inv_d < 0 then
+		t0, t1 = t1, t0 ---@type number
 	end
+
+	t_min = t0 > t_min and t0 or t_min
+	t_max = t1 < t_max and t1 or t_max
+	if t_max <= t_min then return false end
+
+	inv_d = 1 / r.direction.y ---@type number
+	t0 = (self.minimum.y - r.origin.y) * inv_d
+	t1 = (self.maximum.y - r.origin.y) * inv_d
+	if inv_d < 0 then
+		t0, t1 = t1, t0 ---@type number
+	end
+
+	t_min = t0 > t_min and t0 or t_min
+	t_max = t1 < t_max and t1 or t_max
+	if t_max <= t_min then return false end
+
+	inv_d = 1 / r.direction.z ---@type number
+	t0 = (self.minimum.z - r.origin.z) * inv_d
+	t1 = (self.maximum.z - r.origin.z) * inv_d
+	if inv_d < 0 then
+		t0, t1 = t1, t0 ---@type number
+	end
+
+	t_min = t0 > t_min and t0 or t_min
+	t_max = t1 < t_max and t1 or t_max
+	if t_max <= t_min then return false end
 
 	return true
 end

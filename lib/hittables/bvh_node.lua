@@ -6,7 +6,7 @@ local utils = require('lib.utils')
 ---Compare two boxes
 ---@param a hittable
 ---@param b hittable
----@param axis integer
+---@param axis 'x'|'y'|'z'
 ---@nodiscard
 local function box_compare(a, b, axis)
 	local box_a = aabb()
@@ -16,7 +16,7 @@ local function box_compare(a, b, axis)
 		error('No bounding box in bvh_node constructor')
 	end
 
-	return box_a.minimum:axis(axis) < box_b.minimum:axis(axis)
+	return box_a.minimum[axis] < box_b.minimum[axis]
 end
 
 ---Compare two boxes by x
@@ -24,7 +24,7 @@ end
 ---@param b hittable
 ---@nodiscard
 local function box_x_compare(a, b)
-	return box_compare(a, b, 0)
+	return box_compare(a, b, 'x')
 end
 
 ---Compare two boxes by y
@@ -32,7 +32,7 @@ end
 ---@param b hittable
 ---@nodiscard
 local function box_y_compare(a, b)
-	return box_compare(a, b, 1)
+	return box_compare(a, b, 'y')
 end
 
 ---Compare two boxes by z
@@ -40,7 +40,7 @@ end
 ---@param b hittable
 ---@nodiscard
 local function box_z_compare(a, b)
-	return box_compare(a, b, 2)
+	return box_compare(a, b, 'z')
 end
 
 

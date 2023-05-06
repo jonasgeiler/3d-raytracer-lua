@@ -80,21 +80,6 @@ function vec3:near_zero()
 	return (math.abs(self.x) < s) and (math.abs(self.y) < s) and (math.abs(self.z) < s)
 end
 
----Allow accessing XYZ using their index 0-2
----@param i integer
----@return number
-function vec3:axis(i)
-	if i == 0 then
-		return self.x
-	elseif i == 1 then
-		return self.y
-	elseif i == 2 then
-		return self.z
-	else
-		error('Index not allowed in vec3: ' .. i)
-	end
-end
-
 ---Negate the vector
 ---@return vec3
 ---@nodiscard
