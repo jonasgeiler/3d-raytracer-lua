@@ -34,7 +34,7 @@ end
 ---@param scattered ray
 ---@return boolean
 function dielectric:scatter(r_in, rec, attenuation, scattered)
-	attenuation:replace(color(1.0, 1.0, 1.0))
+	attenuation:set(1.0, 1.0, 1.0)
 	local refraction_ratio = rec.front_face and (1.0 / self.index_of_refraction) or self.index_of_refraction
 
 	local unit_direction = r_in.direction:unit_vector()
@@ -50,7 +50,7 @@ function dielectric:scatter(r_in, rec, attenuation, scattered)
 		direction = unit_direction:refract(rec.normal, refraction_ratio)
 	end
 
-	scattered:replace(ray(rec.p, direction, r_in.time))
+	scattered:set(rec.p, direction, r_in.time)
 	return true
 end
 

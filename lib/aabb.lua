@@ -16,7 +16,15 @@ function aabb:new(minimum, maximum)
 	self.maximum = maximum
 end
 
----Replace the vector with another one
+---Set all values of the AABB at once
+---@param minimum point3?
+---@param maximum point3?
+function aabb:set(minimum, maximum)
+	self.minimum = minimum
+	self.maximum = maximum
+end
+
+---Replace the AABB with another one
 ---@param new_aabb aabb
 function aabb:replace(new_aabb)
 	self.minimum = new_aabb.minimum

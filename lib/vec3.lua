@@ -26,6 +26,16 @@ function vec3:new(x, y, z)
 	self.z = z or 0
 end
 
+---Set all vector values at once
+---@param x number?
+---@param y number?
+---@param z number?
+function vec3:set(x, y, z)
+	self.x = x or self.x
+	self.y = y or self.y
+	self.z = z or self.z
+end
+
 ---Replace the vector with another one
 ---@param new_vec3 vec3
 function vec3:replace(new_vec3)

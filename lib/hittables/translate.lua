@@ -46,7 +46,7 @@ function translate:bounding_box(time0, time1, output_box)
 		return false
 	end
 
-	output_box:replace(aabb(output_box.minimum + self.offset, output_box.maximum + self.offset))
+	output_box:set(output_box.minimum + self.offset, output_box.maximum + self.offset)
 	return true
 end
 

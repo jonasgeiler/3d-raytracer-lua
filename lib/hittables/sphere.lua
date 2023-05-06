@@ -76,7 +76,7 @@ end
 ---@param output_box aabb
 ---@return boolean
 function sphere:bounding_box(time0, time1, output_box)
-	output_box:replace(aabb(self.center - self.radius, self.center + self.radius))
+	output_box:set(self.center - self.radius, self.center + self.radius)
 	return true
 end
 

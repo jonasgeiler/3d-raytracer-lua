@@ -1,8 +1,8 @@
 local utils = {}
 
 ---Get a random float
----@param min number
----@param max number
+---@param min number?
+---@param max number?
 ---@return number
 ---@nodiscard
 function utils.random_float(min, max)

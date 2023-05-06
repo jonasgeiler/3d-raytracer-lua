@@ -67,7 +67,7 @@ end
 ---@return boolean
 function xz_rect:bounding_box(time0, time1, output_box)
 	--- The bounding box must have non-zero width in each dimension, so pad the Z dimension a small amount.
-	output_box:replace(aabb(point3(self.x0, self.k - 0.0001, self.z0), point3(self.x1, self.k + 0.0001, self.z1)))
+	output_box:set(point3(self.x0, self.k - 0.0001, self.z0), point3(self.x1, self.k + 0.0001, self.z1))
 	return true
 end
 

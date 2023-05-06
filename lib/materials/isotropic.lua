@@ -29,7 +29,7 @@ end
 ---@param scattered ray
 ---@return boolean
 function isotropic:scatter(r_in, rec, attenuation, scattered)
-	scattered:replace(ray(rec.p, vec3.random_in_unit_sphere(), r_in.time))
+	scattered:set(rec.p, vec3.random_in_unit_sphere(), r_in.time)
 	attenuation:replace(self.albedo:value(rec.u, rec.v, rec.p))
 	return true
 end

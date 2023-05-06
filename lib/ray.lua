@@ -18,6 +18,16 @@ function ray:new(origin, direction, time)
 	self.time = time or 0.0
 end
 
+---Set all values of the ray at once
+---@param origin point3
+---@param direction vec3
+---@param time number?
+function ray:set(origin, direction, time)
+	self.origin = origin
+	self.direction = direction
+	self.time = time or self.time
+end
+
 ---Replace the ray with another one
 ---@param new_ray ray
 function ray:replace(new_ray)
