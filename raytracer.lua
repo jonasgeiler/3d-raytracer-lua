@@ -65,6 +65,25 @@ local function ray_color(r, background, world, depth)
 	return emitted + attenuation * ray_color(scattered, background, world, depth - 1)
 end
 
+---Generate a scene with 3 spheres
+---@return hittable_list
+---@nodiscard
+local function three_spheres_scene()
+	local world = hittable_list()
+
+	local material_ground = lambertian(color(0.8, 0.8, 0))
+	local material_center = lambertian(color(0.7, 0.3, 0.3))
+	local material_left = metal(color(0.8, 0.8, 0.8), 0.3)
+	local material_right = metal(color(0.8, 0.6, 0.2), 1)
+
+	world:add(sphere(point3(0, -100.5, -1), 100, material_ground))
+	world:add(sphere(point3(0, 0, -1), 0.5, material_center))
+	world:add(sphere(point3(-1, 0, -1), 0.5, material_left))
+	world:add(sphere(point3(1, 0, -1), 0.5, material_right))
+
+	return world
+end
+
 ---Generate a random scene
 ---@return hittable_list
 ---@nodiscard
@@ -272,6 +291,11 @@ local vfov = 40
 local aperture = 0
 local dist_to_focus = 10
 
+world = three_spheres_scene()
+background = color(0.7, 0.8, 1)
+lookfrom = point3(3, 3, 3)
+lookat = point3(0, 0, -1)
+vfov = 20
 --[[
 world = random_scene()
 background = color(0.7, 0.8, 1)
@@ -291,13 +315,13 @@ background = color(0.7, 0.8, 1)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20
-]]
+
 world = earth_globe_scene()
 background = color(0.7, 0.8, 1)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20
---[[
+
 world = simple_light_scene()
 samples_per_pixel = 400
 lookfrom = point3(26, 3, 6)
@@ -320,7 +344,6 @@ lookfrom = point3(278, 278, -800)
 lookat = point3(278, 278, 0)
 vfov = 40
 ]]
-
 local image_height = math.floor(image_width / aspect_ratio)
 local cam = camera(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0, 1)
 local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', true, image_width, image_height)
@@ -331,7 +354,7 @@ print('Scanlines remaining: ', image_height)
 local render_start = os.clock()
 
 ---@diagnostic disable-next-line: no-unknown
-local st1, st2, st3, st4, st5 -- holds the last 5 scanline times
+local st1, st2, st3, st4, st5       -- holds the last 5 scanline times
 local st_min, st_max = math.huge, 0 -- holds the overall longest and shortest scanline times
 for j = image_height - 1, 0, -1 do
 	local scanline_start = os.clock()
@@ -360,14 +383,15 @@ for j = image_height - 1, 0, -1 do
 	end
 
 	st1, st2, st3, st4, st5 = os.clock() - scanline_start, st1, st2, st3, st4 -- update the last 5 scanline times
-	if st1 < st_min then st_min = st1 end -- update shortest scanline time
-	if st1 > st_max then st_max = st1 end -- update longest scanline time
+	if st1 < st_min then st_min = st1 end                                  -- update shortest scanline time
+	if st1 > st_max then st_max = st1 end                                  -- update longest scanline time
 	if st5 ~= nil then
 		-- try to calculate the remaining seconds by using the average of:
 		-- > the average of the last 5 scanline times
 		-- > the longest scanline time
 		-- > the shortest scanline time
-		print('Scanlines remaining: ', j, 'Seconds remaining: ', string.format('%.2fs', ((st1 + st2 + st3 + st4 + st5) / 5 + st_min + st_max) / 3 * j))
+		print('Scanlines remaining: ', j, 'Seconds remaining: ',
+			string.format('%.2fs', ((st1 + st2 + st3 + st4 + st5) / 5 + st_min + st_max) / 3 * j))
 	else
 		print('Scanlines remaining: ', j, 'Seconds remaining: ', string.format('%.2fs', st1 * j))
 	end
