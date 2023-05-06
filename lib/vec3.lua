@@ -228,10 +228,12 @@ end
 ---@nodiscard
 function vec3.random_in_unit_sphere()
 	while true do
-		local p = vec3.random(-1, 1)
+		local x = utils.random_float(-1, 1)
+		local y = utils.random_float(-1, 1)
+		local z = utils.random_float(-1, 1)
 
-		if p:length_squared() < 1 then
-			return p
+		if x * x + y * y + z * z < 1 then
+			return vec3(x, y, z)
 		end
 	end
 end
@@ -243,29 +245,16 @@ function vec3.random_unit_vector()
 	return vec3.random_in_unit_sphere():unit_vector()
 end
 
----Get a random vector in hemisphere
----@param normal vec3
----@return vec3
----@nodiscard
-function vec3.random_in_hemisphere(normal)
-	local in_unit_sphere = vec3.random_in_unit_sphere()
-
-	if in_unit_sphere:dot(normal) > 0 then
-		return in_unit_sphere
-	else
-		return -in_unit_sphere
-	end
-end
-
 ---Get a random vector in unit disk
 ---@return vec3
 ---@nodiscard
 function vec3.random_in_unit_disk()
 	while true do
-		local p = vec3(utils.random_float(-1, 1), utils.random_float(-1, 1), 0)
+		local x = utils.random_float(-1, 1)
+		local y = utils.random_float(-1, 1)
 
-		if p:length_squared() < 1 then
-			return p
+		if x * x + y * y < 1 then
+			return vec3(x, y, 0)
 		end
 	end
 end
