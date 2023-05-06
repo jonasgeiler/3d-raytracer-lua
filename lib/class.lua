@@ -15,7 +15,7 @@ local function class(base)
 			local new = instance.new ---@type fun(instance: table, ...)
 			if new then new(instance, ...) end
 			return instance
-		end
+		end,
 	})
 
 	return cls

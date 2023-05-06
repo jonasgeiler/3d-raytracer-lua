@@ -271,6 +271,66 @@ local function cornell_box_smoke()
 	return world
 end
 
+---Generate the final scene
+---@return hittable_list
+---@nodiscard
+local function final_scene()
+	local boxes1 = hittable_list()
+	local ground = lambertian(color(0.48, 0.83, 0.53))
+
+	local boxes_per_side = 20
+	for i = 0, boxes_per_side - 1 do
+		for j = 0, boxes_per_side - 1 do
+			local w = 100.0
+			local x0 = -1000.0 + i * w
+			local z0 = -1000.0 + j * w
+			local y0 = 0.0
+			local x1 = x0 + w
+			local y1 = utils.random_float(1, 101)
+			local z1 = z0 + w
+
+			boxes1:add(box(point3(x0, y0, z0), point3(x1, y1, z1), ground))
+		end
+	end
+
+	local world = hittable_list()
+
+	world:add(bvh_node(boxes1, 0, 1))
+
+	local light = diffuse_light(color(7, 7, 7))
+	world:add(xz_rect(123, 423, 147, 412, 554, light))
+
+	local center1 = point3(400, 400, 200)
+	local center2 = center1 + vec3(30, 0, 0)
+	local moving_sphere_material = lambertian(color(0.7, 0.3, 0.1))
+	world:add(moving_sphere(center1, center2, 0, 1, 50, moving_sphere_material))
+
+	world:add(sphere(point3(260, 150, 45), 50, dielectric(1.5)))
+	world:add(sphere(point3(0, 150, 145), 50, metal(color(0.8, 0.8, 0.9), 1.0)))
+
+	local boundary = sphere(point3(360, 150, 145), 70, dielectric(1.5))
+	world:add(boundary)
+	world:add(constant_medium(boundary, 0.2, color(0.2, 0.4, 0.9)))
+	boundary = sphere(point3(0, 0, 0), 5000, dielectric(1.5))
+	world:add(constant_medium(boundary, 0.0001, color(1, 1, 1)))
+
+	local emat = lambertian(image_texture('images/earthmap.ppm'))
+	world:add(sphere(point3(400, 200, 400), 100, emat))
+	local pertext = noise_texture(0.1)
+	world:add(sphere(point3(220, 280, 300), 80, lambertian(pertext)))
+
+	local boxes2 = hittable_list()
+	local white = lambertian(color(0.73, 0.73, 0.73))
+	local ns = 1000
+	for j = 0, ns - 1 do
+		boxes2:add(sphere(point3.random(0, 165), 10, white))
+	end
+
+	world:add(translate(rotate_y(bvh_node(boxes2, 0.0, 1.0), 15), vec3(-100, 270, 395)))
+
+	return world
+end
+
 
 print('\n-------------\n| RAYTRACER |\n-------------\n\nInitiating...')
 
@@ -291,12 +351,13 @@ local vfov = 40
 local aperture = 0
 local dist_to_focus = 10
 
+--[[
 world = three_spheres_scene()
 background = color(0.7, 0.8, 1)
 lookfrom = point3(3, 3, 3)
 lookat = point3(0, 0, -1)
 vfov = 20
---[[
+
 world = random_scene()
 background = color(0.7, 0.8, 1)
 lookfrom = point3(13, 2, 3)
@@ -344,6 +405,15 @@ lookfrom = point3(278, 278, -800)
 lookat = point3(278, 278, 0)
 vfov = 40
 ]]
+world = final_scene()
+aspect_ratio = 1
+image_width = 800
+samples_per_pixel = 10000
+background = color(0, 0, 0)
+lookfrom = point3(478, 278, -600)
+lookat = point3(278, 278, 0)
+vfov = 40
+
 local image_height = math.floor(image_width / aspect_ratio)
 local cam = camera(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0, 1)
 local image = ppm('renders/render_' .. os.date('%Y-%m-%d_%H-%M-%S') .. '.ppm', true, image_width, image_height)
