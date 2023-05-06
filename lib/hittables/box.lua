@@ -4,7 +4,6 @@ local hittable_list = require('lib.hittables.hittable_list')
 local xy_rect = require('lib.hittables.xy_rect')
 local xz_rect = require('lib.hittables.xz_rect')
 local yz_rect = require('lib.hittables.yz_rect')
-local aabb = require('lib.aabb')
 
 ---Represents a hittable box
 ---@class box : hittable

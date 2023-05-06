@@ -1,3 +1,5 @@
+local error = error
+local math = math
 local class = require('lib.class')
 local hittable = require('lib.base.hittable')
 local aabb = require('lib.aabb')

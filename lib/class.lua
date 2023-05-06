@@ -1,3 +1,5 @@
+local setmetatable = setmetatable
+
 ---Creates a class
 ---@param base table?
 ---@return table

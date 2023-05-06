@@ -1,7 +1,12 @@
 --- TODO: Make classes function more like the book's classes (init without params, define field scopes, etc.)
---- TODO: "Import" global modules by using something like `local _math = math`. This might make things 30% faster!
 --- TODO: See if I actually need to use vec3:clone() anywhere (maybe higlight all pointers in the type definition with `&`)
 
+local print = print
+local tonumber = tonumber
+local tostring = tostring
+local math = math
+local os = os
+local string = string
 local camera = require('lib.camera')
 local color = require('lib.color')
 local hit_record = require('lib.hit_record')
@@ -267,13 +272,14 @@ local vfov = 40
 local aperture = 0
 local dist_to_focus = 10
 
+--[[
 world = random_scene()
 background = color(0.7, 0.8, 1)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20
 aperture = 0.1
---[[
+
 world = two_checker_spheres_scene()
 background = color(0.7, 0.8, 1)
 lookfrom = point3(13, 2, 3)
@@ -285,13 +291,13 @@ background = color(0.7, 0.8, 1)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20
-
+]]
 world = earth_globe_scene()
 background = color(0.7, 0.8, 1)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20
-
+--[[
 world = simple_light_scene()
 samples_per_pixel = 400
 lookfrom = point3(26, 3, 6)

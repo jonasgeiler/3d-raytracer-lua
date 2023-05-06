@@ -1,6 +1,5 @@
 local class = require('lib.class')
 local hittable = require('lib.base.hittable')
-local aabb = require('lib.aabb')
 local ray = require('lib.ray')
 
 ---Represents a translated hittable

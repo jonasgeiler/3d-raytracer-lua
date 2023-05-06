@@ -1,3 +1,4 @@
+local math = math
 local class = require('lib.class')
 local ray = require('lib.ray')
 local utils = require('lib.utils')

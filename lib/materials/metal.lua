@@ -1,6 +1,5 @@
 local class = require('lib.class')
 local material = require('lib.base.material')
-local ray = require('lib.ray')
 local vec3 = require('lib.vec3')
 
 ---Represents a metalic material

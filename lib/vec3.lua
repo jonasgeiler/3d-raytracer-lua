@@ -1,3 +1,6 @@
+local error = error
+local type = type
+local math = math
 local class = require('lib.class')
 local utils = require('lib.utils')
 

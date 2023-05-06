@@ -1,3 +1,4 @@
+local error = error
 local class = require('lib.class')
 
 ---Represents a texture

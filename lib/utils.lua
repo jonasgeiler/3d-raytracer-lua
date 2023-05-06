@@ -1,3 +1,5 @@
+local math = math
+local table = table
 local utils = {}
 
 ---Get a random float

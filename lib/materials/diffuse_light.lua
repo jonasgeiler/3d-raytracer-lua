@@ -1,6 +1,5 @@
 local class = require('lib.class')
 local material = require('lib.base.material')
-local color = require('lib.color')
 local solid_color = require('lib.textures.solid_color')
 
 ---Represents a light emitting material

@@ -1,6 +1,6 @@
+local math = math
 local class = require('lib.class')
 local texture = require('lib.base.texture')
-local color = require('lib.color')
 local ppm = require('lib.ppm')
 local utils = require('lib.utils')
 

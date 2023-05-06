@@ -1,6 +1,6 @@
+local math = math
 local class = require('lib.class')
 local hittable = require('lib.base.hittable')
-local aabb = require('lib.aabb')
 
 ---Calculate the spherical UV coordinates
 --- (1 0 0) yields <0.50 0.50>       (-1  0  0) yields <0.00 0.50>

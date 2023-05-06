@@ -1,7 +1,6 @@
+local math = math
 local class = require('lib.class')
 local material = require('lib.base.material')
-local color = require('lib.color')
-local ray = require('lib.ray')
 
 ---Get the Schlick's approximation for reflectance
 ---@param cosine number
