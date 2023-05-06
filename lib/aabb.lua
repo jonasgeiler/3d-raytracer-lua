@@ -18,7 +18,7 @@ end
 
 ---Replace the vector with another one
 ---@param new_aabb aabb
-function aabb:replace_with(new_aabb)
+function aabb:replace(new_aabb)
 	self.minimum = new_aabb.minimum
 	self.maximum = new_aabb.maximum
 end

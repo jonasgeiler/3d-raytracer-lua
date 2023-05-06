@@ -47,7 +47,7 @@ end
 ---@param output_box aabb
 ---@return boolean
 function box:bounding_box(time0, time1, output_box)
-	output_box:replace_with(aabb(self.box_min, self.box_max))
+	output_box:replace(aabb(self.box_min, self.box_max))
 	return true
 end
 

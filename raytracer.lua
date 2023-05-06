@@ -269,14 +269,13 @@ local vfov = 40.0
 local aperture = 0.0
 local dist_to_focus = 10.0
 
---[[
 world = random_scene()
 background = color(0.7, 0.8, 1.0)
 lookfrom = point3(13, 2, 3)
 lookat = point3(0, 0, 0)
 vfov = 20.0
 aperture = 0.1
-
+--[[
 world = two_checker_spheres_scene()
 background = color(0.7, 0.8, 1.0)
 lookfrom = point3(13, 2, 3)
@@ -308,7 +307,7 @@ samples_per_pixel = 200
 lookfrom = point3(278, 278, -800)
 lookat = point3(278, 278, 0)
 vfov = 40.0
-]]
+
 world = cornell_box_smoke()
 aspect_ratio = 1.0
 image_width = 600
@@ -316,6 +315,7 @@ samples_per_pixel = 200
 lookfrom = point3(278, 278, -800)
 lookat = point3(278, 278, 0)
 vfov = 40.0
+]]
 
 local image_height = math.floor(image_width / aspect_ratio)
 local cam = camera(lookfrom, lookat, vup, vfov, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0)

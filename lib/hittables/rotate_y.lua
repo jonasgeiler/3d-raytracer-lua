@@ -100,7 +100,7 @@ end
 ---@param output_box aabb
 ---@return boolean
 function rotate_y:bounding_box(time0, time1, output_box)
-	output_box:replace_with(self.bbox)
+	output_box:replace(self.bbox)
 	return self.has_box
 end
 

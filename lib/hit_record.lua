@@ -25,7 +25,7 @@ end
 
 ---Replace the hit record with another one
 ---@param new_hit_record hit_record
-function hit_record:replace_with(new_hit_record)
+function hit_record:replace(new_hit_record)
 	self.p = new_hit_record.p
 	self.normal = new_hit_record.normal
 	self.mat = new_hit_record.mat

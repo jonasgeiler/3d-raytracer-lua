@@ -123,7 +123,7 @@ end
 ---@param output_box aabb
 ---@return boolean
 function bvh_node:bounding_box(time0, time1, output_box)
-	output_box:replace_with(self.box)
+	output_box:replace(self.box)
 	return true
 end
 

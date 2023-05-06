@@ -26,8 +26,8 @@ end
 ---@return boolean
 function metal:scatter(r_in, rec, attenuation, scattered)
 	local reflected = r_in.direction:unit_vector():reflect(rec.normal)
-	scattered:replace_with(ray(rec.p, reflected + vec3.random_in_unit_sphere() * self.fuzz, r_in.time))
-	attenuation:replace_with(self.albedo)
+	scattered:replace(ray(rec.p, reflected + vec3.random_in_unit_sphere() * self.fuzz, r_in.time))
+	attenuation:replace(self.albedo)
 	return scattered.direction:dot(rec.normal) > 0
 end
 

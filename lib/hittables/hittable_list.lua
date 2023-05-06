@@ -42,7 +42,7 @@ function hittable_list:hit(r, t_min, t_max, rec)
 		if self.objects[i]:hit(r, t_min, closest_so_far, temp_rec) then
 			hit_anything = true
 			closest_so_far = temp_rec.t
-			rec:replace_with(temp_rec)
+			rec:replace(temp_rec)
 		end
 	end
 
@@ -65,7 +65,7 @@ function hittable_list:bounding_box(time0, time1, output_box)
 			return false
 		end
 
-		output_box:replace_with(first_box and temp_box or aabb.surrounding_box(output_box, temp_box))
+		output_box:replace(first_box and temp_box or aabb.surrounding_box(output_box, temp_box))
 		first_box = false
 	end
 

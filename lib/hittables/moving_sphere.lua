@@ -71,7 +71,7 @@ function moving_sphere:bounding_box(time0, time1, output_box)
 	local box0 = aabb(self:center(time0) - self.radius, self:center(time0) + self.radius)
 	local box1 = aabb(self:center(time1) - self.radius, self:center(time1) + self.radius)
 
-	output_box:replace_with(aabb.surrounding_box(box0, box1))
+	output_box:replace(aabb.surrounding_box(box0, box1))
 	return true
 end
 

@@ -28,7 +28,7 @@ end
 
 ---Replace the vector with another one
 ---@param new_vec3 vec3
-function vec3:replace_with(new_vec3)
+function vec3:replace(new_vec3)
 	self.x = new_vec3.x
 	self.y = new_vec3.y
 	self.z = new_vec3.z

@@ -20,7 +20,7 @@ end
 
 ---Replace the ray with another one
 ---@param new_ray ray
-function ray:replace_with(new_ray)
+function ray:replace(new_ray)
 	self.origin = new_ray.origin
 	self.direction = new_ray.direction
 	self.time = new_ray.time
