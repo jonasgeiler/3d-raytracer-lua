@@ -1,5 +1,6 @@
 --- TODO: Make classes function more like the book's classes (init without params, define field scopes, etc.)
 --- TODO: See if I actually need to use vec3:clone() anywhere (maybe higlight all pointers in the type definition with `&`)
+--- TODO: Remove replace() and set() methods (aka. pointer alternatives) and return multiple values instead (`return true, ray, hit_record`)
 
 local print = print
 local tonumber = tonumber
