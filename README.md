@@ -18,7 +18,8 @@ All the code is written by me, but I added a MIT license so feel free to use it.
 
 ## Examples
 
-![Render](https://user-images.githubusercontent.com/10259118/231303100-ee609722-1898-4eb9-b79e-6f63029c1b22.png)
+![Render 1](https://github.com/skayo/raytracer.lua/assets/10259118/58deb0ce-4c8a-4bc3-8b18-023624e41758)
+![Render 2](https://user-images.githubusercontent.com/10259118/231303100-ee609722-1898-4eb9-b79e-6f63029c1b22.png)
 
 
 ## How to use
@@ -49,7 +50,7 @@ To convert the PPM file to a PNG file, I recommend using [GIMP](https://www.gimp
 	- [X] Positionable Camera
 	- [X] Defocus Blur
 	- [X] A Final Render
-- [ ] Book 2 (Ray Tracing: The Next Week)
+- [X] Book 2 (Ray Tracing: The Next Week)
 	- [X] Motion Blur
 	- [X] Bounding Volume Hierachies
 	- [X] Solid Textures
