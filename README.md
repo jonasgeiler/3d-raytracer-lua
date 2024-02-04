@@ -16,7 +16,7 @@ All the code is written by me, but I added a MIT license so feel free to use it.
 > If you want to try out the finished raytracer after the first book, checkout the tag [`end-of-book-1`](https://github.com/skayo/raytracer.lua/tree/end-of-book-1).
 
 
-## Examples
+## Results
 
 ![Render 1](https://github.com/skayo/raytracer.lua/assets/10259118/58deb0ce-4c8a-4bc3-8b18-023624e41758)
 ![Render 2](https://user-images.githubusercontent.com/10259118/231303100-ee609722-1898-4eb9-b79e-6f63029c1b22.png)
