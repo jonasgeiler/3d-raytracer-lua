@@ -1,3 +1,4 @@
+local raytracer = require('lib.raytracer')
 local hittable_list = require('lib.hittables.hittable_list')
 local lambertian = require('lib.materials.lambertian')
 local color = require('lib.color')
@@ -18,9 +19,9 @@ world:add(sphere(point3(-1, 0, -1), 0.5, material_left))
 world:add(sphere(point3(1, 0, -1), 0.5, material_right))
 
 local rt = raytracer(world)
-	:background(color(0.7, .8, 1))
-	:lookfrom(point3(3, 3, 3))
-	:lookat(point3(0, 0, -1))
-	:vfov(20)
+	:set_background_color(color(0.7, 0.8, 1))
+	:set_look_from(point3(3, 3, 3))
+	:set_look_at(point3(0, 0, -1))
+	:set_vertical_fov(20)
 
 rt:render('./renders/three_spheres.ppm')

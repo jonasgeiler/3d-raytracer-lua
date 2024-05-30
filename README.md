@@ -24,9 +24,9 @@ All the code is written by me, but I added a MIT license so feel free to use it.
 
 ## How to use
 
-Just download the repository and then run `raytracer.lua` using LuaJIT:
+Just download the repository and then run any of the scenes using LuaJIT:
 ```shell
-$ luajit ./raytracer.lua
+$ luajit ./scenes/<scene>.lua
 ```
 > You can also use standard Lua 5.1, but I _**highly recommend**_ using LuaJIT instead.
 > Also, to use standard Lua you have to install the [Lua BitOp extension](https://bitop.luajit.org/), which is included in LuaJIT.
