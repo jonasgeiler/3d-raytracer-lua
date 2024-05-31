@@ -66,7 +66,7 @@ world:add(sphere(point3(220, 280, 300), 80, lambertian(pertext)))
 local boxes2 = hittable_list()
 local white = lambertian(color(0.73, 0.73, 0.73))
 local ns = 1000
-for j = 0, ns - 1 do
+for _ = 0, ns - 1 do
 	boxes2:add(sphere(point3.random(0, 165), 10, white))
 end
 
@@ -81,4 +81,4 @@ local rt = raytracer(world)
 	:set_look_at(point3(278, 278, 0))
 	:set_vertical_fov(40)
 
-rt:render('./renders/final.ppm')
+rt:render('./results/final.ppm')

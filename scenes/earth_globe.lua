@@ -19,4 +19,4 @@ local rt = raytracer(world)
 	:set_look_at(point3(0, 0, 0))
 	:set_vertical_fov(20)
 
-rt:render('./renders/earth_globe.ppm')
+rt:render('./results/earth_globe.ppm')

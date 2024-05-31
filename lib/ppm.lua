@@ -26,7 +26,8 @@ local ppm = class()
 ---Init the PPM file for reading or writing
 ---Note: This class is very opinonated and will not be able to read every PPM file.
 ---      The file has to be of type "P6" and not contain any comments or extra whitespace.
----      I chose this approach for simplicity since parsing different whitespaces and comments can become pretty complicated.
+---      I chose this approach for simplicity since parsing different whitespaces and
+---      comments can become pretty complicated.
 ---      You can use HxD or any other hex editor to remove comments in your PPM file.
 ---@param filename string Path to the file
 ---@param write boolean? Controls whether the PPM file should be opened for writing (true) or reading (false, default)

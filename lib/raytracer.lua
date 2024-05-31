@@ -79,6 +79,9 @@ function raytracer:new(world)
 	self.dist_to_focus = 10
 	self.time0 = 0
 	self.time1 = 1
+
+	---@diagnostic disable-next-line: param-type-mismatch
+	math.randomseed(tonumber(tostring(os.time()):reverse():sub(1, 6))) -- improve random nums
 end
 
 ---Set the aspect ratio (default is 16/9)

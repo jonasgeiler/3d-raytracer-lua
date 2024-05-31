@@ -2,16 +2,16 @@
 
 > A simple 3D raytracer written in Lua over a couple of weekends.
 
-Some time ago I wanted to learn more about 3D raytracers, so I followed these two books by Peter Shirley and translated the C++ code from the books into Lua:
+Some time ago I wanted to learn more about 3D raytracers, so I read these two books by Peter Shirley and then translated the C++ code from the books into Lua:
 - [_Ray Tracing in One Weekend_](https://raytracing.github.io/v3/books/RayTracingInOneWeekend.html)
 - [_Ray Tracing: The Next Week_](https://raytracing.github.io/v3/books/RayTracingTheNextWeek.html)
 
 > [!NOTE]
-> I read version 3 of the books. There are a newer versions now.
+> I read version 3 of the books. There are newer versions now.
 
-This raytracer is obviously not production-ready or really anything to take serious, but I had a lot of fun writing it!
-I decided to use Lua because it is a very minimal and limited language which makes it even more fun, but it's obviously not the fastest language out there so if you want to try this out you'll have to free up your schedule.  
-The final render seen below took almost a week to render... Don't ask. (Sorry Planet Earth!)
+This raytracer is obviously not production-ready or really anything to be taken seriously, but I had a lot of fun writing it!  
+I decided to use Lua because it's a very minimal and limited language, which makes it even more fun, but it's obviously not the fastest language out there, so if you want to try it, you'll have to clear your schedule. 😅  
+The final render seen below took almost a week to render... Don't ask. Sorry Planet Earth!
 
 All the code is written by me, but I added a MIT license so feel free to use it however you like.
 

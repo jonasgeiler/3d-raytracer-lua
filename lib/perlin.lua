@@ -126,7 +126,7 @@ function perlin:turb(p, depth)
 	local temp_p = p
 	local weight = 1
 
-	for i = 0, depth - 1 do
+	for _ = 0, depth - 1 do
 		accum = accum + weight * self:noise(temp_p)
 		weight = weight * 0.5
 		temp_p = temp_p * 2

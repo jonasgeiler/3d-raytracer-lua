@@ -19,4 +19,4 @@ local rt = raytracer(world)
 	:set_look_at(point3(0, 0, 0))
 	:set_vertical_fov(20)
 
-rt:render('./renders/two_perlin_spheres.ppm')
+rt:render('./results/two_perlin_spheres.ppm')

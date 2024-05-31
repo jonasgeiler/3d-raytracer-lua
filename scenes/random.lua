@@ -70,4 +70,4 @@ local rt = raytracer(world)
 	:set_vertical_fov(20)
 	:set_aperture(0.1)
 
-rt:render('./renders/random.ppm')
+rt:render('./results/random.ppm')

@@ -56,46 +56,46 @@ end
 local bvh_node = class(hittable)
 
 ---Init a new BVH Node
----@param _objects hittable_list|hittable[]
----@param _from number
----@param _to number
----@param _time0 number?
----@param _time1 number?
-function bvh_node:new(_objects, _from, _to, _time0, _time1)
-	local given_hittable_list = _objects.objects and true or false
-	local objects = given_hittable_list and _objects.objects or _objects
-	local from = given_hittable_list and 0 or _from
-	local to = given_hittable_list and #_objects.objects or _to
-	local time0 = given_hittable_list and _from or _time0
-	local time1 = given_hittable_list and _to or _time1
+---@param objects hittable_list|hittable[]
+---@param from number
+---@param to number
+---@param time0 number?
+---@param time1 number?
+function bvh_node:new(objects, from, to, time0, time1)
+	local given_hittable_list = objects.objects and true or false
+	local _objects = given_hittable_list and objects.objects or objects
+	local _from = given_hittable_list and 0 or from
+	local _to = given_hittable_list and #objects.objects or to
+	local _time0 = given_hittable_list and from or time0
+	local _time1 = given_hittable_list and to or time1
 
 	local axis = math.random(0, 2)
 	local comparator = axis == 0 and box_x_compare or (axis == 1 and box_y_compare or box_z_compare)
 
-	local object_span = to - from
+	local object_span = _to - _from
 
 	if object_span == 1 then
-		self.left = objects[from + 1]
-		self.right = objects[from + 1]
+		self.left = _objects[_from + 1]
+		self.right = _objects[_from + 1]
 	elseif object_span == 2 then
-		if comparator(objects[from + 1], objects[from + 2]) then
-			self.left = objects[from + 1]
-			self.right = objects[from + 2]
+		if comparator(_objects[_from + 1], _objects[_from + 2]) then
+			self.left = _objects[_from + 1]
+			self.right = _objects[_from + 2]
 		else
-			self.left = objects[from + 2]
-			self.right = objects[from + 1]
+			self.left = _objects[_from + 2]
+			self.right = _objects[_from + 1]
 		end
 	else
-		utils.sort_range(objects, from, to, comparator)
+		utils.sort_range(_objects, _from, _to, comparator)
 
-		local mid = math.floor(from + object_span / 2)
-		self.left = bvh_node(objects, from, mid, time0, time1)
-		self.right = bvh_node(objects, mid, to, time0, time1)
+		local mid = math.floor(_from + object_span / 2)
+		self.left = bvh_node(_objects, _from, mid, _time0, _time1)
+		self.right = bvh_node(_objects, mid, _to, _time0, _time1)
 	end
 
 	local box_left = aabb()
 	local box_right = aabb()
-	if not self.left:bounding_box(time0, time1, box_left) or not self.right:bounding_box(time0, time1, box_right) then
+	if not self.left:bounding_box(_time0, _time1, box_left) or not self.right:bounding_box(_time0, _time1, box_right) then
 		error('No bounding box in bvh_node constructor')
 	end
 

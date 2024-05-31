@@ -25,4 +25,4 @@ local rt = raytracer(world)
 	:set_look_at(point3(0, 2, 0))
 	:set_vertical_fov(20)
 
-rt:render('./renders/simple_light.ppm')
+rt:render('./results/simple_light.ppm')

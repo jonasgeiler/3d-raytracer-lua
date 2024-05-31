@@ -46,4 +46,4 @@ local rt = raytracer(world)
 	:set_look_at(point3(278, 278, 0))
 	:set_vertical_fov(40)
 
-rt:render('./renders/cornell_box.ppm')
+rt:render('./results/cornell_box.ppm')

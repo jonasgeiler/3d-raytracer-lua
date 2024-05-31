@@ -24,4 +24,4 @@ local rt = raytracer(world)
 	:set_look_at(point3(0, 0, -1))
 	:set_vertical_fov(20)
 
-rt:render('./renders/three_spheres.ppm')
+rt:render('./results/three_spheres.ppm')
