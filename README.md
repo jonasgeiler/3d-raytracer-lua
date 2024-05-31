@@ -60,3 +60,9 @@ To convert the PPM file to a PNG file, I recommend using [GIMP](https://www.gimp
 	- [X] Instances
 	- [X] Volumes
 	- [X] A Scene Testing All New Features
+- [ ] Other
+	- [X] Raytracer class
+	- [X] Each scene own file
+	- [X] Move ./renders to ./results
+	- [ ] Convert results to JPG and add more to README
+	- [ ] Run luacheck

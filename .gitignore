@@ -1,4 +1,2 @@
 .idea
-
-# Ignore rendered images
-renders/*.ppm
+.DS_Store
