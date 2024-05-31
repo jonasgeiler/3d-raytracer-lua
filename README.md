@@ -1,25 +1,28 @@
-# raytracer.lua (WIP)
+# 3d-raytracer-lua
 
-A simple 3D raytracer written in Lua
+> A simple 3D raytracer written in Lua over a couple of weekends.
 
+Some time ago I wanted to learn more about 3D raytracers, so I followed these two books by Peter Shirley and translated the C++ code from the books into Lua:
+- [_Ray Tracing in One Weekend_](https://raytracing.github.io/v3/books/RayTracingInOneWeekend.html)
+- [_Ray Tracing: The Next Week_](https://raytracing.github.io/v3/books/RayTracingTheNextWeek.html)
 
-## About
+> [!NOTE]
+> I read version 3 of the books. There are a newer versions now.
 
-I followed these two books by Peter Shirley and translated the C++ code from the books into Lua:
-- [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html)
-- [_Ray Tracing: The Next Week_](https://raytracing.github.io/books/RayTracingTheNextWeek.html)
+This raytracer is obviously not production-ready or really anything to take serious, but I had a lot of fun writing it!
+I decided to use Lua because it is a very minimal and limited language which makes it even more fun, but it's obviously not the fastest language out there so if you want to try this out you'll have to free up your schedule.  
+The final render seen below took almost a week to render... Don't ask. (Sorry Planet Earth!)
 
-All the code is written by me, but I added a MIT license so feel free to use it.
-
-> **Note**  
-> I am currently _**still reading the second book**_, therefore this repository is work-in-progress (WIP).  
-> If you want to try out the finished raytracer after the first book, checkout the tag [`end-of-book-1`](https://github.com/skayo/raytracer.lua/tree/end-of-book-1).
+All the code is written by me, but I added a MIT license so feel free to use it however you like.
 
 
 ## Results
 
-![Render 1](https://github.com/skayo/raytracer.lua/assets/10259118/58deb0ce-4c8a-4bc3-8b18-023624e41758)
-![Render 2](https://user-images.githubusercontent.com/10259118/231303100-ee609722-1898-4eb9-b79e-6f63029c1b22.png)
+![Result - Final](./results/final-full.jpg)
+![Result - Random](./results/random-full.png)
+![Result - Cornell Box Smoke](./results/cornell_box_smoke.png)
+![Result - Simple Light](./results/simple_light.png)
+![Result - Three Spheres](./results/three_spheres.png)
 
 
 ## How to use
@@ -28,41 +31,9 @@ Just download the repository and then run any of the scenes using LuaJIT:
 ```shell
 $ luajit ./scenes/<scene>.lua
 ```
+> [!NOTE]
 > You can also use standard Lua 5.1, but I _**highly recommend**_ using LuaJIT instead.
 > Also, to use standard Lua you have to install the [Lua BitOp extension](https://bitop.luajit.org/), which is included in LuaJIT.
 
-After the rendering is finished, you can find the PPM file in `renders/`.  
-To convert the PPM file to a PNG file, I recommend using [GIMP](https://www.gimp.org/).
-
-
-## To Do
-
-- [X] Book 1 (Ray Tracing in One Weekend)
-	- [X] Output an Image
-	- [X] The vec3 Class
-	- [X] Rays, a Simple Camera, and Background
-	- [X] Adding a Sphere
-	- [X] Surface Normals and Multiple Objects
-	- [X] Antialiasing
-	- [X] Diffuse Materials
-	- [X] Metal
-	- [X] Dielectrics
-	- [X] Positionable Camera
-	- [X] Defocus Blur
-	- [X] A Final Render
-- [X] Book 2 (Ray Tracing: The Next Week)
-	- [X] Motion Blur
-	- [X] Bounding Volume Hierachies
-	- [X] Solid Textures
-	- [X] Perlin Noise
-	- [X] Image Texture Mapping
-	- [X] Rectangles and Lights
-	- [X] Instances
-	- [X] Volumes
-	- [X] A Scene Testing All New Features
-- [ ] Other
-	- [X] Raytracer class
-	- [X] Each scene own file
-	- [X] Move ./renders to ./results
-	- [ ] Convert results to JPG and add more to README
-	- [ ] Run luacheck
+After the rendering is finished, you can find the resulting PPM file in `./results/`.  
+To convert the PPM file to a PNG/JPEG file, I recommend using [GIMP](https://www.gimp.org/) or [ImageMagick](https://imagemagick.org/).
