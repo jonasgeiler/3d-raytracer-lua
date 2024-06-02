@@ -27,7 +27,7 @@ All the code is written by me, but I added a MIT license so feel free to use it 
 
 ## How to use
 
-Just download the repository and then run any of the scenes using LuaJIT:
+Download the repository and then run any of the scenes using LuaJIT:
 ```shell
 $ luajit ./scenes/<scene>.lua
 ```
