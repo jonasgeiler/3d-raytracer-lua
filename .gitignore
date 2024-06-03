@@ -6,6 +6,8 @@
 
 # IDE
 .idea
+.vscode
+!/.vscode/extensions.json
 
 # Temp Files
 test.lua
