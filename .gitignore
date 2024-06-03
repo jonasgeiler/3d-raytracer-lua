@@ -9,3 +9,11 @@
 
 # Temp Files
 test.lua
+*.rockspec
+luarocks.lock
+
+# LuaRocks
+/luarocks
+/lua
+/lua_modules
+/.luarocks
