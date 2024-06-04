@@ -28,8 +28,8 @@ All the code is written by me, but I added a MIT license so feel free to use it 
 ## How to try
 
 Download the repository and then run any of the scenes using LuaJIT:
-```shell
-$ luajit ./scenes/<scene>.lua
+```bash
+luajit ./scenes/<scene>.lua
 ```
 > [!NOTE]
 > You can also use standard Lua 5.1, but I _**highly recommend**_ using LuaJIT instead.
