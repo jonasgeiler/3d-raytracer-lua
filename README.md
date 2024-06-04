@@ -42,7 +42,7 @@ $ luajit ./scenes/<scene>.lua
 > instead. Also, to use standard Lua you have to install the
 > [Lua BitOp extension](https://bitop.luajit.org/), which is included in LuaJIT.
 
-For example, the `random` scene is reasonably fast and showcases many of the
+For example, the [`random`](./scenes/random.lua) scene is reasonably fast and showcases many of the
 features:
 
 ```
