@@ -25,7 +25,7 @@ All the code is written by me, but I added a MIT license so feel free to use it 
 ![Result - Three Spheres](./results/three_spheres.png)
 
 
-## How to use
+## How to try
 
 Download the repository and then run any of the scenes using LuaJIT:
 ```shell
