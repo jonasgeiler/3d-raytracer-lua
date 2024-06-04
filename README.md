@@ -30,17 +30,17 @@ however you like.
 ![Result - Simple Light](./results/simple_light.png)
 ![Result - Three Spheres](./results/three_spheres.png)
 
+## Requirements
+
+- LuaJIT 2.1 (_**highly recommended**_) or Lua 5.1 (newer Lua versions might work but not tested)
+- If you use standard Lua you will also need the [Lua BitOp extension](https://bitop.luajit.org/), which is included in LuaJIT
+
 ## How to try
 
 Download the repository and then run any of the scenes using LuaJIT:
 ```shell
 $ luajit ./scenes/<scene>.lua
 ```
-
-> [!NOTE]
-> You can also use standard Lua 5.1, but I _**highly recommend**_ using LuaJIT
-> instead. Also, to use standard Lua you have to install the
-> [Lua BitOp extension](https://bitop.luajit.org/), which is included in LuaJIT.
 
 For example, [`random.lua`](./scenes/random.lua) is reasonably fast and showcases many of the
 features:
