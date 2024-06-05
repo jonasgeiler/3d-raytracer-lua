@@ -13,6 +13,7 @@
 test.lua
 *.rockspec
 luarocks.lock
+/results/*.ppm
 
 # LuaRocks
 /luarocks
