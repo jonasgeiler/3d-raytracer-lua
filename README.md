@@ -33,7 +33,8 @@ however you like.
 ## Requirements
 
 - LuaJIT 2.1 (_**highly recommended**_) or Lua 5.1 (newer Lua versions might work but not tested)
-- If you use standard Lua you will also need the [Lua BitOp extension](https://bitop.luajit.org/), which is included in LuaJIT
+- If you use standard Lua 5.1, you will also need the [Lua BitOp extension](https://bitop.luajit.org/), which is already included in LuaJIT 2.1
+  > **💡 Tip:** On Arch Linux, you can easily install it with `pacman -S lua51-bitop`.
 
 ## How to try
 
