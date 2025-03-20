@@ -9,17 +9,18 @@
 .vscode/
 !/.vscode/extensions.json
 
-# Temporary Files
-/test.lua
-/results/*.ppm
-
 # LuaRocks
-/luarocks/
-/lua/
-/lua_modules/
-/.luarocks/
+luarocks/
+lua/
+lua_modules/
+.luarocks/
+luarocks.lock
 *.src.rock
 *.zip
 *.tar.gz
-*.rockspec
-luarocks.lock
+
+# Temporary Files
+/test.lua
+
+# Output
+/results/*.ppm
