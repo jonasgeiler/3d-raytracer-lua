@@ -7,8 +7,7 @@ books by Peter Shirley and then translated the C++ code from the books into Lua:
 - [_Ray Tracing in One Weekend_](https://raytracing.github.io/v3/books/RayTracingInOneWeekend.html)
 - [_Ray Tracing: The Next Week_](https://raytracing.github.io/v3/books/RayTracingTheNextWeek.html)
 
-> [!NOTE]
-> I read version 3 of the books. There are newer versions now.
+> **ℹ️ Note:** I have read version 3 of the books. There are newer versions now.
 
 This raytracer is obviously not production-ready or really anything to be taken
 seriously, but I had a lot of fun writing it!  
